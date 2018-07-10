@@ -1,0 +1,113 @@
+<div class="mb-5 col-sm-12">
+    <div class="row">
+        <span class="d-inline">
+            <h3 class="d-inline">Product Development 
+                <strong>Operation</strong>
+            </h3>
+        </span>
+    
+        <span class="d-inline ml-auto">
+            <button 
+              (click)="openModalGrid()"
+              class="btn btn-outline-primary">
+                Search
+            </button>
+        </span>
+    </div>
+</div>
+
+<form>
+  <div class="form-row">
+    <div class="form-group col-md-2">
+      <label for="operation" class="text-uppercase">
+        <span>operation</span>
+      </label>
+
+      <input 
+        [disabled]="!editMode"
+        type="text" 
+        class="form-control" 
+        id="operation" 
+        placeholder="Operation">
+    </div>
+    
+    <div class="form-group col-md-2">
+      <label for="inputState" class="text-uppercase">
+        <span>status</span>
+      </label>
+
+      <select 
+        [disabled]="!editMode"
+        id="inputState" 
+        class="form-control">
+          <option selected>Choose...</option>
+          <option>Pending</option>
+          <option>Sent for Approval</option>
+          <option>Approved</option>
+          <option>Cancel</option>
+      </select>
+    </div>
+
+    <div class="form-group col-md-3">
+      <label for="class" class="text-uppercase">
+        <span>class</span>
+      </label>
+
+      <select
+        [disabled]="!editMode" 
+        id="inputState" 
+        class="form-control">
+          <option selected>Choose...</option>
+          <option>CORRUG OPR</option>
+          <option>CORRUG 2</option>
+          <option>CONVERSION</option>
+      </select>
+    </div>
+    <div class="form-group col-md-5">
+      <label for="description" class="text-uppercase">
+        <span>description</span>
+      </label>
+
+      <input 
+        [disabled]="!editMode"
+        type="text" 
+        class="form-control" 
+        id="description" 
+        placeholder="Description">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <div class="form-group">
+        <label for="description" class="text-uppercase">
+          <span>description</span>
+        </label>
+
+        <textarea 
+          [disabled]="!editMode"
+          class="form-control" 
+          id="description" 
+          placeholder="Description">
+        </textarea>
+      </div>
+    </div>
+  </div>
+  
+  <!-- user actions -->
+  <div class="col-sm-12">
+    <div class="row">
+      <span class="d-inline">
+          <button class="btn btn-outline-warning">Add</button>
+          <button class="btn btn-outline-info">Edit</button>
+      </span>
+  
+      <span class="d-inline ml-auto">
+          <button class="btn btn-outline-success">Save</button>
+          <button class="btn btn-outline-danger">Cancel</button>
+      </span>
+    </div>
+  </div>
+  <!-- user actions ends -->
+
+</form>
