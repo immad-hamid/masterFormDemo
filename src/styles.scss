@@ -1,9 +1,19 @@
+// // material theme
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+// bootstrap
+@import "~bootstrap/scss/bootstrap.scss";
+// ngx datatable theme
 @import '~@swimlane/ngx-datatable/release/index.css';
 @import '~@swimlane/ngx-datatable/release/themes/material.css';
 @import '~@swimlane/ngx-datatable/release/assets/icons.css';
 
 body {
     background-color: #fafafa;
+    // background-color: #303030;
+}
+
+button:focus {
+    outline: none;
 }
 
 /*
@@ -92,3 +102,9 @@ bootstrap table theme
       }
     }
   }
+
+@media (min-width: 992px){
+  .modal-dialog {
+      max-width: 800px!important;
+  }
+}

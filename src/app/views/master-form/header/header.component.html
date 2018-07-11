@@ -1,110 +1,107 @@
 <div class="mb-5 col-sm-12">
     <div class="row">
         <span class="d-inline">
-            <h3 class="d-inline">Product Development 
-                <strong>Operation</strong>
+            <h3 class="d-inline" style="font-weight: 300">Product Development 
+                <strong style="font-weight: 600">Operations</strong>
             </h3>
         </span>
     
         <span class="d-inline ml-auto">
             <button 
               (click)="openModalGrid()"
-              class="btn btn-outline-primary">
-                Search
+              color="primary"
+              mat-fab
+              matTooltip="Search">
+                <mat-icon>search</mat-icon>
             </button>
         </span>
     </div>
 </div>
 
-<form>
-  <div class="form-row">
-    <div class="form-group col-md-2">
-      <label for="operation" class="text-uppercase">
-        <span>operation</span>
-      </label>
-
+<form #novalidate>
+  <div class="form-container">
+    <mat-form-field>
       <input 
+        matInput
         [disabled]="!editMode"
-        type="text" 
-        class="form-control" 
+        type="text"
         id="operation" 
         placeholder="Operation">
-    </div>
-    
-    <div class="form-group col-md-2">
-      <label for="inputState" class="text-uppercase">
-        <span>status</span>
-      </label>
+    </mat-form-field>
 
-      <select 
+    <mat-form-field>
+      <mat-select 
         [disabled]="!editMode"
         id="inputState" 
-        class="form-control">
-          <option selected>Choose...</option>
-          <option>Pending</option>
-          <option>Sent for Approval</option>
-          <option>Approved</option>
-          <option>Cancel</option>
-      </select>
-    </div>
+        placeholder="Select">
+          <mat-option value="option">Pending</mat-option>
+          <mat-option value="option">Sent for Approval</mat-option>
+          <mat-option value="option">Approved</mat-option>
+          <mat-option value="option">Cancel</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-    <div class="form-group col-md-3">
-      <label for="class" class="text-uppercase">
-        <span>class</span>
-      </label>
-
-      <select
+    <mat-form-field>
+      <mat-select 
         [disabled]="!editMode" 
         id="inputState" 
-        class="form-control">
-          <option selected>Choose...</option>
-          <option>CORRUG OPR</option>
-          <option>CORRUG 2</option>
-          <option>CONVERSION</option>
-      </select>
-    </div>
-    <div class="form-group col-md-5">
-      <label for="description" class="text-uppercase">
-        <span>description</span>
-      </label>
-
+        placeholder="Select">
+          <mat-option value="option">CORRUG OPR</mat-option>
+          <mat-option value="option">CORRUG 2</mat-option>
+          <mat-option value="option">CONVERSION</mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field>
       <input 
+        matInput
         [disabled]="!editMode"
         type="text" 
-        class="form-control" 
-        id="description" 
+        class="description" 
         placeholder="Description">
-    </div>
+    </mat-form-field>
   </div>
 
-  <div class="form-row">
-    <div class="form-group col-md-4">
-      <div class="form-group">
-        <label for="description" class="text-uppercase">
-          <span>description</span>
-        </label>
-
-        <textarea 
-          [disabled]="!editMode"
-          class="form-control" 
-          id="description" 
-          placeholder="Description">
-        </textarea>
-      </div>
-    </div>
+  <div class="form-container-50">
+    <mat-form-field>
+      <textarea 
+        matInput 
+        placeholder="Description" 
+        matTextareaAutosize 
+        matAutosizeMinRows="2"
+        matAutosizeMaxRows="5"
+        [disabled]="!editMode"></textarea>
+    </mat-form-field>
   </div>
   
   <!-- user actions -->
-  <div class="col-sm-12">
+  <div class="col-sm-12 mt-5">
     <div class="row">
       <span class="d-inline">
-          <button class="btn btn-outline-warning">Add</button>
-          <button class="btn btn-outline-info">Edit</button>
+          <div class="button-row">
+            <a
+              (click)="enableInputs()"
+              mat-raised-button color="basic"
+              matTooltip="Edit Form">
+                Edit
+            </a>
+          </div>
       </span>
   
       <span class="d-inline ml-auto">
-          <button class="btn btn-outline-success">Save</button>
-          <button class="btn btn-outline-danger">Cancel</button>
+          <div class="button-row">
+            <a 
+              mat-raised-button color="basic"
+              matTooltip="Save Information">
+                Save
+            </a>
+            <a 
+              (click)="disableInputs()"
+              mat-raised-button color="basic"
+              matTooltip="Cancel Form">
+                Cancel
+            </a>
+          </div>
       </span>
     </div>
   </div>

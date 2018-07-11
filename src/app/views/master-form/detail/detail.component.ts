@@ -23,7 +23,7 @@ export class DetailComponent implements OnInit {
     const req = new XMLHttpRequest();
     req.open('GET', `assets/data/company.json`);
 
-    req.onload = function () {
+    req.onload = () => {
       if (req.status === 200) {
         // sending the null as an error and 2nd pram as a response
         cb(JSON.parse(req.response));

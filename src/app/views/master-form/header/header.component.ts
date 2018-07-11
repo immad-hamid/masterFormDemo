@@ -11,26 +11,33 @@ import { CommonGridComponent } from '../../../common/common-grid/common-grid.com
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  openModal: boolean;
   bsModalRef: BsModalRef;
+  editMode: boolean;
 
   constructor(private modalService: BsModalService) { }
 
   ngOnInit() {
   }
 
-  searchData() {
-    this.openModal = true;
+  enableInputs() {
+    this.editMode = true;
   }
 
-  openModalGrid() {
+  disableInputs() {
+    this.editMode = false;
+  }
+
+  openModalGrid(template: TemplateRef<any>) {
+
     const initialState = {
       list: [
         'This Modal will show the Data Grid...'
       ],
-      title: 'Modal with component'
+      abc: 'Immad'
     };
-    this.bsModalRef = this.modalService.show(CommonGridComponent, { initialState });
+    this.bsModalRef = this.modalService.show(
+      CommonGridComponent, { initialState }
+    );
     this.bsModalRef.content.closeBtnName = 'Close';
   }
 
