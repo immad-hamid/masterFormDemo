@@ -23,6 +23,7 @@ import { ModalModule } from 'ngx-bootstrap'
 
 // in app modules
 import { MaterialModule } from './material-module/material.module';
+import { FormsModule, ReactiveFormsModule } from '../../node_modules/@angular/forms';
 
 
 @NgModule({
@@ -38,6 +39,8 @@ import { MaterialModule } from './material-module/material.module';
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     NgxDatatableModule,
     ModalModule.forRoot()

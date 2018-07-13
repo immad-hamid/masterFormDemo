@@ -18,44 +18,47 @@
     </div>
 </div>
 
-<form #novalidate>
+<form [formGroup]="masterForm" #novalidate>
   <div class="form-container">
     <mat-form-field>
       <input 
+        formControlName="operation"
         matInput
-        [disabled]="!editMode"
         type="text"
         id="operation" 
         placeholder="Operation">
+      <mat-error *ngIf="operation.touched && operation.invalid">Field should not be empty</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-select 
-        [disabled]="!editMode"
+        formControlName="status"
         id="inputState" 
-        placeholder="Select">
+        placeholder="Select Status">
           <mat-option value="option">Pending</mat-option>
           <mat-option value="option">Sent for Approval</mat-option>
           <mat-option value="option">Approved</mat-option>
           <mat-option value="option">Cancel</mat-option>
       </mat-select>
+      <mat-error *ngIf="status.touched && status.invalid">Field should not be empty</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-select 
-        [disabled]="!editMode" 
+        formControlName="class"
         id="inputState" 
-        placeholder="Select">
+        placeholder="Select Class">
           <mat-option value="option">CORRUG OPR</mat-option>
           <mat-option value="option">CORRUG 2</mat-option>
           <mat-option value="option">CONVERSION</mat-option>
       </mat-select>
+      <mat-error *ngIf="class.touched && class.invalid">Field should not be empty</mat-error>
     </mat-form-field>
     
     <mat-form-field>
       <input 
+        formControlName="descShort"
         matInput
-        [disabled]="!editMode"
         type="text" 
         class="description" 
         placeholder="Description">
@@ -65,12 +68,13 @@
   <div class="form-container-50">
     <mat-form-field>
       <textarea 
+        formControlName="descLong"
         matInput 
         placeholder="Description" 
         matTextareaAutosize 
         matAutosizeMinRows="2"
-        matAutosizeMaxRows="5"
-        [disabled]="!editMode"></textarea>
+        matAutosizeMaxRows="5"></textarea>
+      <mat-error *ngIf="descLong.touched && descLong.invalid">Field should not be empty</mat-error>
     </mat-form-field>
   </div>
   
@@ -91,6 +95,7 @@
       <span class="d-inline ml-auto">
           <div class="button-row">
             <a 
+              (click)="saveRecord()"
               mat-raised-button color="basic"
               matTooltip="Save Information">
                 Save
