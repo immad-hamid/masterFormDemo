@@ -34,17 +34,33 @@ export class DetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.detailGridForm = this.fb.group({
+    //   lineNum: ['', Validators.required],
+    //   activity: ['', Validators.required],
+    //   description: ['', Validators.required],
+    //   resourcesf: ['', Validators.required],
+    //   proQuan: ['', [
+    //     Validators.required,
+    //     Validators.min(1),
+    //     Validators.max(9),
+    //   ]]
+    // });
+
     this.detailGridForm = this.fb.group({
-      lineNum: ['', Validators.required],
-      activity: ['', Validators.required],
-      description: ['', Validators.required],
-      resourcesf: ['', Validators.required],
-      proQuan: ['', [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(9),
-      ]]
+      topics: this.fb.array([])
     });
+  }
+
+  get topics() { return this.detailGridForm.get('topics') as FormArray }
+
+  addTopic(topic: HTMLInputElement) {
+    this.topics.push(new FormControl(topic.value));
+    topic.value = '';
+  }
+
+  removeTopic(topic: FormControl) {
+    let index = this.topics.controls.indexOf(topic);
+    this.topics.removeAt(index);
   }
 
   get lineNum() { return this.detailGridForm.get('lineNum') }

@@ -1,85 +1,20 @@
-<div *ngIf="masterFormData != undefined">
-  <form [formGroup]="detailGridForm">
-    <div class="table-responsive">
-      <table class="table table-sm">
-        <thead>
-          <tr>
-            <th scope="col">Line No.</th>
-            <th scope="col">Activity</th>
-            <th scope="col">Description</th>
-            <th scope="col">Resources</th>
-            <th scope="col">Process Quantity</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-          <tbody>
-            <!-- <tr *formRow> -->
-            <tr>
-              <!-- Line No. -->
-              <td>
-                  <mat-form-field>
-                    <input 
-                      formControlName="lineNum"
-                      matInput
-                      type="text" >
-                  </mat-form-field>
-              </td>
-              <!-- Activity -->
-              <td>
-                  <mat-form-field>
-                    <mat-select 
-                      formControlName="activity">
-                        <mat-option 
-                          *ngFor="let activity of activities"
-                          value="{{activity.ACTIVITY_ID}}">
-                          {{activity.ACTIVITY}}
-                        </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-              </td>
-              <!-- Description -->
-              <td>
-                  <mat-form-field>
-                    <input 
-                      formControlName="description"
-                      matInput
-                      type="text" >
-                  </mat-form-field>
-              </td>
-              <!-- Resources -->
-              <td>
-                  <mat-form-field>
-                    <mat-select 
-                      formControlName="resourcesf">
-                        <mat-option 
-                          *ngFor="let resource of resources"
-                          [value]="resource.RESOURCE_ID">
-                          {{ resource.RESOURCE }}
-                        </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-              </td>
-              <!-- Process Quantity -->
-              <td>
-                  <mat-form-field>
-                    <input 
-                      formControlName="proQuan"
-                      matInput
-                      type="number" >
-                  </mat-form-field>
-              </td>
-              <!-- Action -->
-              <td>
-                  <button 
-                    [disabled]="detailGridForm.invalid"
-                    mat-raised-button color="primary"
-                    (click)="saveData()">
-                      Save
-                  </button>
-              </td>
-            </tr>
-          </tbody>
-      </table>
-    </div>
+<div>
+  <form >
+    <mat-form-field>
+      <input 
+        matInput
+        (keyup.enter)="addTopic(topic)"
+        #topic
+        placeholder="topic"
+        type="text">
+    </mat-form-field>
+
+    <ul>
+      <li 
+        *ngFor="let topic of detailGridForm.get('topics').controls"
+        (click)="removeTopic(topic)">
+        {{ topic.value }}
+      </li>
+    </ul>
   </form>
 </div>
