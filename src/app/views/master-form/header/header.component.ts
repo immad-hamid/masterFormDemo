@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 // ng Modal
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 // component from where we will open our modal
 import { CommonGridComponent } from '../../../common/common-grid/common-grid.component';
 import { FormBuilder, Validators } from '../../../../../node_modules/@angular/forms';
+import { SubjectService } from '../../../services/subject.service';
 
 @Component({
   selector: 'master-form-header',
@@ -13,17 +14,21 @@ import { FormBuilder, Validators } from '../../../../../node_modules/@angular/fo
 })
 
 export class HeaderComponent implements OnInit {
+
+  subject
   bsModalRef: BsModalRef;
   editMode: boolean;
   masterForm;
 
-  constructor(private modalService: BsModalService, public fb: FormBuilder) { }
+  constructor(
+    private modalService: BsModalService,
+    public fb: FormBuilder,
+    private subService: SubjectService
+  ) { }
 
   ngOnInit() {
     this.masterForm = this.fb.group({
-      operation: ['', [
-        Validators.required,
-      ]],
+      operation: ['', Validators.required],
       status: ['', Validators.required],
       class: ['', Validators.required],
       descShort: [],
@@ -47,7 +52,13 @@ export class HeaderComponent implements OnInit {
   }
 
   saveRecord() {
-    console.log(this.masterForm.value);
+    this.subService.headerData.next({
+      operation: this.operation.value,
+      status: this.status.value,
+      class: this.class.value,
+      descShort: this.descShort.value,
+      descLong: this.descLong.value
+    });
   }
 
   openModalGrid() {

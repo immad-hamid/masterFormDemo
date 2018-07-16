@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'master-form',
@@ -10,6 +10,10 @@ export class MasterFormComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  getmasterFormData(event) {
+    console.log(event)
   }
 
 }

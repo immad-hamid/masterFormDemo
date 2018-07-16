@@ -1,0 +1,161 @@
+<ngx-datatable
+  #mydatatable
+  class="material"
+  [headerHeight]="50"
+  [limit]="5"
+  [columnMode]="'force'"
+  [footerHeight]="50"
+  [rowHeight]="'auto'"
+  [rows]="rows">
+
+    <ngx-datatable-column name="Line No">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        <input type="text">
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Activity">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Description">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Resource">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Description">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="UOM">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Process Quantity">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Usage">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="UOM">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Action">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+    <!-- <ngx-datatable-column name="Name">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+        <span
+          title="Double click to edit"
+          (dblclick)="editing[rowIndex + '-name'] = true"
+          *ngIf="!editing[rowIndex + '-name']">
+          {{value}}
+        </span>
+        <input
+          autofocus
+          (blur)="updateValue($event, 'name', rowIndex)"
+          *ngIf="editing[rowIndex+ '-name']"
+          type="text"
+          [value]="value"
+        />
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Gender">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <span
+          title="Double click to edit"
+          (dblclick)="editing[rowIndex + '-gender'] = true"
+          *ngIf="!editing[rowIndex + '-gender']">
+          {{value}} {{ rowIndex }}
+        </span>
+        <select
+          *ngIf="editing[rowIndex + '-gender']"
+          (blur)="editing[rowIndex + '-gender'] = false"
+          (change)="updateValue($event, 'gender', rowIndex)"
+          [value]="value">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Age">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column> -->
+</ngx-datatable>
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'master-form-detail',
+  templateUrl: './detail.component.html',
+  styleUrls: ['./detail.component.scss']
+})
+export class DetailComponent implements OnInit {
+
+  editing = {};
+  rows = [];
+
+  constructor() {
+    // this.fetch((data) => {
+    //   this.rows = data;
+    //   console.log(this.rows);
+    // });
+  }
+
+  ngOnInit() {
+  }
+
+  fetch(cb) {
+    const req = new XMLHttpRequest();
+    req.open('GET', `assets/data/company.json`);
+
+    req.onload = () => {
+      if (req.status === 200) {
+        // sending the null as an error and 2nd pram as a response
+        cb(JSON.parse(req.response));
+      }
+    }
+
+    req.send();
+  }
+
+  updateValue(event, cell, rowIndex) {
+    console.log('inline editing rowIndex', rowIndex)
+    this.editing[rowIndex + '-' + cell] = false;
+    this.rows[rowIndex][cell] = event.target.value;
+    this.rows = [...this.rows];
+    console.log('UPDATED!', this.rows[rowIndex][cell]);
+  }
+
+}

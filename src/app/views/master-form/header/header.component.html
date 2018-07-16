@@ -27,7 +27,6 @@
         type="text"
         id="operation" 
         placeholder="Operation">
-      <mat-error *ngIf="operation.touched && operation.invalid">Field should not be empty</mat-error>
     </mat-form-field>
 
     <mat-form-field>
@@ -35,10 +34,10 @@
         formControlName="status"
         id="inputState" 
         placeholder="Select Status">
-          <mat-option value="option">Pending</mat-option>
-          <mat-option value="option">Sent for Approval</mat-option>
-          <mat-option value="option">Approved</mat-option>
-          <mat-option value="option">Cancel</mat-option>
+          <mat-option value="1">Pending</mat-option>
+          <mat-option value="2">Sent for Approval</mat-option>
+          <mat-option value="3">Approved</mat-option>
+          <mat-option value="4">Cancel</mat-option>
       </mat-select>
       <mat-error *ngIf="status.touched && status.invalid">Field should not be empty</mat-error>
     </mat-form-field>
@@ -48,9 +47,9 @@
         formControlName="class"
         id="inputState" 
         placeholder="Select Class">
-          <mat-option value="option">CORRUG OPR</mat-option>
-          <mat-option value="option">CORRUG 2</mat-option>
-          <mat-option value="option">CONVERSION</mat-option>
+          <mat-option value="55">CORRUG OPR</mat-option>
+          <mat-option value="67">CORRUG 2</mat-option>
+          <mat-option value="70">CONVERSION</mat-option>
       </mat-select>
       <mat-error *ngIf="class.touched && class.invalid">Field should not be empty</mat-error>
     </mat-form-field>
@@ -94,16 +93,17 @@
   
       <span class="d-inline ml-auto">
           <div class="button-row">
-            <a 
+            <button 
+              [disabled]="masterForm.invalid"
               (click)="saveRecord()"
               mat-raised-button color="basic"
               matTooltip="Save Information">
-                Save
-            </a>
+                Add Line Items
+            </button>
             <a 
               (click)="disableInputs()"
               mat-raised-button color="basic"
-              matTooltip="Cancel Form">
+              matTooltip="Cancel Form lkjasl;dfkjalskjdflkasjdflkjsadlkjfl lksdjflksajdflk ">
                 Cancel
             </a>
           </div>

@@ -23,3 +23,12 @@
         text-decoration: none;
     }
 }
+
+.mat-tooltip {
+    max-width: 50px;
+    /* or */
+    /* width: 50px; */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

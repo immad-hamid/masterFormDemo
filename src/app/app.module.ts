@@ -25,6 +25,9 @@ import { ModalModule } from 'ngx-bootstrap'
 import { MaterialModule } from './material-module/material.module';
 import { FormsModule, ReactiveFormsModule } from '../../node_modules/@angular/forms';
 
+// in app services
+import { SubjectService } from './services/subject.service';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +36,7 @@ import { FormsModule, ReactiveFormsModule } from '../../node_modules/@angular/fo
     HeaderComponent,
     DetailComponent,
     CommonGridComponent,
-    NavComponent,
+    NavComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,9 @@ import { FormsModule, ReactiveFormsModule } from '../../node_modules/@angular/fo
     NgxDatatableModule,
     ModalModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    SubjectService
+  ],
   entryComponents: [CommonGridComponent],
   bootstrap: [AppComponent]
 })

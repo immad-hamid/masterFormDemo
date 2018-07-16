@@ -4,6 +4,7 @@ import { MatButtonModule, MatToolbarModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -16,6 +17,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
+        MatTabsModule,
         MatProgressBarModule,
         MatTooltipModule,
         MatProgressSpinnerModule
@@ -27,6 +29,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
+        MatTabsModule,
         MatProgressBarModule,
         MatTooltipModule,
         MatProgressSpinnerModule

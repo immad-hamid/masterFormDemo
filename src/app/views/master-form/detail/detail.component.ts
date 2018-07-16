@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormBuilder, Validators, FormGroup, FormControl, FormArray } from '../../../../../node_modules/@angular/forms';
+import { SubjectService } from '../../../services/subject.service';
 
 @Component({
   selector: 'master-form-detail',
@@ -6,39 +8,129 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent implements OnInit {
+  masterFormData: any;
+  detailGridForm: any;
+  activities: any;
+  resources: any;
 
-  editing = {};
-  rows = [];
+  constructor(
+    public fb: FormBuilder,
+    private subService: SubjectService
+  ) {
+    this.fetchActivities((data) => {
+      this.activities = [...data];
+      console.log(this.activities);
+    });
 
-  constructor() {
-    this.fetch((data) => {
-      this.rows = data;
+    this.fetchResources((data) => {
+      this.resources = [...data];
+      console.log(this.resources);
+    });
+
+    this.subService.headerData.subscribe((data) => {
+      this.masterFormData = data;
+      console.log(this.masterFormData);
     });
   }
 
   ngOnInit() {
+    this.detailGridForm = this.fb.group({
+      lineNum: ['', Validators.required],
+      activity: ['', Validators.required],
+      description: ['', Validators.required],
+      resourcesf: ['', Validators.required],
+      proQuan: ['', [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(9),
+      ]]
+    });
   }
 
-  fetch(cb) {
-    const req = new XMLHttpRequest();
-    req.open('GET', `assets/data/company.json`);
+  get lineNum() { return this.detailGridForm.get('lineNum') }
+  get activity() { return this.detailGridForm.get('activity') }
+  get description() { return this.detailGridForm.get('lineNum') }
+  get resourcesf() { return this.detailGridForm.get('resourcesf') }
+  get proQuan() { return this.detailGridForm.get('proQuan') }
+
+  fetchActivities(cb) {
+    const req = new XMLHttpRequest;
+    req.open('GET', 'http://C3-0467:8011/api/Values/GetAllActivity', true);
 
     req.onload = () => {
       if (req.status === 200) {
-        // sending the null as an error and 2nd pram as a response
         cb(JSON.parse(req.response));
       }
     }
-
     req.send();
   }
 
-  updateValue(event, cell, rowIndex) {
-    console.log('inline editing rowIndex', rowIndex)
-    this.editing[rowIndex + '-' + cell] = false;
-    this.rows[rowIndex][cell] = event.target.value;
-    this.rows = [...this.rows];
-    console.log('UPDATED!', this.rows[rowIndex][cell]);
+  fetchResources(cb) {
+    const req = new XMLHttpRequest;
+    req.open('GET', 'http://C3-0467:8011/api/Values/GetAllResource', true);
+
+    req.onload = () => {
+      if (req.status === 200) {
+        cb(JSON.parse(req.response));
+      }
+    }
+    req.send();
   }
+
+  saveData() {
+    const obj = {
+      status: '2',
+      ACTIVITY: '',
+      RESOURCE: '',
+      OPRN_ID: '0',
+      OPRN_NO: '',
+      OPRN_VERS: '2',
+      OPRN_NAME: this.masterFormData.operation,
+      OPERATION_STATUS: this.masterFormData.status,
+      OPRN_CLASS_ID: this.masterFormData.class,
+      OPRN_CLASS: '',
+      OPRN_CLASS_NAME: '',
+      ORGANIZATION_ID: '1947',
+      MFG_OPERATION_DETAILS: [{
+        OPRN_ACT_RES_ID: 0,
+        OPRN_ACT_ID: 190,
+        RESOURCE_ID: this.resourcesf.value,
+        LINE_NO: this.lineNum.value,
+        OPRN_ID: 1781,
+        ACTIVITY_ID: parseInt(this.activity.value),
+        ACTIVITY: 1,
+        ACTIVITY_NAME: 2,
+        RESOURCE: 158,
+        RESOURCE_NAME: null,
+        RESOURCE_USAGE: '2017-07-01T00:00:00',
+        USAGE_UM: null,
+        PROCESS_QTY: this.proQuan.value,
+        PROCESS_UOM: ''
+      }]
+    }
+
+    const req = new XMLHttpRequest();
+    req.open('POST', `http://C3-0467:8011/api/Values/Save`, true);
+    req.setRequestHeader('Content-type', 'application/json');
+
+    req.onreadystatechange = function () {//Call a function when the state changes.
+      if (req.readyState == 4 && req.status == 200) {
+        alert(JSON.parse(req.responseText));
+        console.log(JSON.stringify(obj));
+        // alert(req.responseText);
+      }
+    }
+
+    req.send(JSON.stringify(obj));
+  }
+
+
+  //   console.log(this.masterFormData);
+  //   console.log(this.lineNum.value);
+  //   console.log(typeof parseInt(this.activity.value));
+  // console.log(this.description.value);
+  // console.log(typeof this.resourcesf.value);
+  // console.log(typeof this.proQuan.value);
+
 
 }
