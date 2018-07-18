@@ -31,7 +31,7 @@ export class DataService {
             });
     }
 
-    // DEMO ONLY, you can find working methods below
+    // These methods are used for demo purpose only
     addIssue(issue: Issue): void {
         this.dialogData = issue;
     }
@@ -47,7 +47,7 @@ export class DataService {
 
 
 
-/* REAL LIFE CRUD Methods I've used in my projects. ToasterService uses Material Toasts for displaying messages:
+/* REAL LIFE CRUD Methods which will used projects. ToasterService uses Material Toasts for displaying messages:
 
     // ADD, POST METHOD
     addItem(kanbanItem: KanbanItem): void {
