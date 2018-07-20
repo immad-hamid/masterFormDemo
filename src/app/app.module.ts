@@ -29,13 +29,6 @@ import { FormsModule, ReactiveFormsModule } from '../../node_modules/@angular/fo
 
 // in app services
 import { SubjectService } from './services/subject.service';
-import { DataService } from './services/data.service';
-
-// dialog components
-import { AddDialogComponent } from './dialogs/add/add.dialog.component';
-import { EditDialogComponent } from './dialogs/edit/edit.dialog.component';
-import { DeleteDialogComponent } from './dialogs/delete/delete.dialog.component';
-
 
 
 @NgModule({
@@ -46,9 +39,6 @@ import { DeleteDialogComponent } from './dialogs/delete/delete.dialog.component'
     DetailComponent,
     CommonGridComponent,
     NavComponent,
-    AddDialogComponent,
-    EditDialogComponent,
-    DeleteDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -62,14 +52,10 @@ import { DeleteDialogComponent } from './dialogs/delete/delete.dialog.component'
     ModalModule.forRoot()
   ],
   providers: [
-    SubjectService,
-    DataService
+    SubjectService
   ],
   entryComponents: [
-    CommonGridComponent,
-    AddDialogComponent,
-    EditDialogComponent,
-    DeleteDialogComponent
+    CommonGridComponent
   ],
   bootstrap: [AppComponent]
 })

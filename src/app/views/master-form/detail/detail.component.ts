@@ -1,20 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { DataService } from '../../../services/data.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormBuilder, Validators, FormGroup, FormControl, FormArray } from '../../../../../node_modules/@angular/forms';
 import { SubjectService } from '../../../services/subject.service';
-import { HttpClient } from '@angular/common/http';
-import { MatDialog, MatPaginator, MatSort } from '@angular/material';
-import { Issue } from '../../../models/issue';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { DataSource } from '@angular/cdk/collections';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import { AddDialogComponent } from '../../../dialogs/add/add.dialog.component';
-import { EditDialogComponent } from '../../../dialogs/edit/edit.dialog.component';
-import { DeleteDialogComponent } from '../../../dialogs/delete/delete.dialog.component';
 
 @Component({
   selector: 'master-form-detail',
@@ -23,203 +9,155 @@ import { DeleteDialogComponent } from '../../../dialogs/delete/delete.dialog.com
 })
 export class DetailComponent implements OnInit {
   masterFormData: any;
-
-  displayedColumns = ['id', 'title', 'state', 'url', 'created_at', 'updated_at', 'actions'];
-  exampleDatabase: DataService | null;
-  dataSource: ExampleDataSource | null;
-  index: number;
-  id: number;
+  detailGridForm: any;
+  activities: any;
+  resources: any;
+  formEl: FormGroup;
 
   constructor(
-    public httpClient: HttpClient,
-    public dialog: MatDialog,
-    public dataService: DataService,
+    public fb: FormBuilder,
     private subService: SubjectService
   ) {
+    this.fetchActivities((data) => {
+      this.activities = [...data];
+      console.log(this.activities);
+    });
+
+    this.fetchResources((data) => {
+      this.resources = [...data];
+      console.log(this.resources);
+    });
+
     this.subService.headerData.subscribe((data) => {
       this.masterFormData = data;
       console.log(this.masterFormData);
     });
   }
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('filter') filter: ElementRef;
-
   ngOnInit() {
-    this.loadData();
-  }
-
-  refresh() {
-    this.loadData();
-  }
-
-  addNew(issue: Issue) {
-    const dialogRef = this.dialog.open(AddDialogComponent, {
-      data: { issue: issue }
+    this.detailGridForm = this.fb.group({
+      topics: this.fb.array([])
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 1) {
-        // After dialog is closed we're doing frontend updates
-        // For add we're just pushing a new row inside DataService
-        this.exampleDatabase.dataChange.value.push(this.dataService.getDialogData());
-        this.refreshTable();
+    this.formEl = this.fb.group({
+      lineNum: ['lineNum', Validators.required],
+      activity: ['', Validators.required],
+      description: ['', Validators.required],
+      resourcesf: ['', Validators.required],
+      proQuan: ['', [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(9),
+      ]]
+    });
+
+    // setTimeout(() => {
+    //   console.log(this.lineNum);
+    // }, 5000);
+  }
+
+  // shorthand for this.topics
+  get topics() { return this.detailGridForm.get('topics') as FormArray }
+
+  addTopic() {
+    this.topics.push(
+      this.formEl
+      // this.fb.group({
+      //   lineNum: ['lineNum', Validators.required],
+      //   activity: ['', Validators.required],
+      //   description: ['', Validators.required],
+      //   resourcesf: ['', Validators.required],
+      //   proQuan: ['', [
+      //     Validators.required,
+      //     Validators.min(1),
+      //     Validators.max(9),
+      //   ]]
+      // })
+    );
+    console.log(this.topics)
+    // topic.value = '';
+  }
+
+  removeTopic(topic: FormControl) {
+    let index = this.topics.controls.indexOf(topic);
+    this.topics.removeAt(index);
+  }
+
+  get lineNum() { return this.detailGridForm.get('lineNum') }
+  get activity() { return this.detailGridForm.get('activity') }
+  get description() { return this.detailGridForm.get('lineNum') }
+  get resourcesf() { return this.detailGridForm.get('resourcesf') }
+  get proQuan() { return this.detailGridForm.get('proQuan') }
+
+  fetchActivities(cb) {
+    const req = new XMLHttpRequest;
+    req.open('GET', 'http://C3-0467:8011/api/Values/GetAllActivity', true);
+
+    req.onload = () => {
+      if (req.status === 200) {
+        cb(JSON.parse(req.response));
       }
-    });
-  }
-
-  startEdit(i: number, id: number, title: string, state: string, url: string, created_at: string, updated_at: string) {
-    this.id = id;
-    // index row is used just for debugging proposes and can be removed
-    this.index = i;
-    console.log(this.index);
-    const dialogRef = this.dialog.open(EditDialogComponent, {
-      data: { id: id, title: title, state: state, url: url, created_at: created_at, updated_at: updated_at }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 1) {
-        // When using an edit things are little different, firstly we find record inside DataService by id
-        const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.id === this.id);
-        // Then you update that record using data from dialogData (values you enetered)
-        this.exampleDatabase.dataChange.value[foundIndex] = this.dataService.getDialogData();
-        // And lastly refresh table
-        this.refreshTable();
-      }
-    });
-  }
-
-  deleteItem(i: number, id: number, title: string, state: string, url: string) {
-    this.index = i;
-    this.id = id;
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: { id: id, title: title, state: state, url: url }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 1) {
-        const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.id === this.id);
-        // for delete we use splice in order to remove single object from DataService
-        this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
-        this.refreshTable();
-      }
-    });
-  }
-
-
-  // If you don't need a filter or a pagination this can be simplified, you just use code from else block
-  private refreshTable() {
-    // if there's a paginator active we're using it for refresh
-    if (this.dataSource._paginator.hasNextPage()) {
-      this.dataSource._paginator.nextPage();
-      this.dataSource._paginator.previousPage();
-      // in case we're on last page this if will tick
-    } else if (this.dataSource._paginator.hasPreviousPage()) {
-      this.dataSource._paginator.previousPage();
-      this.dataSource._paginator.nextPage();
-      // in all other cases including active filter we do it like this
-    } else {
-      this.dataSource.filter = '';
-      this.dataSource.filter = this.filter.nativeElement.value;
     }
+    req.send();
   }
 
-  public loadData() {
-    this.exampleDatabase = new DataService(this.httpClient);
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
-      .subscribe(() => {
-        if (!this.dataSource) {
-          return;
-        }
-        this.dataSource.filter = this.filter.nativeElement.value;
-      });
+  fetchResources(cb) {
+    const req = new XMLHttpRequest;
+    req.open('GET', 'http://C3-0467:8011/api/Values/GetAllResource', true);
+
+    req.onload = () => {
+      if (req.status === 200) {
+        cb(JSON.parse(req.response));
+      }
+    }
+    req.send();
   }
 
-
-}
-
-export class ExampleDataSource extends DataSource<Issue> {
-  _filterChange = new BehaviorSubject('');
-
-  get filter(): string {
-    return this._filterChange.value;
-  }
-
-  set filter(filter: string) {
-    this._filterChange.next(filter);
-  }
-
-  filteredData: Issue[] = [];
-  renderedData: Issue[] = [];
-
-  constructor(public _exampleDatabase: DataService,
-    public _paginator: MatPaginator,
-    public _sort: MatSort) {
-    super();
-    // Reset to the first page when the user changes the filter.
-    this._filterChange.subscribe(() => this._paginator.pageIndex = 0);
-  }
-
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
-  connect(): Observable<Issue[]> {
-    // Listen for any changes in the base data, sorting, filtering, or pagination
-    const displayDataChanges = [
-      this._exampleDatabase.dataChange,
-      this._sort.sortChange,
-      this._filterChange,
-      this._paginator.page
-    ];
-
-    this._exampleDatabase.getAllIssues();
-
-    return Observable.merge(...displayDataChanges).map(() => {
-      // Filter data
-      this.filteredData = this._exampleDatabase.data.slice().filter((issue: Issue) => {
-        const searchStr = (issue.id + issue.title + issue.url + issue.created_at).toLowerCase();
-        return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
-      });
-
-      // Sort filtered data
-      const sortedData = this.sortData(this.filteredData.slice());
-
-      // Grab the page's slice of the filtered sorted data.
-      const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
-      this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
-      return this.renderedData;
-    });
-  }
-  disconnect() {
-  }
-
-
-
-  /** Returns a sorted copy of the database data. */
-  sortData(data: Issue[]): Issue[] {
-    if (!this._sort.active || this._sort.direction === '') {
-      return data;
+  saveData() {
+    const obj = {
+      status: '2',
+      ACTIVITY: '',
+      RESOURCE: '',
+      OPRN_ID: '0',
+      OPRN_NO: '',
+      OPRN_VERS: '2',
+      OPRN_NAME: this.masterFormData.operation,
+      OPERATION_STATUS: this.masterFormData.status,
+      OPRN_CLASS_ID: this.masterFormData.class,
+      OPRN_CLASS: '',
+      OPRN_CLASS_NAME: '',
+      ORGANIZATION_ID: '1947',
+      MFG_OPERATION_DETAILS: [{
+        OPRN_ACT_RES_ID: 0,
+        OPRN_ACT_ID: 190,
+        RESOURCE_ID: this.resourcesf.value,
+        LINE_NO: this.lineNum.value,
+        OPRN_ID: 1781,
+        ACTIVITY_ID: parseInt(this.activity.value),
+        ACTIVITY: 1,
+        ACTIVITY_NAME: 2,
+        RESOURCE: 158,
+        RESOURCE_NAME: null,
+        RESOURCE_USAGE: '2017-07-01T00:00:00',
+        USAGE_UM: null,
+        PROCESS_QTY: this.proQuan.value,
+        PROCESS_UOM: ''
+      }]
     }
 
-    return data.sort((a, b) => {
-      let propertyA: number | string = '';
-      let propertyB: number | string = '';
+    const req = new XMLHttpRequest();
+    req.open('POST', `http://C3-0467:8011/api/Values/Save`, true);
+    req.setRequestHeader('Content-type', 'application/json');
 
-      switch (this._sort.active) {
-        case 'id': [propertyA, propertyB] = [a.id, b.id]; break;
-        case 'title': [propertyA, propertyB] = [a.title, b.title]; break;
-        case 'state': [propertyA, propertyB] = [a.state, b.state]; break;
-        case 'url': [propertyA, propertyB] = [a.url, b.url]; break;
-        case 'created_at': [propertyA, propertyB] = [a.created_at, b.created_at]; break;
-        case 'updated_at': [propertyA, propertyB] = [a.updated_at, b.updated_at]; break;
+    req.onreadystatechange = function () {//Call a function when the state changes.
+      if (req.readyState == 4 && req.status == 200) {
+        alert(JSON.parse(req.responseText));
+        console.log(JSON.stringify(obj));
+        // alert(req.responseText);
       }
+    }
 
-      const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
-      const valueB = isNaN(+propertyB) ? propertyB : +propertyB;
-
-      return (valueA < valueB ? -1 : 1) * (this._sort.direction === 'asc' ? 1 : -1);
-    });
+    req.send(JSON.stringify(obj));
   }
+
 }
