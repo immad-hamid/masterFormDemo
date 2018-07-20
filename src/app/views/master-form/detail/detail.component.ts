@@ -14,8 +14,10 @@ export class DetailComponent implements OnInit {
   resources: any;
   formEl: FormGroup;
 
+  private fieldArray: Array<any> = [];
+  private newAttribute: any = {};
+
   constructor(
-    public fb: FormBuilder,
     private subService: SubjectService
   ) {
     this.fetchActivities((data) => {
@@ -34,60 +36,17 @@ export class DetailComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.detailGridForm = this.fb.group({
-      topics: this.fb.array([])
-    });
-
-    this.formEl = this.fb.group({
-      lineNum: ['lineNum', Validators.required],
-      activity: ['', Validators.required],
-      description: ['', Validators.required],
-      resourcesf: ['', Validators.required],
-      proQuan: ['', [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(9),
-      ]]
-    });
-
-    // setTimeout(() => {
-    //   console.log(this.lineNum);
-    // }, 5000);
+  addFieldValue() {
+    this.fieldArray.push(this.newAttribute)
+    this.newAttribute = {};
+    console.log(this.fieldArray);
   }
 
-  // shorthand for this.topics
-  get topics() { return this.detailGridForm.get('topics') as FormArray }
-
-  addTopic() {
-    this.topics.push(
-      this.formEl
-      // this.fb.group({
-      //   lineNum: ['lineNum', Validators.required],
-      //   activity: ['', Validators.required],
-      //   description: ['', Validators.required],
-      //   resourcesf: ['', Validators.required],
-      //   proQuan: ['', [
-      //     Validators.required,
-      //     Validators.min(1),
-      //     Validators.max(9),
-      //   ]]
-      // })
-    );
-    console.log(this.topics)
-    // topic.value = '';
+  deleteFieldValue(index) {
+    this.fieldArray.splice(index, 1);
   }
 
-  removeTopic(topic: FormControl) {
-    let index = this.topics.controls.indexOf(topic);
-    this.topics.removeAt(index);
-  }
-
-  get lineNum() { return this.detailGridForm.get('lineNum') }
-  get activity() { return this.detailGridForm.get('activity') }
-  get description() { return this.detailGridForm.get('lineNum') }
-  get resourcesf() { return this.detailGridForm.get('resourcesf') }
-  get proQuan() { return this.detailGridForm.get('proQuan') }
+  ngOnInit() { }
 
   fetchActivities(cb) {
     const req = new XMLHttpRequest;
