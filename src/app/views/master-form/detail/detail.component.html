@@ -1,7 +1,10 @@
+<button class="btn btn-primary" (click)="something()">
+  CLICK
+</button>
+
 <table class="table">
   <thead>
       <tr>
-          <th>id</th>
           <th>lineNum</th>
           <th>activity</th>
           <th>description</th>
@@ -13,49 +16,77 @@
   <tbody>
       <tr *ngFor="let field of fieldArray; let i = index">
           <td>
-              <input [(ngModel)]="field.id" [disabled]="true" class="form-control" type="text" name="{{field.code}}" />
+              <input [(ngModel)]="field.lineNum" [disabled]="field.disabled" class="form-control" type="text" name="{{field.lineNum}}" />
           </td>
           <td>
-              <input [(ngModel)]="field.lineNum" [disabled]="true" class="form-control" type="text" name="{{field.name}}" />
+              <input [(ngModel)]="field.activity" [disabled]="field.disabled" class="form-control" type="text" name="{{field.activity}}" />
           </td>
           <td>
-              <input [(ngModel)]="field.activity" [disabled]="true" class="form-control" type="text" name="{{field.price}}" />
+              <input [(ngModel)]="field.description" [disabled]="field.disabled" class="form-control" type="text" name="{{field.description}}" />
           </td>
           <td>
-              <input [(ngModel)]="field.description" [disabled]="true" class="form-control" type="text" name="{{field.price}}" />
+              <input [(ngModel)]="field.resourcesf" [disabled]="field.disabled" class="form-control" type="text" name="{{field.resourcesf}}" />
           </td>
           <td>
-              <input [(ngModel)]="field.resourcesf" [disabled]="true" class="form-control" type="text" name="{{field.price}}" />
+              <input [(ngModel)]="field.proQuan" [disabled]="field.disabled" class="form-control" type="text" name="{{field.proQuan}}" />
           </td>
-          <td>
-              <input [(ngModel)]="field.proQuan" [disabled]="true" class="form-control" type="text" name="{{field.price}}" />
+          <!-- if disabled -->
+          <td *ngIf="!field.rowEditMode">
+              <button 
+                (click)="editFieldValue(i)"
+                color="basic"
+                mat-mini-fab
+                matTooltip="Edit">
+                  <mat-icon>edit</mat-icon>
+              </button>
+
+              <button 
+                (click)="deleteFieldValue(i)"
+                color="warn"
+                mat-mini-fab
+                matTooltip="Delete"
+                class="mt-2">
+                  <mat-icon>remove</mat-icon>
+              </button>
           </td>
-          <td>
-              <button class="btn btn-warning"  type="button" (click)="deleteFieldValue(i)">Edit</button>
-              <button class="btn btn-danger"  type="button" (click)="deleteFieldValue(i)">Delete</button>
+          <!-- if not disabled -->
+          <td *ngIf="field.rowEditMode">
+              <button 
+                (click)="addAfterEdit(i)"
+                color="primary"
+                mat-mini-fab
+                matTooltip="Add">
+                  <mat-icon>add</mat-icon>
+              </button>
           </td>
       </tr>
       <tr>
           <td>
-              <input class="form-control" type="text" id="newAttributeCode" [(ngModel)]="newAttribute.id" name="newAttributeCode" />
+              <input [(ngModel)]="newAttribute.lineNum" #lineNumber="ngModel" name="newAttributeName" class="form-control" type="number" required />
+              <div class="alert alert-danger" *ngIf="lineNumber.touched && lineNumber.invalid">
+                <div *ngIf="lineNumber.errors.required">This field is required</div>
+              </div>
           </td>
           <td>
-              <input class="form-control" type="text" id="newAttributeName" [(ngModel)]="newAttribute.lineNum" name="newAttributeName" />
+              <input [(ngModel)]="newAttribute.activity" #activity="ngModel" name="newAttributePrice" class="form-control" type="text" required />
           </td>
           <td>
-              <input class="form-control" type="text" id="newAttributePrice" [(ngModel)]="newAttribute.activity" name="newAttributePrice" />
+              <input [(ngModel)]="newAttribute.description" #description="ngModel" name="newAttributePrice" class="form-control" type="text" required />
           </td>
           <td>
-              <input class="form-control" type="text" id="newAttributePrice" [(ngModel)]="newAttribute.description" name="newAttributePrice" />
+              <input [(ngModel)]="newAttribute.resourcesf" #resources="ngModel" name="newAttributePrice" class="form-control" type="text" required />
           </td>
           <td>
-              <input class="form-control" type="text" id="newAttributePrice" [(ngModel)]="newAttribute.resourcesf" name="newAttributePrice" />
+              <input [(ngModel)]="newAttribute.proQuan" #proQuan="ngModel" name="newAttributePrice" class="form-control" type="text" required />
           </td>
           <td>
-              <input class="form-control" type="text" id="newAttributePrice" [(ngModel)]="newAttribute.proQuan" name="newAttributePrice" />
-          </td>
-          <td>
-              <button class="btn btn-default" type="button" (click)="addFieldValue()">Add</button>
+              <button 
+                (click)="addFieldValue(i)"
+                color="primary"
+                mat-mini-fab
+                matTooltip="Add">
+                  <mat-icon>add</mat-icon>
+              </button>
           </td>
       </tr>
   </tbody>
