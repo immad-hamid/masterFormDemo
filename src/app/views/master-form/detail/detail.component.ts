@@ -16,15 +16,21 @@ export class DetailComponent implements OnInit {
   private fieldArray: Array<any> = [];
   private newAttribute: any = {};
 
+  checker(activityTmp) {
+    console.log(activityTmp)
+  }
+
   constructor(
     private subService: SubjectService
   ) {
     this.fetchActivities((data) => {
       this.activities = [...data];
+      // console.log(JSON.stringify(data));
     });
 
     this.fetchResources((data) => {
       this.resources = [...data];
+      // console.log(JSON.stringify(data));
     });
 
     this.subService.headerData.subscribe((data) => {
@@ -62,27 +68,41 @@ export class DetailComponent implements OnInit {
   ngOnInit() { }
 
   fetchActivities(cb) {
-    const req = new XMLHttpRequest;
-    req.open('GET', 'http://C3-0467:8011/api/Values/GetAllActivity', true);
 
-    req.onload = () => {
-      if (req.status === 200) {
-        cb(JSON.parse(req.response));
-      }
-    }
-    req.send();
+    // fetch('http://C3-0467:8011/api/Values/GetAllActivity')
+    fetch('./assets/data/activities.json')
+      .then(res => res.json())
+      .then(data => cb(data))
+      .catch(err => console.log(err));
+
+
+    // const req = new XMLHttpRequest;
+    // req.open('GET', 'http://C3-0467:8011/api/Values/GetAllActivity', true);
+
+    // req.onload = () => {
+    //   if (req.status === 200) {
+    //     cb(JSON.parse(req.response));
+    //   }
+    // }
+    // req.send();
   }
 
   fetchResources(cb) {
-    const req = new XMLHttpRequest;
-    req.open('GET', 'http://C3-0467:8011/api/Values/GetAllResource', true);
 
-    req.onload = () => {
-      if (req.status === 200) {
-        cb(JSON.parse(req.response));
-      }
-    }
-    req.send();
+    fetch('http://C3-0467:8011/api/Values/GetAllResource')
+      .then(res => res.json())
+      .then(data => cb(data))
+      .catch(err => console.log(err));
+
+    // const req = new XMLHttpRequest;
+    // req.open('GET', 'http://C3-0467:8011/api/Values/GetAllResource', true);
+
+    // req.onload = () => {
+    //   if (req.status === 200) {
+    //     cb(JSON.parse(req.response));
+    //   }
+    // }
+    // req.send();
   }
 
   // saveData() {

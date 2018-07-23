@@ -100,7 +100,7 @@ export class CommonGridComponent implements OnInit {
     req.onload = () => {
       // sending the null as an error and 2nd pram as a response
       cb(JSON.parse(req.response));
-      // console.log(req.response);
+      console.log(req.response);
     };
 
     req.send(obj);
