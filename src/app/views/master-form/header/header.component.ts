@@ -24,7 +24,21 @@ export class HeaderComponent implements OnInit {
     private modalService: BsModalService,
     public fb: FormBuilder,
     private subService: SubjectService
-  ) { }
+  ) {
+    this.subService.gridData.subscribe((data) => {
+      const gridData = data.dataFromGrid.selected[0];
+      // setting form values
+      this.operation.setValue(gridData.OPRN_ID);
+      this.status.setValue(gridData.status);
+      this.class.setValue(gridData.OPRN_CLASS);
+      this.descShort.setValue(gridData.OPRN_CLASS);
+      this.descLong.setValue(gridData.OPRN_CLASS);
+
+      if (gridData.OPRN_ID) {
+        this.fetchGridData(gridData.OPRN_ID);
+      }
+    });
+  }
 
   ngOnInit() {
     this.masterForm = this.fb.group({
@@ -36,6 +50,19 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.subService.gridData.unsubscribe();
+  }
+
+  fetchGridData(id) {
+    console.log(id);
+
+    fetch(`http://C3-0467:8011/api/Values/GetOperationByID?operationID=${id}`)
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
+  }
+
   // getter methods for form
   get operation() { return this.masterForm.get('operation') }
   get status() { return this.masterForm.get('status') }
@@ -43,10 +70,12 @@ export class HeaderComponent implements OnInit {
   get descShort() { return this.masterForm.get('descShort') }
   get descLong() { return this.masterForm.get('descLong') }
 
-  // enabling and disabling inputs
+  // enabling inputs
   enableInputs() {
     this.editMode = true; this.operation.enable(); this.status.enable(); this.class.enable(); this.descShort.enable(); this.descLong.enable();
   }
+
+  // disabling inputs
   disableInputs() {
     this.editMode = false; this.operation.disable(); this.status.disable(); this.class.disable(); this.descShort.disable(); this.descLong.disable();
   }

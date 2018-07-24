@@ -16,9 +16,10 @@ button:focus {
     outline: none;
 }
 
-.form-control.ng-touched.ng-invalid {
-  border: 2px solid red;
-}
+// .form-control.ng-touched.ng-invalid {
+//   border: 2px solid red;
+// }
+
 .alert.alert-danger {
   padding: 4px 2px;
   font-size: 0.8rem;

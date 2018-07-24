@@ -1,5 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, FormControl, FormArray } from '../../../../../node_modules/@angular/forms';
+import { Component, OnDestroy } from '@angular/core';
 import { SubjectService } from '../../../services/subject.service';
 
 @Component({
@@ -8,29 +7,24 @@ import { SubjectService } from '../../../services/subject.service';
   styleUrls: ['./detail.component.scss']
 })
 
-export class DetailComponent implements OnInit {
+export class DetailComponent implements OnDestroy {
   masterFormData: any;
   activities: any;
   resources: any;
+  activityEl: any;
 
   private fieldArray: Array<any> = [];
   private newAttribute: any = {};
-
-  checker(activityTmp) {
-    console.log(activityTmp)
-  }
 
   constructor(
     private subService: SubjectService
   ) {
     this.fetchActivities((data) => {
       this.activities = [...data];
-      // console.log(JSON.stringify(data));
     });
 
     this.fetchResources((data) => {
       this.resources = [...data];
-      // console.log(JSON.stringify(data));
     });
 
     this.subService.headerData.subscribe((data) => {
@@ -39,12 +33,18 @@ export class DetailComponent implements OnInit {
     });
   }
 
-  addFieldValue() {
+  ngOnDestroy() {
+    this.subService.headerData.unsubscribe();
+  }
+
+  addFieldValue(lineNumber, description, proQuan) {
     this.newAttribute.disabled = true;
     this.newAttribute.rowEditMode = false;
     this.fieldArray.push(this.newAttribute)
     this.newAttribute = {};
-    console.log(this.fieldArray);
+    lineNumber.reset();
+    description.reset();
+    proQuan.reset();
   }
 
   editFieldValue(index) {
@@ -60,12 +60,6 @@ export class DetailComponent implements OnInit {
   deleteFieldValue(index) {
     this.fieldArray.splice(index, 1);
   }
-
-  submit(f) {
-    console.log(f);
-  }
-
-  ngOnInit() { }
 
   fetchActivities(cb) {
 
@@ -151,5 +145,4 @@ export class DetailComponent implements OnInit {
 
   //   req.send(JSON.stringify(obj));
   // }
-
 }

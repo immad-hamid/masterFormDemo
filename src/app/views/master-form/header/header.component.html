@@ -47,9 +47,7 @@
         formControlName="class"
         id="inputState" 
         placeholder="Select Class">
-          <mat-option value="55">CORRUG OPR</mat-option>
-          <mat-option value="67">CORRUG 2</mat-option>
-          <mat-option value="70">CONVERSION</mat-option>
+          <mat-option [value]="status">{{ status.value }}</mat-option>
       </mat-select>
       <mat-error *ngIf="class.touched && class.invalid">Field should not be empty</mat-error>
     </mat-form-field>
@@ -82,23 +80,22 @@
     <div class="row">
       <span class="d-inline">
           <div class="button-row">
-            <a
+            <!-- <a
               (click)="enableInputs()"
               mat-raised-button color="basic"
               matTooltip="Edit Form">
                 Edit
-            </a>
+            </a> -->
           </div>
       </span>
   
       <span class="d-inline ml-auto">
           <div class="button-row">
             <button 
-              [disabled]="masterForm.invalid"
-              (click)="saveRecord()"
+              (click)="enableInputs()"
               mat-raised-button color="basic"
-              matTooltip="Save Information">
-                Add Line Items
+              matTooltip="Edit Form">
+                Edit
             </button>
             <a 
               (click)="disableInputs()"

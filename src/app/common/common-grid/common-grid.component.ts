@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 // ng Modal
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { SubjectService } from '../../services/subject.service';
 
 @Component({
   selector: 'app-common-grid',
@@ -12,17 +13,8 @@ export class CommonGridComponent implements OnInit {
   loader: boolean = true;
   closeBtnName: string;
   list: any[] = [];
-  abc: string;
   rows = [];
-
   temp = [];
-
-  // columns = [
-  //   { prop: 'name' },
-  //   { name: 'Company' },
-  //   { name: 'Gender' }
-  // ];
-
   columns = [
     { prop: 'status', name: 'Status' },
     { prop: 'ACTIVITY', name: 'Activity' },
@@ -32,7 +24,9 @@ export class CommonGridComponent implements OnInit {
     { prop: 'OPRN_NAME', name: 'Op Name' }
   ];
 
-  constructor(public bsModalRef: BsModalRef) {
+  constructor(
+    private subService: SubjectService,
+    public bsModalRef: BsModalRef) {
     this.fetch((data) => {
       this.loader = false;
       // cache our list
@@ -92,6 +86,7 @@ export class CommonGridComponent implements OnInit {
       filterConflicted: 1,
       dataid: 12
     }
+
     const req = new XMLHttpRequest();
     req.open('POST', `http://C3-0467:8011/api/Values/GetList`, true);
     req.setRequestHeader('Content-type', 'application/json');
@@ -100,27 +95,29 @@ export class CommonGridComponent implements OnInit {
     req.onload = () => {
       // sending the null as an error and 2nd pram as a response
       cb(JSON.parse(req.response));
-      console.log(req.response);
+      // console.log(req.response);
     };
 
     req.send(obj);
     // req.send();
   }
 
-  onActivate(event) {
-    console.log(event);
-  }
-
   onSelect(event) {
-    console.log(event);
+    this.subService.gridData.next({
+      dataFromGrid: event
+    });
+    this.bsModalRef.hide();
   }
 
   updateFilter(event) {
-    const val = event.target.value.toLowerCase();
+    console.log(event);
+    const val = event.target.value;
+
 
     // filter our data
+    console.log(this.temp);
     const temp = this.temp.filter((d) => {
-      return d.name.toLowerCase().indexOf(val) !== -1 || !val;
+      return d.OPRN_NAME.toLowerCase().indexOf(val) !== -1 || !val;
     });
 
     // update the rows
