@@ -47,9 +47,9 @@
         formControlName="class"
         id="inputState" 
         placeholder="Select Class">
-          <mat-option [value]="status">{{ status.value }}</mat-option>
+          <mat-option [value]="class">{{ class }}</mat-option>
       </mat-select>
-      <mat-error *ngIf="class.touched && class.invalid">Field should not be empty</mat-error>
+      <mat-error *ngIf="class.touched && class.invalid">{{ class }}</mat-error>
     </mat-form-field>
     
     <mat-form-field>

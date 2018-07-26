@@ -27,6 +27,7 @@ export class HeaderComponent implements OnInit {
   ) {
     this.subService.gridData.subscribe((data) => {
       const gridData = data.dataFromGrid.selected[0];
+      console.log(gridData);
       // setting form values
       this.operation.setValue(gridData.OPRN_ID);
       this.status.setValue(gridData.status);
@@ -50,6 +51,13 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  // getter methods for form
+  get operation() { return this.masterForm.get('operation') }
+  get status() { return this.masterForm.get('status') }
+  get class() { return this.masterForm.get('class') }
+  get descShort() { return this.masterForm.get('descShort') }
+  get descLong() { return this.masterForm.get('descLong') }
+
   ngOnDestroy() {
     this.subService.gridData.unsubscribe();
   }
@@ -59,16 +67,11 @@ export class HeaderComponent implements OnInit {
 
     fetch(`http://C3-0467:8011/api/Values/GetOperationByID?operationID=${id}`)
       .then(res => res.json())
-      .then(data => console.log(data))
+      .then(data =>
+        this.subService.operationData.next({ operationData: data })
+      )
       .catch(err => console.log(err));
   }
-
-  // getter methods for form
-  get operation() { return this.masterForm.get('operation') }
-  get status() { return this.masterForm.get('status') }
-  get class() { return this.masterForm.get('class') }
-  get descShort() { return this.masterForm.get('descShort') }
-  get descLong() { return this.masterForm.get('descLong') }
 
   // enabling inputs
   enableInputs() {

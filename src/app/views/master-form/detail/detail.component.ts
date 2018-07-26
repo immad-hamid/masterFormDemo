@@ -13,7 +13,12 @@ export class DetailComponent implements OnDestroy {
   resources: any;
   activityEl: any;
 
+  dtoSave: any;
+
   private fieldArray: Array<any> = [];
+
+
+
   private newAttribute: any = {};
 
   constructor(
@@ -27,9 +32,16 @@ export class DetailComponent implements OnDestroy {
       this.resources = [...data];
     });
 
+    // header data
     this.subService.headerData.subscribe((data) => {
       this.masterFormData = data;
       console.log(this.masterFormData);
+    });
+    // operation data
+    this.subService.operationData.subscribe((data) => {
+      const opData = data.operationData;
+      console.log(opData);
+      this.populateLineItems(opData);
     });
   }
 
@@ -37,14 +49,48 @@ export class DetailComponent implements OnDestroy {
     this.subService.headerData.unsubscribe();
   }
 
+  populateLineItems(opData) {
+    const lineItems = opData.MFG_OPERATION_DETAILS;
+
+    lineItems.forEach(
+      (lineItem) => {
+        const obj = {
+          activities: {
+            ACTIVITY: lineItem.ACTIVITY,
+            ACTIVITY_ID: lineItem.ACTIVITY_ID,
+            ACTIVITY_NAME: lineItem.ACTIVITY_NAME
+          },
+          resources: {
+            RESOURCE: lineItem.RESOURCE,
+            RESOURCE_ID: lineItem.RESOURCE_ID,
+            RESOURCE_NAME: lineItem.RESOURCE_NAME
+          },
+          description: lineItem.ACTIVITY_NAME,
+          lineNum: lineItem.LINE_NO,
+          proQuan: lineItem.PROCESS_QTY,
+          disabled: true,
+          rowEditMode: false
+        }
+        this.fieldArray.push(obj);
+      }
+    );
+  }
+
+  // adding activity description
+  addActivityDesc(select) {
+    this.newAttribute.description = select.value.ACTIVITY_NAME
+  }
+
   addFieldValue(lineNumber, description, proQuan) {
     this.newAttribute.disabled = true;
     this.newAttribute.rowEditMode = false;
     this.fieldArray.push(this.newAttribute)
+    console.log(JSON.stringify(this.fieldArray));
+    console.log(this.fieldArray);
     this.newAttribute = {};
-    lineNumber.reset();
-    description.reset();
-    proQuan.reset();
+    // lineNumber.reset();
+    // description.reset();
+    // proQuan.reset();
   }
 
   editFieldValue(index) {

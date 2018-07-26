@@ -27,7 +27,7 @@
                 class="form-control" 
                 name="activity" 
                 required>
-                  <option *ngFor="let activity of activities" [ngValue]="activity">{{ activity.ACTIVITY_NAME }}</option>
+                  <option *ngFor="let activity of activities" [ngValue]="activity" [selected]="activity.ACTIVITY_ID == activities.ACTIVITY_ID">{{ activity.ACTIVITY_NAME }}</option>
               </select>
           </td>
 
@@ -95,17 +95,19 @@
                 class="form-control" 
                 type="number" 
                 required />
-              <div class="alert alert-danger" *ngIf="lineNumber.touched && lineNumber.invalid">
+              <!-- <div class="alert alert-danger" *ngIf="lineNumber.touched && lineNumber.invalid">
                 <div *ngIf="lineNumber.errors.required">This field is required</div>
-              </div>
+              </div> -->
           </td>
           <td *ngIf="activities" >
               <select 
-                [(ngModel)]="newAttribute.activities" 
+                [(ngModel)]="newAttribute.activities"
+                #select = ngModel
+                (change)="addActivityDesc(select)" 
                 class="form-control" 
                 name="activity"
                 required>
-                  <option *ngFor="let activity of activities" [ngValue]="activity">{{ activity.ACTIVITY }}</option>
+                  <option *ngFor="let activity of activities" [ngValue]="activity" [selected]="activities.ACTIVITY_ID == activity.ACTIVITY_ID">{{ activity.ACTIVITY }}</option>
               </select>
           </td>
           <td>
