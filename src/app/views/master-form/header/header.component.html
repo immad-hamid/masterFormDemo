@@ -28,6 +28,15 @@
         id="operation" 
         placeholder="Operation">
     </mat-form-field>
+    
+    <mat-form-field>
+      <input 
+        formControlName="operationName"
+        matInput
+        type="text" 
+        class="operationName" 
+        placeholder="Operation Name">
+    </mat-form-field>
 
     <mat-form-field>
       <mat-select 
@@ -47,18 +56,11 @@
         formControlName="class"
         id="inputState" 
         placeholder="Select Class">
-          <mat-option [value]="class">{{ class }}</mat-option>
+          <mat-option value="55">CORRUG OPR</mat-option>
+          <mat-option value="67">CORRUG 2</mat-option>
+          <mat-option value="70">CONVERSION</mat-option>
       </mat-select>
       <mat-error *ngIf="class.touched && class.invalid">{{ class }}</mat-error>
-    </mat-form-field>
-    
-    <mat-form-field>
-      <input 
-        formControlName="descShort"
-        matInput
-        type="text" 
-        class="description" 
-        placeholder="Description">
     </mat-form-field>
   </div>
 
@@ -80,12 +82,12 @@
     <div class="row">
       <span class="d-inline">
           <div class="button-row">
-            <!-- <a
-              (click)="enableInputs()"
+            <button 
+              (click)="saveRecord()"
               mat-raised-button color="basic"
-              matTooltip="Edit Form">
-                Edit
-            </a> -->
+              matTooltip="Add Line Items">
+                Add Line Items
+            </button>
           </div>
       </span>
   
@@ -100,7 +102,7 @@
             <a 
               (click)="disableInputs()"
               mat-raised-button color="basic"
-              matTooltip="Cancel Form lkjasl;dfkjalskjdflkasjdflkjsadlkjfl lksdjflksajdflk ">
+              matTooltip="Cancel Form">
                 Cancel
             </a>
           </div>

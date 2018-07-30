@@ -16,9 +16,6 @@ export class DetailComponent implements OnDestroy {
   dtoSave: any;
 
   private fieldArray: Array<any> = [];
-
-
-
   private newAttribute: any = {};
 
   constructor(
@@ -49,6 +46,10 @@ export class DetailComponent implements OnDestroy {
     this.subService.headerData.unsubscribe();
   }
 
+  onInput(event) {
+    console.dir(event.target.value);
+  }
+
   populateLineItems(opData) {
     const lineItems = opData.MFG_OPERATION_DETAILS;
 
@@ -72,13 +73,23 @@ export class DetailComponent implements OnDestroy {
           rowEditMode: false
         }
         this.fieldArray.push(obj);
-      }
+      },
+
+      console.log(this.fieldArray),
+      console.log(this.activities),
+      console.log(this.masterFormData)
     );
   }
 
   // adding activity description
-  addActivityDesc(select) {
-    this.newAttribute.description = select.value.ACTIVITY_NAME
+  addActivityDesc(select: any, index?: number) {
+    console.log(index);
+    if (index !== undefined) {
+      console.log('Not undefined');
+      this.fieldArray[index].description = select.value.ACTIVITY_NAME
+    } else {
+      this.newAttribute.description = select.value.ACTIVITY_NAME
+    }
   }
 
   addFieldValue(lineNumber, description, proQuan) {
@@ -109,22 +120,10 @@ export class DetailComponent implements OnDestroy {
 
   fetchActivities(cb) {
 
-    // fetch('http://C3-0467:8011/api/Values/GetAllActivity')
-    fetch('./assets/data/activities.json')
+    fetch('http://C3-0467:8011/api/Values/GetAllActivity')
       .then(res => res.json())
       .then(data => cb(data))
       .catch(err => console.log(err));
-
-
-    // const req = new XMLHttpRequest;
-    // req.open('GET', 'http://C3-0467:8011/api/Values/GetAllActivity', true);
-
-    // req.onload = () => {
-    //   if (req.status === 200) {
-    //     cb(JSON.parse(req.response));
-    //   }
-    // }
-    // req.send();
   }
 
   fetchResources(cb) {
@@ -133,62 +132,64 @@ export class DetailComponent implements OnDestroy {
       .then(res => res.json())
       .then(data => cb(data))
       .catch(err => console.log(err));
-
-    // const req = new XMLHttpRequest;
-    // req.open('GET', 'http://C3-0467:8011/api/Values/GetAllResource', true);
-
-    // req.onload = () => {
-    //   if (req.status === 200) {
-    //     cb(JSON.parse(req.response));
-    //   }
-    // }
-    // req.send();
   }
 
-  // saveData() {
-  //   const obj = {
-  //     status: '2',
-  //     ACTIVITY: '',
-  //     RESOURCE: '',
-  //     OPRN_ID: '0',
-  //     OPRN_NO: '',
-  //     OPRN_VERS: '2',
-  //     OPRN_NAME: this.masterFormData.operation,
-  //     OPERATION_STATUS: this.masterFormData.status,
-  //     OPRN_CLASS_ID: this.masterFormData.class,
-  //     OPRN_CLASS: '',
-  //     OPRN_CLASS_NAME: '',
-  //     ORGANIZATION_ID: '1947',
-  //     MFG_OPERATION_DETAILS: [{
-  //       OPRN_ACT_RES_ID: 0,
-  //       OPRN_ACT_ID: 190,
-  //       RESOURCE_ID: this.resourcesf.value,
-  //       LINE_NO: this.lineNum.value,
-  //       OPRN_ID: 1781,
-  //       ACTIVITY_ID: parseInt(this.activity.value),
-  //       ACTIVITY: 1,
-  //       ACTIVITY_NAME: 2,
-  //       RESOURCE: 158,
-  //       RESOURCE_NAME: null,
-  //       RESOURCE_USAGE: '2017-07-01T00:00:00',
-  //       USAGE_UM: null,
-  //       PROCESS_QTY: this.proQuan.value,
-  //       PROCESS_UOM: ''
-  //     }]
-  //   }
+  saveData() {
+    const obj = {
+      status: '2',
+      ACTIVITY: '',
+      RESOURCE: '',
+      OPRN_ID: this.masterFormData.operation !== "" ? this.masterFormData.operation : null,
+      OPRN_NO: '',
+      OPRN_VERS: '2',
+      OPRN_NAME: this.masterFormData.operationName,
+      OPERATION_STATUS: this.masterFormData.status,
+      OPRN_CLASS_ID: this.masterFormData.class,
+      OPRN_CLASS: '',
+      OPRN_CLASS_NAME: '',
+      ORGANIZATION_ID: '1947',
+      MFG_OPERATION_DETAILS: []
+    }
 
-  //   const req = new XMLHttpRequest();
-  //   req.open('POST', `http://C3-0467:8011/api/Values/Save`, true);
-  //   req.setRequestHeader('Content-type', 'application/json');
+    this.fieldArray.forEach(el => {
+      obj.MFG_OPERATION_DETAILS.push(
+        {
+          OPRN_ACT_RES_ID: 0,
+          OPRN_ACT_ID: 190,
+          RESOURCE_ID: el.resources.RESOURCE_ID,
+          LINE_NO: el.lineNum,
+          OPRN_ID: 1781,
+          ACTIVITY_ID: el.activities.ACTIVITY_ID,
+          ACTIVITY: el.activities.ACTIVITY,
+          ACTIVITY_NAME: el.activities.ACTIVITY,
+          RESOURCE: 158,
+          RESOURCE_NAME: null,
+          RESOURCE_USAGE: '2017-07-01T00:00:00',
+          USAGE_UM: null,
+          PROCESS_QTY: el.proQuan,
+          PROCESS_UOM: ''
+        }
+      )
+    });
 
-  //   req.onreadystatechange = function () {//Call a function when the state changes.
-  //     if (req.readyState == 4 && req.status == 200) {
-  //       alert(JSON.parse(req.responseText));
-  //       console.log(JSON.stringify(obj));
-  //       // alert(req.responseText);
-  //     }
-  //   }
+    console.log(JSON.stringify(obj));
 
-  //   req.send(JSON.stringify(obj));
-  // }
+    const req = new XMLHttpRequest();
+    req.open('POST', `http://C3-0467:8011/api/Values/Save`, true);
+    req.setRequestHeader('Content-type', 'application/json');
+
+    req.onreadystatechange = function () {//Call a function when the state changes.
+      if (req.readyState == 4 && req.status == 200) {
+        alert(JSON.parse(req.responseText));
+        console.log(JSON.stringify(obj));
+        // alert(req.responseText);
+      }
+    }
+
+    req.send(JSON.stringify(obj));
+  }
+
+  checkVal(val) {
+    console.log(val);
+  }
 }

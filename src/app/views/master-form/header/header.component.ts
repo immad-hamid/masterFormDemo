@@ -30,32 +30,36 @@ export class HeaderComponent implements OnInit {
       console.log(gridData);
       // setting form values
       this.operation.setValue(gridData.OPRN_ID);
+      this.operationName.setValue(gridData.OPRN_NAME);
       this.status.setValue(gridData.status);
       this.class.setValue(gridData.OPRN_CLASS);
-      this.descShort.setValue(gridData.OPRN_CLASS);
       this.descLong.setValue(gridData.OPRN_CLASS);
 
       if (gridData.OPRN_ID) {
         this.fetchGridData(gridData.OPRN_ID);
       }
+
+      this.saveRecord();
     });
   }
 
   ngOnInit() {
     this.masterForm = this.fb.group({
-      operation: ['', Validators.required],
+      operation: [''],
+      operationName: ['', Validators.required],
       status: ['', Validators.required],
       class: ['', Validators.required],
-      descShort: [],
       descLong: ['', Validators.required]
     });
+
+    this.operation.disable();
   }
 
   // getter methods for form
   get operation() { return this.masterForm.get('operation') }
+  get operationName() { return this.masterForm.get('operationName') }
   get status() { return this.masterForm.get('status') }
   get class() { return this.masterForm.get('class') }
-  get descShort() { return this.masterForm.get('descShort') }
   get descLong() { return this.masterForm.get('descLong') }
 
   ngOnDestroy() {
@@ -75,20 +79,20 @@ export class HeaderComponent implements OnInit {
 
   // enabling inputs
   enableInputs() {
-    this.editMode = true; this.operation.enable(); this.status.enable(); this.class.enable(); this.descShort.enable(); this.descLong.enable();
+    this.editMode = true; this.status.enable(); this.class.enable(); this.descShort.enable(); this.descLong.enable();
   }
 
   // disabling inputs
   disableInputs() {
-    this.editMode = false; this.operation.disable(); this.status.disable(); this.class.disable(); this.descShort.disable(); this.descLong.disable();
+    this.editMode = false; this.status.disable(); this.class.disable(); this.descShort.disable(); this.descLong.disable();
   }
 
   saveRecord() {
     this.subService.headerData.next({
       operation: this.operation.value,
+      operationName: this.operationName.value,
       status: this.status.value,
       class: this.class.value,
-      descShort: this.descShort.value,
       descLong: this.descLong.value
     });
   }

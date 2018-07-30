@@ -22,12 +22,14 @@
 
           <td *ngIf="activities" >
               <select 
+                [(ngModel)]="field.activities"
                 [disabled]="field.disabled"
-                [(ngModel)]="field.activities" 
+                #selectEdit = ngModel
+                (change)="addActivityDesc(selectEdit, i)" 
                 class="form-control" 
                 name="activity" 
                 required>
-                  <option *ngFor="let activity of activities" [ngValue]="activity" [selected]="activity.ACTIVITY_ID == activities.ACTIVITY_ID">{{ activity.ACTIVITY_NAME }}</option>
+                  <option *ngFor="let activity of activities; index as i" [ngValue]="activity">{{ activity.ACTIVITY }}</option>
               </select>
           </td>
 
@@ -107,7 +109,7 @@
                 class="form-control" 
                 name="activity"
                 required>
-                  <option *ngFor="let activity of activities" [ngValue]="activity" [selected]="activities.ACTIVITY_ID == activity.ACTIVITY_ID">{{ activity.ACTIVITY }}</option>
+                  <option *ngFor="let activity of activities" [ngValue]="activity" selected="{{ checkVal(activity.ACTIVITY_ID) }}">{{ activity.ACTIVITY }}</option>
               </select>
           </td>
           <td>
@@ -117,6 +119,7 @@
                 name="newAttributePrice" 
                 class="form-control" 
                 type="text" 
+                disabled
                 required />
           </td>
           <td *ngIf="resources">
@@ -159,3 +162,29 @@
       <!-- <p>{{ fieldArray | json }}</p> -->
   </tbody>
 </table>
+
+<div class="col-sm-12 mt-5">
+    <div class="row">
+        <span class="d-inline">
+            <div class="button-row">
+            <!-- <a
+                (click)="enableInputs()"
+                mat-raised-button color="basic"
+                matTooltip="Edit Form">
+                Edit
+            </a> -->
+            </div>
+        </span>
+    
+        <span class="d-inline ml-auto">
+            <div class="button-row">
+                <button 
+                    (click)="saveData()"
+                    mat-raised-button color="basic"
+                    matTooltip="Edit Form">
+                    Save
+                </button>
+            </div>
+        </span>
+    </div>
+</div>
