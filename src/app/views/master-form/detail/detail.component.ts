@@ -12,7 +12,6 @@ export class DetailComponent implements OnDestroy {
   activities: any;
   resources: any;
   activityEl: any;
-
   dtoSave: any;
 
   private fieldArray: Array<any> = [];
@@ -32,12 +31,10 @@ export class DetailComponent implements OnDestroy {
     // header data
     this.subService.headerData.subscribe((data) => {
       this.masterFormData = data;
-      console.log(this.masterFormData);
     });
     // operation data
     this.subService.operationData.subscribe((data) => {
       const opData = data.operationData;
-      console.log(opData);
       this.populateLineItems(opData);
     });
   }
@@ -51,10 +48,11 @@ export class DetailComponent implements OnDestroy {
   }
 
   populateLineItems(opData) {
+    this.fieldArray = [];
     const lineItems = opData.MFG_OPERATION_DETAILS;
 
     lineItems.forEach(
-      (lineItem) => {
+      (lineItem, index) => {
         const obj = {
           activities: {
             ACTIVITY: lineItem.ACTIVITY,
@@ -73,11 +71,10 @@ export class DetailComponent implements OnDestroy {
           rowEditMode: false
         }
         this.fieldArray.push(obj);
-      },
 
-      console.log(this.fieldArray),
-      console.log(this.activities),
-      console.log(this.masterFormData)
+        this.fieldArray[index].activities = this.activities[index];
+        this.fieldArray[index].resources = this.resources[index];
+      }
     );
   }
 

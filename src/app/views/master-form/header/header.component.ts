@@ -19,21 +19,38 @@ export class HeaderComponent implements OnInit {
   bsModalRef: BsModalRef;
   editMode: boolean;
   masterForm;
+  statuses: { value: number; name: string; }[];
+  classes: { value: number; name: string; }[];
+  statusModel: any;
 
   constructor(
     private modalService: BsModalService,
     public fb: FormBuilder,
     private subService: SubjectService
   ) {
+
     this.subService.gridData.subscribe((data) => {
       const gridData = data.dataFromGrid.selected[0];
-      console.log(gridData);
+
       // setting form values
       this.operation.setValue(gridData.OPRN_ID);
       this.operationName.setValue(gridData.OPRN_NAME);
-      this.status.setValue(gridData.status);
+
+      this.statuses.forEach((el) => {
+        if (el.name === gridData.status) {
+          this.status.setValue(el);
+        }
+      });
+      // this.status.setValue({
+      //   value: this.statuses.find(x => x.name === gridData.status).value,
+      //   name: gridData.status
+      // });
       this.class.setValue(gridData.OPRN_CLASS);
       this.descLong.setValue(gridData.OPRN_CLASS);
+
+      console.log(this.status.value);
+      console.log(this.statuses);
+
 
       if (gridData.OPRN_ID) {
         this.fetchGridData(gridData.OPRN_ID);
@@ -43,11 +60,49 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  compareFn(c1: any, c2: any): boolean {
+    return c1 && c2 ? c1.value === c2.value : c1 === c2;
+  }
+
   ngOnInit() {
+    this.statuses = [
+      {
+        value: 1,
+        name: "Pending"
+      },
+      {
+        value: 2,
+        name: "Sent for Approval"
+      },
+      {
+        value: 3,
+        name: "Approved"
+      },
+      {
+        value: 4,
+        name: "Cancel"
+      }
+    ];
+
+    this.classes = [
+      {
+        value: 55,
+        name: "CORRUG OPR"
+      },
+      {
+        value: 67,
+        name: "CORRUG 2"
+      },
+      {
+        value: 70,
+        name: "CONVERSION"
+      },
+    ];
+
     this.masterForm = this.fb.group({
       operation: [''],
       operationName: ['', Validators.required],
-      status: ['', Validators.required],
+      status: [this.statuses[0], Validators.required],
       class: ['', Validators.required],
       descLong: ['', Validators.required]
     });
@@ -67,8 +122,6 @@ export class HeaderComponent implements OnInit {
   }
 
   fetchGridData(id) {
-    console.log(id);
-
     fetch(`http://C3-0467:8011/api/Values/GetOperationByID?operationID=${id}`)
       .then(res => res.json())
       .then(data =>
@@ -79,14 +132,15 @@ export class HeaderComponent implements OnInit {
 
   // enabling inputs
   enableInputs() {
-    this.editMode = true; this.status.enable(); this.class.enable(); this.descShort.enable(); this.descLong.enable();
+    this.editMode = true; this.status.enable(); this.class.enable(); this.operationName.enable(); this.descLong.enable();
   }
 
   // disabling inputs
   disableInputs() {
-    this.editMode = false; this.status.disable(); this.class.disable(); this.descShort.disable(); this.descLong.disable();
+    this.editMode = false; this.status.disable(); this.class.disable(); this.operationName.disable(); this.descLong.disable();
   }
 
+  // passing the record to detail component
   saveRecord() {
     this.subService.headerData.next({
       operation: this.operation.value,
@@ -97,6 +151,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  // opening modal with data
   openModalGrid() {
     const initialState = {
       list: [

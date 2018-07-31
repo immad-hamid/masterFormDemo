@@ -36,17 +36,16 @@
         type="text" 
         class="operationName" 
         placeholder="Operation Name">
+      <mat-error *ngIf="operationName.touched && operationName.invalid">Field should not be empty</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-select 
         formControlName="status"
-        id="inputState" 
+        [compareWith]="compareFn"
+        id="inputState"
         placeholder="Select Status">
-          <mat-option value="1">Pending</mat-option>
-          <mat-option value="2">Sent for Approval</mat-option>
-          <mat-option value="3">Approved</mat-option>
-          <mat-option value="4">Cancel</mat-option>
+          <mat-option *ngFor="let st of statuses" [value]="st">{{ st.name }}</mat-option>
       </mat-select>
       <mat-error *ngIf="status.touched && status.invalid">Field should not be empty</mat-error>
     </mat-form-field>
@@ -56,11 +55,9 @@
         formControlName="class"
         id="inputState" 
         placeholder="Select Class">
-          <mat-option value="55">CORRUG OPR</mat-option>
-          <mat-option value="67">CORRUG 2</mat-option>
-          <mat-option value="70">CONVERSION</mat-option>
+          <mat-option *ngFor="let class of classes" [value]="class">{{ class.name }}</mat-option>
       </mat-select>
-      <mat-error *ngIf="class.touched && class.invalid">{{ class }}</mat-error>
+      <mat-error *ngIf="class.touched && class.invalid">Field should not be empty</mat-error>
     </mat-form-field>
   </div>
 

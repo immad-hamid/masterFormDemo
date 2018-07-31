@@ -10,6 +10,7 @@
       </tr>
   </thead>
   <tbody>
+
       <tr *ngFor="let field of fieldArray; let i = index">
           <td>
               <input 
@@ -109,7 +110,8 @@
                 class="form-control" 
                 name="activity"
                 required>
-                  <option *ngFor="let activity of activities" [ngValue]="activity" selected="{{ checkVal(activity.ACTIVITY_ID) }}">{{ activity.ACTIVITY }}</option>
+                  <option *ngFor="let activity of activities" [ngValue]="activity" >{{ activity.ACTIVITY }}</option>
+                  <!-- <option *ngFor="let activity of activities" [ngValue]="activity" selected="{{ checkVal(activity.ACTIVITY_ID) }}">{{ activity.ACTIVITY }}</option> -->
               </select>
           </td>
           <td>
@@ -159,23 +161,11 @@
           </td>
       </tr>
 
-      <!-- <p>{{ fieldArray | json }}</p> -->
   </tbody>
 </table>
 
 <div class="col-sm-12 mt-5">
-    <div class="row">
-        <span class="d-inline">
-            <div class="button-row">
-            <!-- <a
-                (click)="enableInputs()"
-                mat-raised-button color="basic"
-                matTooltip="Edit Form">
-                Edit
-            </a> -->
-            </div>
-        </span>
-    
+    <div class="row">    
         <span class="d-inline ml-auto">
             <div class="button-row">
                 <button 
