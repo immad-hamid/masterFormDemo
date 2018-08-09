@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 // ng Modal
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { SubjectService } from '../../services/subject.service';
+import { PricingService } from '../../services/pricing/pricing.service';
 
 @Component({
   selector: 'app-common-grid',
@@ -26,21 +27,12 @@ export class CommonGridComponent implements OnInit {
 
   constructor(
     private subService: SubjectService,
-    public bsModalRef: BsModalRef) {
-    this.fetch((data) => {
-      this.loader = false;
-      // cache our list
-      this.temp = [...data];
-      // push our inital complete list
-      this.rows = data;
-    });
-  }
+    public bsModalRef: BsModalRef,
+    private psService: PricingService) { }
 
   ngOnInit() {
     this.list.push();
-  }
 
-  fetch(cb) {
     const obj = {
       iColumns: 1,
       iDisplayLength: 1,
@@ -87,19 +79,15 @@ export class CommonGridComponent implements OnInit {
       dataid: 12
     }
 
-    const req = new XMLHttpRequest();
-    req.open('POST', `http://C3-0467:8011/api/Values/GetList`, true);
-    req.setRequestHeader('Content-type', 'application/json');
-    // req.open('GET', `assets/data/company.json`);
-
-    req.onload = () => {
-      // sending the null as an error and 2nd pram as a response
-      cb(JSON.parse(req.response));
-      // console.log(req.response);
-    };
-
-    req.send(obj);
-    // req.send();
+    this.psService.fetchList(obj).subscribe(
+      (res: any) => {
+        this.loader = false;
+        // cache our list
+        this.temp = [...res];
+        // push our inital complete list
+        this.rows = res;
+      }
+    );
   }
 
   onSelect(event) {
@@ -113,7 +101,6 @@ export class CommonGridComponent implements OnInit {
     console.log(event);
     const val = event.target.value;
 
-
     // filter our data
     console.log(this.temp);
     const temp = this.temp.filter((d) => {
@@ -122,7 +109,5 @@ export class CommonGridComponent implements OnInit {
 
     // update the rows
     this.rows = temp;
-    // Whenever the filter changes, always go back to the first page
-    // this.table.offset = 0;
   }
 }

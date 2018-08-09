@@ -29,6 +29,8 @@ import { FormsModule, ReactiveFormsModule } from '../../node_modules/@angular/fo
 
 // in app services
 import { SubjectService } from './services/subject.service';
+import { PricingService } from './services/pricing/pricing.service';
+import { RestApiService } from './services/http.service';
 
 
 @NgModule({
@@ -52,7 +54,9 @@ import { SubjectService } from './services/subject.service';
     ModalModule.forRoot()
   ],
   providers: [
-    SubjectService
+    RestApiService,
+    SubjectService,
+    PricingService
   ],
   entryComponents: [
     CommonGridComponent

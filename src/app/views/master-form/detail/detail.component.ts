@@ -1,5 +1,6 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SubjectService } from '../../../services/subject.service';
+import { PricingService } from '../../../services/pricing/pricing.service';
 
 @Component({
   selector: 'master-form-detail',
@@ -7,7 +8,7 @@ import { SubjectService } from '../../../services/subject.service';
   styleUrls: ['./detail.component.scss']
 })
 
-export class DetailComponent implements OnDestroy {
+export class DetailComponent implements OnInit, OnDestroy {
   masterFormData: any;
   activities: any;
   resources: any;
@@ -18,16 +19,9 @@ export class DetailComponent implements OnDestroy {
   private newAttribute: any = {};
 
   constructor(
-    private subService: SubjectService
+    private subService: SubjectService,
+    private psService: PricingService
   ) {
-    this.fetchActivities((data) => {
-      this.activities = [...data];
-    });
-
-    this.fetchResources((data) => {
-      this.resources = [...data];
-    });
-
     // header data
     this.subService.headerData.subscribe((data) => {
       this.masterFormData = data;
@@ -37,6 +31,20 @@ export class DetailComponent implements OnDestroy {
       const opData = data.operationData;
       this.populateLineItems(opData);
     });
+  }
+
+  ngOnInit() {
+    // get activiites
+    this.psService.getActivities().subscribe(
+      (res: any) => this.activities = [...res],
+      err => console.log(err)
+    );
+
+    // get resources
+    this.psService.getResources().subscribe(
+      (res: any) => this.resources = [...res],
+      err => console.log(err)
+    );
   }
 
   ngOnDestroy() {
@@ -113,22 +121,6 @@ export class DetailComponent implements OnDestroy {
 
   deleteFieldValue(index) {
     this.fieldArray.splice(index, 1);
-  }
-
-  fetchActivities(cb) {
-
-    fetch('http://C3-0467:8011/api/Values/GetAllActivity')
-      .then(res => res.json())
-      .then(data => cb(data))
-      .catch(err => console.log(err));
-  }
-
-  fetchResources(cb) {
-
-    fetch('http://C3-0467:8011/api/Values/GetAllResource')
-      .then(res => res.json())
-      .then(data => cb(data))
-      .catch(err => console.log(err));
   }
 
   saveData() {
