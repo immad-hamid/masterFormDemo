@@ -16,14 +16,8 @@ export class CommonGridComponent implements OnInit {
   list: any[] = [];
   rows = [];
   temp = [];
-  columns = [
-    { prop: 'status', name: 'Status' },
-    { prop: 'ACTIVITY', name: 'Activity' },
-    { prop: 'OPRN_ID', name: 'Op Id' },
-    { prop: 'OPRN_NO', name: 'Op No.' },
-    { prop: 'OPRN_VERS', name: 'Op Vers' },
-    { prop: 'OPRN_NAME', name: 'Op Name' }
-  ];
+  columns: any[] = [];
+  url: string;
 
   constructor(
     private subService: SubjectService,
@@ -31,7 +25,12 @@ export class CommonGridComponent implements OnInit {
     private psService: PricingService) { }
 
   ngOnInit() {
-    this.list.push();
+    // this.list.push();
+    // this.columns.push();
+
+    console.log(this.list);
+    console.log(this.columns);
+    console.log(this.url)
 
     const obj = {
       iColumns: 1,
@@ -79,14 +78,16 @@ export class CommonGridComponent implements OnInit {
       dataid: 12
     }
 
-    this.psService.fetchList(obj).subscribe(
+    this.psService.getData(this.url).subscribe(
       (res: any) => {
         this.loader = false;
         // cache our list
         this.temp = [...res];
         // push our inital complete list
         this.rows = res;
-      }
+      },
+      err => console.log(err)
+
     );
   }
 

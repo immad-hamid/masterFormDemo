@@ -22,7 +22,11 @@ export class PricingService {
     return this.http.get(`http://C3-0467:8011/api/Values/GetOperationByID?operationID=${id}`, '')
   }
 
-  fetchList(body) {
-    return this.http.post('http://C3-0467:8011/api/Values/GetList', body, '')
+  getData(url) {
+    return this.http.get(url, '')
   }
+
+  // fetchList(body) {
+  //   return this.http.post('http://C3-0467:8011/api/Values/GetList', body, '')
+  // }
 }
