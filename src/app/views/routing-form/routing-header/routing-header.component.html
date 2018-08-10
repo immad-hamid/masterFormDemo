@@ -1,0 +1,138 @@
+<div class="mb-5 col-sm-12">
+    <div class="row">
+        <span class="d-inline">
+            <h3 class="d-inline" style="font-weight: 300">Product Development 
+                <strong style="font-weight: 600">Routing</strong>
+            </h3>
+        </span>
+    
+        <span class="d-inline ml-auto">
+            <button               
+              color="primary"
+              mat-fab
+              (click)="openModalSearchGrid()"
+              matTooltip="Search">
+                <mat-icon>search</mat-icon>
+            </button>
+        </span>
+    </div>
+  </div>
+  
+
+  <form [formGroup]="masterForm" #novalidate>
+      
+      <!--First row-->
+      <div class="row">
+          <!--First column-->
+          <div class="col-md-2">
+              <div class="md-form">               
+                  <label for="form9">ROUTE</label>
+                  <input type="text" class="form-control" id="ROUTE_NO" name="ROUTE_NO" disabled>                
+              </div>
+          </div>
+    
+          <!--Second column-->
+          <div class="col-md-2">
+              <div class="md-form">
+                  <label for="form10">STATUS</label>
+                  <select class="form-control" id="STATUS" name="STATUS"> 
+                      <option *ngFor="let s of status" [value]="s">{{ s.name }}</option>
+  
+                  </select>               
+              </div>
+          </div>
+  
+          <!--Third column-->
+          <div class="col-md-2">
+              <div class="md-form">               
+                  <label for="form11">ROUTING CLASS</label>
+                  <div class="input-group">
+                        <input type="hidden" class="form-control" formControlName="ROUTING_CLASS_ID" > 
+                        <input type="text" class="form-control" formControlName="ROUTING_CLASS" >                      
+                        
+                        <button class="btn btn-primary btn-sm" type="button"                         
+                        color="warn"                    
+                        matTooltip="Search"
+                        md-raised-button    
+                        (click)="openModalGrid()"              
+                        >
+                        <span class="btn-icon-search"><mat-icon>search</mat-icon></span>
+                        </button>                    
+                  
+                        <div *ngIf="ROUTING_CLASS.invalid && ROUTING_CLASS.touched"
+                        class="alert alert-danger">Routing Class required.</div>
+                </div>
+              </div>
+          </div>
+    
+          <!--Fourth column-->
+          <div class="col-md-6">
+              <div class="md-form">
+                  <label for="form12">DESCRIPTION</label>
+                  <input type="text" class="form-control" formControlName="ROUTING_CLASS_NAME">  
+                                 
+              </div>
+          </div>
+      </div>
+
+    <!--Second Row-->
+      <div class="row">
+          <!--First column-->
+          <div class="col-md-2">
+              <div class="md-form">               
+                  <label for="form9">VERSION</label>
+                  <input type="text" class="form-control" id="VERSION" formControlName="VERSION" 
+                  maxlength=3 NumberOnly >                
+              </div>
+          </div>           
+      </div>
+  
+   <!--Third Row-->
+      <div class="row">
+          <!--First column-->
+          <div class="col-md-6">
+              <div class="md-form">               
+                  <label for="form9">DESCRIPTION</label>
+                  <textarea type="text" class="form-control" id="ROUTING_DESC" formControlName="ROUTING_DESC"></textarea>                
+                  <div *ngIf="masterForm.controls['ROUTING_DESC'].invalid && masterForm.controls['ROUTING_DESC'].touched"
+                  class="alert alert-danger">Description required.</div>
+                </div>
+          </div>
+      </div>
+    
+
+      <!-- user actions -->
+  <div class="col-sm-12 mt-5">
+        <div class="row">
+          <span class="d-inline">
+              <div class="button-row">
+                <button 
+                  (click)="saveRecord()"
+                  mat-raised-button color="basic"
+                  matTooltip="Add Line Items">
+                    Add Line Items
+                </button>
+              </div>
+          </span>
+      
+          <span class="d-inline ml-auto">
+              <div class="button-row">
+                <button 
+                  (click)="enableInputs()"
+                  mat-raised-button color="basic"
+                  matTooltip="Edit Form">
+                    Edit
+                </button>
+                <a 
+                  (click)="disableInputs()"
+                  mat-raised-button color="basic"
+                  matTooltip="Cancel Form">
+                    Cancel
+                </a>
+              </div>
+          </span>
+        </div>
+      </div>
+      <!-- user actions ends -->    
+    </form>
+  

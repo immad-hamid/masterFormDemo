@@ -1,0 +1,180 @@
+<table class="table">
+        <thead>
+            <tr>
+                <th>Line No</th>
+                <th>activity</th>
+                <th>description</th>
+                <th>resourcesf</th>
+                <th>proQuan</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+      
+            <tr *ngFor="let field of fieldArray; let i = index">
+                <td>
+                    <input 
+                      [readonly]="field.disabled" 
+                      [(ngModel)]="field.lineNum" 
+                      class="form-control" 
+                      type="text" 
+                      name="lineNum" />
+                </td>
+      
+                <td *ngIf="activities" >
+                    <select 
+                      [(ngModel)]="field.activities"
+                      [disabled]="field.disabled"
+                      #selectEdit = ngModel
+                      (change)="addActivityDesc(selectEdit, i)" 
+                      class="form-control" 
+                      name="activity" 
+                      required>
+                        <option *ngFor="let activity of activities; index as i" [ngValue]="activity">{{ activity.ACTIVITY }}</option>
+                    </select>
+                </td>
+      
+                <td>
+                    <input [readonly]="field.disabled" [(ngModel)]="field.description" class="form-control" type="text" name="{{field.description}}" />
+                </td>
+      
+                <td *ngIf="resources">
+                    <select 
+                      [disabled]="field.disabled"
+                      [(ngModel)]="field.resources"
+                      class="form-control" 
+                      name="{{ field.resources }}" 
+                      required>
+                      <option *ngFor="let resource of resources" [ngValue]="resource">{{ resource.RESOURCE }}</option>
+                    </select>
+                </td>
+      
+                <td>
+                    <input
+                      [readonly]="field.disabled" 
+                      [(ngModel)]="field.proQuan" 
+                      class="form-control" 
+                      type="number" 
+                      name="{{ field.proQuan }}" />
+                </td>
+                <!-- if disabled -->
+                <td *ngIf="!field.rowEditMode">
+                    <button 
+                      (click)="editFieldValue(i)"
+                      color="basic"
+                      mat-mini-fab
+                      matTooltip="Edit">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+      
+                    <button 
+                      (click)="deleteFieldValue(i)"
+                      color="warn"
+                      mat-mini-fab
+                      matTooltip="Delete"
+                      class="mt-2">
+                        <mat-icon>remove</mat-icon>
+                    </button>
+                </td>
+                <!-- if not disabled -->
+                <td *ngIf="field.rowEditMode">
+                    <button 
+                      (click)="addAfterEdit(i)"
+                      color="primary"
+                      mat-mini-fab
+                      matTooltip="Add">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </td>
+            </tr>
+      
+            <!-- Initial input fields -->
+            <tr>
+                <td>
+                    <input 
+                      [(ngModel)]="newAttribute.lineNum" 
+                      #lineNumber="ngModel" 
+                      name="newAttributeName" 
+                      class="form-control" 
+                      type="number" 
+                      required />
+                    <!-- <div class="alert alert-danger" *ngIf="lineNumber.touched && lineNumber.invalid">
+                      <div *ngIf="lineNumber.errors.required">This field is required</div>
+                    </div> -->
+                </td>
+                <td *ngIf="activities" >
+                    <select 
+                      [(ngModel)]="newAttribute.activities"
+                      #select = ngModel
+                      (change)="addActivityDesc(select)" 
+                      class="form-control" 
+                      name="activity"
+                      required>
+                        <option *ngFor="let activity of activities" [ngValue]="activity" >{{ activity.ACTIVITY }}</option>
+                        <!-- <option *ngFor="let activity of activities" [ngValue]="activity" selected="{{ checkVal(activity.ACTIVITY_ID) }}">{{ activity.ACTIVITY }}</option> -->
+                    </select>
+                </td>
+                <td>
+                    <input 
+                      [(ngModel)]="newAttribute.description" 
+                      #description="ngModel" 
+                      name="newAttributePrice" 
+                      class="form-control" 
+                      type="text" 
+                      disabled
+                      required />
+                </td>
+                <td *ngIf="resources">
+                    <select 
+                      [(ngModel)]="newAttribute.resources"
+                      #resourceSl="ngModel"
+                      class="form-control" 
+                      name="resources" 
+                      required>
+                      <option *ngFor="let resource of resources" [ngValue]="resource">{{ resource.RESOURCE }}</option>
+                    </select>
+                </td>
+                <td>
+                    <input 
+                      [(ngModel)]="newAttribute.proQuan" 
+                      #proQuan="ngModel" 
+                      name="newAttributePrice" 
+                      class="form-control" 
+                      type="number" 
+                      required />
+                </td>
+                <td>
+                    <button 
+                      (click)="addFieldValue(lineNumber, activitySl, description, resourceSl, proQuan)"
+                      [disabled]="
+                        newAttribute.lineNum === undefined || 
+                        newAttribute.activities === undefined || 
+                        newAttribute.description === undefined || 
+                        newAttribute.resources === undefined || 
+                        newAttribute.proQuan === undefined
+                      "
+                      color="primary"
+                      mat-mini-fab
+                      matTooltip="Add">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </td>
+            </tr>
+      
+        </tbody>
+      </table>
+      
+      <div class="col-sm-12 mt-5">
+          <div class="row">    
+              <span class="d-inline ml-auto">
+                  <div class="button-row">
+                      <button 
+                          (click)="saveData()"
+                          mat-raised-button color="basic"
+                          matTooltip="Edit Form">
+                          Save
+                      </button>
+                  </div>
+              </span>
+          </div>
+      </div>

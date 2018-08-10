@@ -23,12 +23,17 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ModalModule } from 'ngx-bootstrap'
 
 // in app modules
-import { HttpClientModule } from '../../node_modules/@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material-module/material.module';
-import { FormsModule, ReactiveFormsModule } from '../../node_modules/@angular/forms';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 // in app services
 import { SubjectService } from './services/subject.service';
+import { RoutingMasterComponent } from './views/routing-form/routing-master.component';
+import { RoutingDetailComponent } from './views/routing-form/routing-detail/routing-detail.component';
+import { RoutingHeaderComponent } from './views/routing-form/routing-header/routing-header.component';
+import { LovGridComponent } from './common/lov-grid/lov-grid.component';
+import { NumberOnlyDirective } from './common/Directives/number-only.directive';
 
 
 @NgModule({
@@ -39,6 +44,11 @@ import { SubjectService } from './services/subject.service';
     DetailComponent,
     CommonGridComponent,
     NavComponent,
+    RoutingMasterComponent,
+    RoutingDetailComponent,
+    RoutingHeaderComponent,
+    LovGridComponent,
+    NumberOnlyDirective
   ],
   imports: [
     BrowserModule,
@@ -48,14 +58,15 @@ import { SubjectService } from './services/subject.service';
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    NgxDatatableModule,
+    NgxDatatableModule,    
     ModalModule.forRoot()
   ],
   providers: [
     SubjectService
   ],
   entryComponents: [
-    CommonGridComponent
+    CommonGridComponent,
+    LovGridComponent
   ],
   bootstrap: [AppComponent]
 })
