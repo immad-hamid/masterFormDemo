@@ -1,21 +1,9 @@
-// import { Component, OnInit } from '@angular/core';
-
-// @Component({
-//   selector: 'routing-detail',
-//   templateUrl: './routing-detail.component.html',
-//   styleUrls: ['./routing-detail.component.scss']
-// })
-// export class RoutingDetailComponent implements OnInit {
-
-//   constructor() { }
-
-//   ngOnInit() {
-//   }
-
-// }
-
 import { Component, OnDestroy } from '@angular/core';
 import { SubjectService } from '../../../services/subject.service';
+import { BsModalRef, BsModalService } from '../../../../../node_modules/ngx-bootstrap/modal';
+import { CommonGridComponent } from '../../../common/common-grid/common-grid.component';
+import { OPERATION } from '../../../models/operation.model';
+
 
 @Component({
   selector: 'routing-detail',
@@ -25,25 +13,28 @@ import { SubjectService } from '../../../services/subject.service';
 
 export class RoutingDetailComponent implements OnDestroy {
   masterFormData: any;
-  activities: any;
+  operations: any;
   resources: any;
   activityEl: any;
   dtoSave: any;
+ 
+  SelectedOPRN : OPERATION = {};
 
   private fieldArray: Array<any> = [];
   private newAttribute: any = {};
-
-  constructor(
+  bsModalRef: BsModalRef;
+  constructor(private modalService: BsModalService,
     private subService: SubjectService
-  ) {
-    this.fetchActivities((data) => {
-      this.activities = [...data];
-    });
+  ) {    
 
-    this.fetchResources((data) => {
-      this.resources = [...data];
-    });
-
+    this.subService.gridData.subscribe(      
+      lovData => {       
+        let objOperation =lovData.dataFromGrid.selected[0];
+        this.newAttribute.OPRN_ID = objOperation.OPRN_ID;
+        this.newAttribute.OPRN_NO = objOperation.OPRN_NO;
+        this.newAttribute.OPRN_NAME = objOperation.OPRN_NAME;
+        this.newAttribute.OPRN_VERS = objOperation.OPRN_VERS;
+      });
     // header data
     this.subService.headerData.subscribe((data) => {
       this.masterFormData = data;
@@ -53,6 +44,14 @@ export class RoutingDetailComponent implements OnDestroy {
       const opData = data.operationData;
       this.populateLineItems(opData);
     });
+  }
+
+  openModalLOVGrid() {
+    
+    this.bsModalRef = this.modalService.show(
+      CommonGridComponent, //{ initialState }
+    );
+    this.bsModalRef.content.closeBtnName = 'Close';
   }
 
   ngOnDestroy() {
@@ -88,8 +87,7 @@ export class RoutingDetailComponent implements OnDestroy {
         }
         this.fieldArray.push(obj);
 
-        this.fieldArray[index].activities = this.activities[index];
-        this.fieldArray[index].resources = this.resources[index];
+        this.fieldArray[index].operation = this.operations[index];
       }
     );
   }
@@ -119,6 +117,8 @@ export class RoutingDetailComponent implements OnDestroy {
 
   editFieldValue(index) {
     this.fieldArray[index].disabled = false;
+    this.fieldArray[index].OPRN_NAME.disabled = true;
+    this.fieldArray[index].OPRN_VERS.disabled = true;
     this.fieldArray[index].rowEditMode = true;
   }
 
@@ -131,17 +131,9 @@ export class RoutingDetailComponent implements OnDestroy {
     this.fieldArray.splice(index, 1);
   }
 
-  fetchActivities(cb) {
+  fetchOperations(cb) {
 
-    fetch('http://C3-0467:8011/api/Values/GetAllActivity')
-      .then(res => res.json())
-      .then(data => cb(data))
-      .catch(err => console.log(err));
-  }
-
-  fetchResources(cb) {
-
-    fetch('http://C3-0467:8011/api/Values/GetAllResource')
+    fetch('http://C3-0467:8011/api/Values/GetOperationLOV')
       .then(res => res.json())
       .then(data => cb(data))
       .catch(err => console.log(err));

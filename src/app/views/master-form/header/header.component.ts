@@ -157,7 +157,15 @@ export class HeaderComponent implements OnInit {
       list: [
         'This Modal will show the Data Grid...'
       ],
-      abc: 'Immad'
+      columns: [
+        { prop: 'status', name: 'Status' },
+        { prop: 'ACTIVITY', name: 'Activity' },
+        { prop: 'OPRN_ID', name: 'Op Id' },
+        { prop: 'OPRN_NO', name: 'Op No.' },
+        { prop: 'OPRN_VERS', name: 'Op Vers' },
+        { prop: 'OPRN_NAME', name: 'Op Name' }
+      ],
+      url: 'http://C3-0467:8011/api/Values/'
     };
     this.bsModalRef = this.modalService.show(
       CommonGridComponent, { initialState }

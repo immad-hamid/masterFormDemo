@@ -63,26 +63,14 @@ export class RoutingHeaderComponent implements OnInit, OnDestroy {
     this.subService.gridData.unsubscribe(); 
   }
 
-  openModalGrid() {
-    // const initialState = {
-    //   list: [
-    //     'This Modal will show the Data Grid...'
-    //   ],
-    //   abc: 'Immad'
-    // };
+  openModalGrid() {    
     this.bsModalRef = this.modalService.show(
       LovGridComponent, //{ initialState }
     );
     this.bsModalRef.content.closeBtnName = 'Close';
   }
 
-  openModalSearchGrid() {
-    // const initialState = {
-    //   list: [
-    //     'This Modal will show the Data Grid...'
-    //   ],
-    //   abc: 'Immad'
-    // };
+  openModalSearchGrid() {  
     this.bsModalRef = this.modalService.show(
       CommonGridComponent, //{ initialState }
     );
