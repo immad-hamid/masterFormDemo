@@ -26,7 +26,7 @@
                       [(ngModel)]="field.OPRN_NO"
                       [disabled]="field.disabled"
                       class="form-control" 
-                      name="OPRN_NO" 
+                      name="OPRN_NO" UpperCase
                       required />
                       <button class="btn btn-primary btn-sm" type="button"                         
                         matTooltip="Search"
@@ -39,10 +39,10 @@
                 </td>
       
                 <td>
-                    <input [readonly]="field.disabled" [(ngModel)]="field.OPRN_VERS" class="form-control" type="text" name="{{field.OPRN_VERS}}" />
+                    <input readonly [(ngModel)]="field.OPRN_VERS" class="form-control" type="text" name="{{field.OPRN_VERS}}" />
                     </td>
                 <td>
-                    <input [readonly]="field.disabled" [(ngModel)]="field.OPRN_NAME" class="form-control" type="text" name="{{field.OPRN_NAME}}" />
+                    <input readonly [(ngModel)]="field.OPRN_NAME" class="form-control" type="text" name="{{field.OPRN_NAME}}" />
                 </td>
       
                 <!-- if disabled -->
@@ -94,7 +94,7 @@
                       [(ngModel)]="newAttribute.OPRN_NO"
                       #OPRN_NO="ngModel" 
                       class="form-control" 
-                      name="newAttributeOPRN_NO"
+                      name="newAttributeOPRN_NO" UpperCase
                       required />
                       <button class="btn btn-primary btn-sm" type="button"                         
                         matTooltip="Search"

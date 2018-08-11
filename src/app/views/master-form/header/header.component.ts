@@ -4,8 +4,9 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 // component from where we will open our modal
 import { CommonGridComponent } from '../../../common/common-grid/common-grid.component';
-import { FormBuilder, Validators } from '../../../../../node_modules/@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { SubjectService } from '../../../services/subject.service';
+import { PricingService } from '../../../services/pricing/pricing.service';
 
 @Component({
   selector: 'master-form-header',
@@ -26,7 +27,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private modalService: BsModalService,
     public fb: FormBuilder,
-    private subService: SubjectService
+    private subService: SubjectService,
+    private psService: PricingService
   ) {
 
     this.subService.gridData.subscribe((data) => {
@@ -41,19 +43,15 @@ export class HeaderComponent implements OnInit {
           this.status.setValue(el);
         }
       });
-      // this.status.setValue({
-      //   value: this.statuses.find(x => x.name === gridData.status).value,
-      //   name: gridData.status
-      // });
+
       this.class.setValue(gridData.OPRN_CLASS);
       this.descLong.setValue(gridData.OPRN_CLASS);
 
-      console.log(this.status.value);
-      console.log(this.statuses);
-
-
       if (gridData.OPRN_ID) {
-        this.fetchGridData(gridData.OPRN_ID);
+        this.psService.getGridData(gridData.OPRN_ID).subscribe(
+          res => this.subService.operationData.next({ operationData: res }),
+          err => console.log(err)
+        );
       }
 
       this.saveRecord();
@@ -121,15 +119,6 @@ export class HeaderComponent implements OnInit {
     this.subService.gridData.unsubscribe();
   }
 
-  fetchGridData(id) {
-    fetch(`http://C3-0467:8011/api/Values/GetOperationByID?operationID=${id}`)
-      .then(res => res.json())
-      .then(data =>
-        this.subService.operationData.next({ operationData: data })
-      )
-      .catch(err => console.log(err));
-  }
-
   // enabling inputs
   enableInputs() {
     this.editMode = true; this.status.enable(); this.class.enable(); this.operationName.enable(); this.descLong.enable();
@@ -165,7 +154,8 @@ export class HeaderComponent implements OnInit {
         { prop: 'OPRN_VERS', name: 'Op Vers' },
         { prop: 'OPRN_NAME', name: 'Op Name' }
       ],
-      url: 'http://C3-0467:8011/api/Values/'
+      url: 'http://C3-0467:8011/api/Values/GetList',
+      
     };
     this.bsModalRef = this.modalService.show(
       CommonGridComponent, { initialState }

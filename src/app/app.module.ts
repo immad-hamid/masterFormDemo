@@ -1,3 +1,4 @@
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -34,6 +35,9 @@ import { RoutingDetailComponent } from './views/routing-form/routing-detail/rout
 import { RoutingHeaderComponent } from './views/routing-form/routing-header/routing-header.component';
 import { LovGridComponent } from './common/lov-grid/lov-grid.component';
 import { NumberOnlyDirective } from './common/Directives/number-only.directive';
+import { UpperCaseDirective } from './common/Directives/upper-case.directive';
+import { PricingService } from './services/pricing/pricing.service';
+import { RestApiService } from './services/http.service';
 
 
 @NgModule({
@@ -48,7 +52,8 @@ import { NumberOnlyDirective } from './common/Directives/number-only.directive';
     RoutingDetailComponent,
     RoutingHeaderComponent,
     LovGridComponent,
-    NumberOnlyDirective
+    NumberOnlyDirective,
+    UpperCaseDirective
   ],
   imports: [
     BrowserModule,
@@ -62,7 +67,9 @@ import { NumberOnlyDirective } from './common/Directives/number-only.directive';
     ModalModule.forRoot()
   ],
   providers: [
-    SubjectService
+    RestApiService,
+    SubjectService,
+    PricingService
   ],
   entryComponents: [
     CommonGridComponent,
