@@ -1,13 +1,13 @@
+
 import { CommonGridComponent } from '../../../common/common-grid/common-grid.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { LovGridComponent } from '../../../common/lov-grid/lov-grid.component';
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import {MatDialog, MatDialogConfig} from "@angular/material";
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { SubjectService } from '../../../services/subject.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { config } from '../../../models/config';
+import { PricingService } from '../../../services/pricing/pricing.service';
 
 @Component({
   selector: 'routing-header',
@@ -16,19 +16,28 @@ import { config } from '../../../models/config';
 })
 export class RoutingHeaderComponent implements OnInit, OnDestroy {
   masterForm;
+  editMode: boolean;
   status :{value:number,name:string}[] ;
   bsModalRef: BsModalRef;
+
+
   constructor(private modalService: BsModalService,
      private subService: SubjectService,
-     public fb: FormBuilder
+     public fb: FormBuilder,
+     private psService: PricingService
     ) { 
+      
     this.subService.RoutingClassData.subscribe(
       lovData => {
-        const objRouting =lovData.dataFromGrid.selected[0];
+        const objRouting =lovData.dataFromGrid.selected[0];       
+        if(objRouting.ROUTING_CLASS_ID > 0){
         this.ROUTING_CLASS_ID.setValue(objRouting.ROUTING_CLASS_ID);
         this.ROUTING_CLASS.setValue(objRouting.ROUTING_CLASS);
         this.ROUTING_CLASS_NAME.setValue(objRouting.ROUTING_CLASS_NAME);
-      });
+        }
+      });          
+      
+      
   }
 
   ngOnInit() {
@@ -72,9 +81,14 @@ export class RoutingHeaderComponent implements OnInit, OnDestroy {
               ROUTING_VERS : this.ROUTING_VERS,
               ROUTING_NAME:this.ROUTING_NAME
             }); 
+            this.disableInputs();
   }
-  
+  addRecord(){
+    this.enableInputs();
+  }
+
   saveRecord() {
+    
     this.subService.headerData.next({
       ROUTING_CLASS_ID: this.ROUTING_CLASS_ID,
       ROUTING_CLASS: this.ROUTING_CLASS,
@@ -134,6 +148,30 @@ export class RoutingHeaderComponent implements OnInit, OnDestroy {
     );
     this.bsModalRef.content.closeBtnName = 'Close';
   }
+
+ // enabling inputs
+ enableInputs() {
+  this.editMode = true; 
+  this.ROUTING_NO.enable(); 
+  this.ROUTING_STATUS.enable(); 
+  this.ROUTING_CLASS.enable(); 
+  this.ROUTING_NAME.enable();
+  this.subService.handleInput.next(
+    { val: false }
+  );
+}
+
+// disabling inputs
+disableInputs() {
+  this.editMode = false; 
+  this.ROUTING_NO.disable(); 
+  this.ROUTING_STATUS.disable(); 
+  this.ROUTING_CLASS.disable(); 
+  this.ROUTING_NAME.disable();
+  this.subService.handleInput.next(
+    { val: true }
+  );
+} 
 
   get ROUTING_CLASS_ID() { return this.masterForm.get('ROUTING_CLASS_ID') }
   get ROUTING_CLASS() { return this.masterForm.get('ROUTING_CLASS') }

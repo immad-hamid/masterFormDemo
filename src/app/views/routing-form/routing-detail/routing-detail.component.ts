@@ -4,7 +4,6 @@ import { Component, OnDestroy } from '@angular/core';
 import { SubjectService } from '../../../services/subject.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CommonGridComponent } from '../../../common/common-grid/common-grid.component';
-import { OPERATION } from '../../../models/operation.model';
 import { PricingService } from '../../../services/pricing/pricing.service';
 
 @Component({
@@ -20,35 +19,57 @@ export class RoutingDetailComponent implements OnDestroy {
   activityEl: any;
   dtoSave: any;
 
+  IsDisable : boolean;
+
   private fieldArray: Array<any> = [];
   private newAttribute: any = {};
   bsModalRef: BsModalRef;
   constructor(private modalService: BsModalService,
     private subService: SubjectService,private psService: PricingService
   ) {    
-
-    this.subService.gridData.subscribe(      
+    this.IsDisable=true;
+    this.subService.gridData.subscribe(           
       lovData => {              
-        let objOperation =lovData.dataFromGrid.selected[0];
-        this.newAttribute.OPRN_ID = objOperation.OPRN_ID;
-        this.newAttribute.OPRN_NO = objOperation.OPRN_NO;
-        this.newAttribute.OPRN_NAME = objOperation.OPRN_NAME;
-        this.newAttribute.OPRN_VERS = objOperation.OPRN_VERS;
+      let objOperation =lovData.dataFromGrid.selected[0];
+
+          if(objOperation.OPRN_ID > 0){
+            this.newAttribute.OPRN_ID = objOperation.OPRN_ID;
+            this.newAttribute.OPRN_NO = objOperation.OPRN_NO;
+            this.newAttribute.OPRN_NAME = objOperation.OPRN_NAME;
+            this.newAttribute.OPRN_VERS = objOperation.OPRN_VERS;
+          } 
       });
     // header data
+     this.subService.detailData.subscribe((data) => {
+       debugger
+       const dtlData = data.detailData;
+       this.populateLineItems(dtlData);
+     });
+
     this.subService.headerData.subscribe((data) => {
+      
       this.masterFormData = data;
-    });
-    // operation data
-    this.subService.operationData.subscribe((data) => {
-      const opData = data.operationData;
-      this.populateLineItems(opData);
-    });
+      if(data.dataFromGrid != undefined){
+        const headerData = data.dataFromGrid.selected[0];
+        
+        if (headerData.ROUTING_ID) {
+          this.psService.getDataByID('http://'+ config.hostaddress + `/api/Values/GetRoutingHeaderByID?id=${headerData.ROUTING_ID}`,'GET',headerData.ROUTING_ID).subscribe(          
+          (res) => this.subService.detailData.next({             
+              detailData: res 
+            }),
+            err => console.log(err)
+          );          
+        }
+      }
+    });   
   }
 
-  ngOnInit() {   
-    
-  }
+  ngOnInit() {
+    this.subService.handleInput.subscribe(
+      res => {
+              this.IsDisable = res.val;
+        });    
+      }
 
   openModalLOVGrid() {
     const initialState = {
@@ -78,26 +99,21 @@ export class RoutingDetailComponent implements OnDestroy {
     console.dir(event.target.value);
   }
 
-  populateLineItems(opData) {
+  populateLineItems(routingData) {
+    debugger
     this.fieldArray = [];
-    const lineItems = opData.MFG_OPERATION_DETAILS;
+    const lineItems = routingData.Detail;
 
     lineItems.forEach(
       (lineItem, index) => {
-        const obj = {
-          activities: {
-            ACTIVITY: lineItem.ACTIVITY,
-            ACTIVITY_ID: lineItem.ACTIVITY_ID,
-            ACTIVITY_NAME: lineItem.ACTIVITY_NAME
-          },
-          resources: {
-            RESOURCE: lineItem.RESOURCE,
-            RESOURCE_ID: lineItem.RESOURCE_ID,
-            RESOURCE_NAME: lineItem.RESOURCE_NAME
-          },
-          description: lineItem.ACTIVITY_NAME,
-          lineNum: lineItem.LINE_NO,
-          proQuan: lineItem.PROCESS_QTY,
+        debugger
+        const obj = {          
+          LINE_NO: lineItem.LINE_NO,
+          OPRN_ID: lineItem.OPRN_ID,
+          ROUTING_ID: lineItem.ROUTING_ID,
+          OPRN_NO : lineItem.OPRN_NO,
+          OPRN_NAME : lineItem.OPRN_NAME,
+          OPRN_VERS : lineItem.OPRN_VERS,
           disabled: true,
           rowEditMode: false
         }
@@ -158,19 +174,6 @@ export class RoutingDetailComponent implements OnDestroy {
 
   saveData() {
 
-    // foreach (var item in model.MFG_ROUTING_DETAIL)
-    // {
-    //     Detail = new MFG_ROUTING_DETAIL();
-    //     Detail.ROUTING_ID = header.ROUTING_ID;
-    //     Detail.OPRN_ID = item.OPRN_ID;
-    //     Detail.LINE_NO = item.LINE_NO;
-    //     Detail.CREATED_BY = Convert.ToInt32(HttpContext.Current.Session["Userno"]);
-    //     Detail.CREATION_DATE = DateTime.Now;
-    //     Detail.ORGANIZATION_ID = 1947;
-    //     db.MFG_ROUTING_DETAIL.Add(Detail);
-    // }
-
-debugger
     const obj = {
       ROUTING_ID: this.masterFormData.ROUTING_ID === undefined ? "" : this.masterFormData.ROUTING_ID.value,
       ROUTING_NO: this.masterFormData.ROUTING_NO === undefined ? "" : this.masterFormData.ROUTING_NO.value,
@@ -197,8 +200,8 @@ debugger
         }
       )
     });
-    debugger
-   // console.log(obj);
+
+    // console.log(obj);
 
     const req = new XMLHttpRequest();
     req.open('POST','http://localhost:55690/api/Values/SaveRoutingData', true);
@@ -206,10 +209,10 @@ debugger
 
     req.onreadystatechange = function () {//Call a function when the state changes.
       if (req.readyState == 4 && req.status == 200) {
-        debugger
+        
        // alert(JSON.parse(req.responseText));
         //console.log(JSON.stringify(obj));
-        // alert(req.responseText);
+        alert(req.responseText);
       }
     }
 

@@ -1,4 +1,4 @@
 
 export const config = Object.freeze({
-    hostaddress  : 'C3-0467:8011'
+    hostaddress  :'localhost:55690'// 'C3-0467:8011'
 });

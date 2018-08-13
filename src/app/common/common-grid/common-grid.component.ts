@@ -95,6 +95,7 @@ export class CommonGridComponent implements OnInit {
   }
 
   onSelect(event) {
+    //debugger
     if(this.name == 'OPERATION')
     this.subService.gridData.next({
       dataFromGrid: event
@@ -104,6 +105,12 @@ export class CommonGridComponent implements OnInit {
     this.subService.RoutingClassData.next({
       dataFromGrid: event
     });
+
+    if(this.name == 'ROUTING')
+    this.subService.headerData.next({
+      dataFromGrid: event
+    });
+
     this.bsModalRef.hide();
   }
 

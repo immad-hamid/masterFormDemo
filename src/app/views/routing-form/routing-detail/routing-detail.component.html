@@ -1,4 +1,4 @@
-<table  class="display table table-bordered table-striped table-hover" cellspacing="0">
+<table class="display table table-bordered table-striped table-hover" cellspacing="0">
         <thead>
             <tr>
                 <th>Line No</th>
@@ -12,8 +12,8 @@
       
             <tr *ngFor="let field of fieldArray; let i = index">
                 <td>
-                    <input 
-                      [readonly]="field.disabled" 
+                    <input                      
+                      [attr.disabled]="IsDisable?'':null"
                       [(ngModel)]="field.LINE_NO" 
                       class="form-control" 
                       type="text" 
@@ -24,14 +24,15 @@
                         <input type="hidden" class="form-control" name="OPRN_ID" [(ngModel)]="field.OPRN_ID"/> 
                     <input 
                       [(ngModel)]="field.OPRN_NO"
-                      [disabled]="field.disabled"
+                      [attr.disabled]="IsDisable?'':null"
                       class="form-control" 
                       name="OPRN_NO" UpperCase
                       required />
                       <button class="btn btn-primary btn-sm" type="button"                         
                         matTooltip="Search"
                         md-raised-button    
-                        (click)="openModalLOVGrid()"              
+                        (click)="openModalLOVGrid()" 
+                        [attr.disabled]="IsDisable?'':null"             
                         >
                         <span class="btn-icon-search"><mat-icon>search</mat-icon></span>
                         </button>      
@@ -80,30 +81,33 @@
             <tr>
                 <td>
                     <input 
+                    [attr.disabled]="IsDisable?'':null"
                       [(ngModel)]="newAttribute.LINE_NO" 
-                      #LINE_NO="ngModel" 
+                      
                       name="newAttributeLINE_NO" 
                       class="form-control" 
                       NumberOnly 
                       required />                    
-                </td>
+                </td><!-- #LINE_NO="ngModel"  -->
                 <td>
                     <div class="input-group">
                     <input type="hidden" class="form-control" name="newAttributeOPRN_ID" #OPRN_ID="ngModel" [(ngModel)]="newAttribute.OPRN_ID"/> 
                     <input 
+                    [attr.disabled]="IsDisable?'':null"
                       [(ngModel)]="newAttribute.OPRN_NO"
-                      #OPRN_NO="ngModel" 
+                     
                       class="form-control" 
                       name="newAttributeOPRN_NO" UpperCase
                       required />
                       <button class="btn btn-primary btn-sm" type="button"                         
                         matTooltip="Search"
                         md-raised-button    
-                        (click)="openModalLOVGrid()"              
+                        (click)="openModalLOVGrid()"   
+                        [attr.disabled]="IsDisable?'':null"           
                         >
                         <span class="btn-icon-search"><mat-icon>search</mat-icon></span>
-                        </button>   </div>
-                </td>
+                        </button> </div>
+                </td> <!-- #OPRN_NO="ngModel"  -->
                 <td>
                     <input 
                       [(ngModel)]="newAttribute.OPRN_VERS" 
@@ -118,12 +122,12 @@
                 <td>
                     <input 
                       [(ngModel)]="newAttribute.OPRN_NAME" 
-                      #OPRN_NAME="ngModel" 
+                      
                       name="newAttributeOPRN_NAME" 
                       class="form-control"    
                       disabled                   
                       required />
-                </td>
+                </td><!-- #OPRN_NAME="ngModel"  -->
                 <td>
                     <button 
                       (click)="addFieldValue(LINE_NO,OPRN_ID, OPRN_NO, OPRN_VERS, OPRN_NAME)"

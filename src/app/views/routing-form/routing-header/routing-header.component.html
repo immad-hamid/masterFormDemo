@@ -19,12 +19,12 @@
   </div>
   
 
-  <form [formGroup]="masterForm" #novalidate>
+  <form  class="container-fluid" [formGroup]="masterForm" #novalidate>
       
       <!--First row-->
       <div class="row">
           <!--First column-->
-          <div class="col-md-2">
+          <div class="col-md-2" form-group>
               <div class="md-form">               
                   <label for="form9">ROUTE</label>
                   <input type="hidden" class="form-control" formControlName="ROUTING_ID" > 
@@ -33,7 +33,7 @@
           </div>
     
           <!--Second column-->
-          <div class="col-md-2">
+          <div class="col-md-2" form-group>
               <div class="md-form">
                   <label for="form10">STATUS</label>
                   <select class="form-control" formControlName="ROUTING_STATUS"> 
@@ -44,7 +44,7 @@
           </div>
   
           <!--Third column-->
-          <div class="col-md-2">
+          <div class="col-md-2" form-group>
               <div class="md-form">               
                   <label for="form11">ROUTING CLASS</label>
                   <div class="input-group">
@@ -67,7 +67,7 @@
           </div>
     
           <!--Fourth column-->
-          <div class="col-md-6">
+          <div class="col-md-6" form-group>
               <div class="md-form">
                   <label for="form12">DESCRIPTION</label>
                   <input type="text" class="form-control" formControlName="ROUTING_CLASS_NAME">  
@@ -79,7 +79,7 @@
     <!--Second Row-->
       <div class="row">
           <!--First column-->
-          <div class="col-md-2">
+          <div class="col-md-2" form-group>
               <div class="md-form">               
                   <label for="form9">VERSION</label>
                   <input type="text" class="form-control" formControlName="ROUTING_VERS" 
@@ -91,7 +91,7 @@
    <!--Third Row-->
       <div class="row">
           <!--First column-->
-          <div class="col-md-6">
+          <div class="col-md-6" form-group>
               <div class="md-form">               
                   <label for="form9">DESCRIPTION</label>
                   <textarea type="text" class="form-control" formControlName="ROUTING_NAME"></textarea>                
@@ -108,10 +108,10 @@
           <span class="d-inline">
               <div class="button-row">
                 <button 
-                  (click)="saveRecord()"
+                  (click)="addRecord()"
                   mat-raised-button color="basic"
-                  matTooltip="Add Line Items">
-                    Add Line Items
+                  matTooltip="Add">
+                    Add 
                 </button>
               </div>
           </span>

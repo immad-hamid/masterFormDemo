@@ -162,7 +162,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     });
 
     console.log(JSON.stringify(obj));
-    debugger
+    
     const req = new XMLHttpRequest();
     req.open('POST', `http://C3-0467:8011/api/Values/Save`, true);
     req.setRequestHeader('Content-type', 'application/json');

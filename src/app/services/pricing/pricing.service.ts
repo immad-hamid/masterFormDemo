@@ -22,6 +22,14 @@ export class PricingService {
     return this.http.get(`http://C3-0467:8011/api/Values/GetOperationByID?operationID=${id}`, '')
   }
 
+  getDataByID(url,HttpType,id) {
+   // return this.http.get(`http://C3-0467:8011/api/Values/GetOperationByID?operationID=${id}`, '')
+   if(HttpType == 'POST')
+      return  this.http.post(url, '','');
+    else
+      return this.http.get(url, '')
+  }
+
   getData(url,HttpType) {
      if(HttpType == 'POST')
       return  this.http.post(url, '','');
