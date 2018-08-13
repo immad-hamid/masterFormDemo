@@ -55,11 +55,11 @@
                         color="warn"                    
                         matTooltip="Search"
                         md-raised-button    
-                        (click)="openModalGrid()"              
-                        >
+                        (click)="openModalGrid()"
+                            [attr.disabled]="!editMode?'':null"      >
                         <span class="btn-icon-search"><mat-icon>search</mat-icon></span>
-                        </button>                    
-                  
+                                    
+                        </button>
                         <div *ngIf="ROUTING_CLASS.invalid && ROUTING_CLASS.touched"
                         class="alert alert-danger">Routing Class required.</div>
                 </div>

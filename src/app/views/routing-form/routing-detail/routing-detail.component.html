@@ -88,7 +88,8 @@
                       class="form-control" 
                       NumberOnly 
                       required />                    
-                </td><!-- #LINE_NO="ngModel"  -->
+                </td>
+                <!-- #LINE_NO="ngModel"  -->
                 <td>
                     <div class="input-group">
                     <input type="hidden" class="form-control" name="newAttributeOPRN_ID" #OPRN_ID="ngModel" [(ngModel)]="newAttribute.OPRN_ID"/> 
@@ -106,8 +107,9 @@
                         [attr.disabled]="IsDisable?'':null"           
                         >
                         <span class="btn-icon-search"><mat-icon>search</mat-icon></span>
-                        </button> </div>
-                </td> <!-- #OPRN_NO="ngModel"  -->
+                    </button></div>
+                </td>
+                 <!-- #OPRN_NO="ngModel"  -->
                 <td>
                     <input 
                       [(ngModel)]="newAttribute.OPRN_VERS" 
@@ -127,7 +129,8 @@
                       class="form-control"    
                       disabled                   
                       required />
-                </td><!-- #OPRN_NAME="ngModel"  -->
+                </td>
+                <!-- #OPRN_NAME="ngModel"  -->
                 <td>
                     <button 
                       (click)="addFieldValue(LINE_NO,OPRN_ID, OPRN_NO, OPRN_VERS, OPRN_NAME)"
