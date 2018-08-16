@@ -8,6 +8,8 @@ import { SubjectService } from '../../../services/subject.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { config } from '../../../models/config';
 import { PricingService } from '../../../services/pricing/pricing.service';
+import { Subscription } from '../../../../../node_modules/rxjs';
+import { IROUTING } from '../../../models/customers.model';
 
 @Component({
   selector: 'routing-header',
@@ -19,7 +21,6 @@ export class RoutingHeaderComponent implements OnInit, OnDestroy {
   editMode: boolean;
   status :{value:number,name:string}[] ;
   bsModalRef: BsModalRef;
-
 
   constructor(private modalService: BsModalService,
      private subService: SubjectService,
@@ -35,10 +36,21 @@ export class RoutingHeaderComponent implements OnInit, OnDestroy {
         this.ROUTING_CLASS.setValue(objRouting.ROUTING_CLASS);
         this.ROUTING_CLASS_NAME.setValue(objRouting.ROUTING_CLASS_NAME);
         }
-      });          
+      });
       
-      
-  }
+      this.subService.RoutingData.subscribe((data) => {     
+        debugger   
+        const obj = data.detailData.detailData;        
+        this.ROUTING_CLASS_ID.setValue(obj.ROUTING_CLASS_ID);
+        this.ROUTING_CLASS.setValue(obj.ROUTING_CLASS);
+        this.ROUTING_CLASS_NAME.setValue(obj.ROUTING_CLASS_NAME);        
+        this.ROUTING_VERS.setValue(obj.ROUTING_VERS);
+        this.ROUTING_STATUS.setValue(obj.ROUTING_STATUS);
+        this.ROUTING_NO.setValue(obj.ROUTING_NO);
+        this.ROUTING_NAME.setValue(obj.ROUTING_NAME);
+        this.ROUTING_ID.setValue(obj.ROUTING_ID);
+      });           
+    }
 
   ngOnInit() {
             this.status = [
@@ -59,51 +71,64 @@ export class RoutingHeaderComponent implements OnInit, OnDestroy {
                 name: "Cancel"
               }
             ];
-
+debugger
             this.masterForm = this.fb.group({
               ROUTING_CLASS_ID: [''],
               ROUTING_CLASS: ['', Validators.required],
               ROUTING_CLASS_NAME: [{value: '', disabled: true}],
               ROUTING_NO : ['',Validators.required],
               ROUTING_ID : [{value: ''}],
-              ROUTING_STATUS: [{value: '1'}],
+              ROUTING_STATUS: [{value: 1}],
               ROUTING_VERS : [{value: '1', disabled: true}],
               ROUTING_NAME:['',Validators.required]
             });
 
-            this.subService.headerData.next({
-              ROUTING_CLASS_ID: this.ROUTING_CLASS_ID,
-              ROUTING_CLASS: this.ROUTING_CLASS,
-              ROUTING_CLASS_NAME: this.ROUTING_CLASS_NAME,
-              ROUTING_NO : this.ROUTING_NO,
-              ROUTING_ID : this.ROUTING_ID,
-              ROUTING_STATUS: this.ROUTING_STATUS,
-              ROUTING_VERS : this.ROUTING_VERS,
-              ROUTING_NAME:this.ROUTING_NAME
+
+            this.subService.headerData.next({       
+              ROUTING_CLASS_ID: this.ROUTING_CLASS_ID.value,
+              ROUTING_CLASS: this.ROUTING_CLASS.value,
+              ROUTING_CLASS_NAME: this.ROUTING_CLASS_NAME.value,
+              ROUTING_NO : this.ROUTING_NO.value,
+              ROUTING_ID : this.ROUTING_ID.value.value,
+              ROUTING_STATUS: this.ROUTING_STATUS.value.value,
+              ROUTING_VERS : this.ROUTING_VERS.value,
+              ROUTING_NAME:this.ROUTING_NAME.value
             }); 
+
+            // this.subService.RoutingData.next({       
+            //   ROUTING_CLASS_ID: this.ROUTING_CLASS_ID.value,
+            //   ROUTING_CLASS: this.ROUTING_CLASS.value,
+            //   ROUTING_CLASS_NAME: this.ROUTING_CLASS_NAME.value,
+            //   ROUTING_NO : this.ROUTING_NO.value,
+            //   ROUTING_ID : this.ROUTING_ID.value.value,
+            //   ROUTING_STATUS: this.ROUTING_STATUS.value.value,
+            //   ROUTING_VERS : this.ROUTING_VERS.value,
+            //   ROUTING_NAME:this.ROUTING_NAME.value
+            // }); 
             this.disableInputs();
   }
   addRecord(){
     this.enableInputs();
+    this.clearInputs();
   }
 
-  saveRecord() {
-    
-    this.subService.headerData.next({
-      ROUTING_CLASS_ID: this.ROUTING_CLASS_ID,
-      ROUTING_CLASS: this.ROUTING_CLASS,
-      ROUTING_CLASS_NAME: this.ROUTING_CLASS_NAME,
-      ROUTING_NO : this.ROUTING_NO,
-      ROUTING_ID : this.ROUTING_ID,
-      ROUTING_STATUS: this.ROUTING_STATUS,
-      ROUTING_VERS : this.ROUTING_VERS,
-      ROUTING_NAME:this.ROUTING_NAME
-    });
-  }
+  getHeaderData() {    
+     this.subService.headerData.next({
+     ROUTING_CLASS_ID: this.ROUTING_CLASS_ID,
+     ROUTING_CLASS: this.ROUTING_CLASS,
+     ROUTING_CLASS_NAME: this.ROUTING_CLASS_NAME,
+     ROUTING_NO : this.ROUTING_NO,
+     ROUTING_ID : this.ROUTING_ID,
+     ROUTING_STATUS: this.ROUTING_STATUS,
+     ROUTING_VERS : this.ROUTING_VERS,
+       ROUTING_NAME:this.ROUTING_NAME
+     });
+   }
 
   ngOnDestroy() {
     this.subService.gridData.unsubscribe(); 
     this.subService.RoutingClassData.unsubscribe(); 
+    this.subService.RoutingData.unsubscribe();
   }
 
   openModalGrid() { 
@@ -156,8 +181,10 @@ export class RoutingHeaderComponent implements OnInit, OnDestroy {
   this.ROUTING_STATUS.enable(); 
   this.ROUTING_CLASS.enable(); 
   this.ROUTING_NAME.enable();
-  this.subService.handleInput.next(
-    { val: false }
+  this.subService.EnableDisableInput.next(
+    { val: false,
+      IsReset : false
+     }
   );
 }
 
@@ -168,9 +195,19 @@ disableInputs() {
   this.ROUTING_STATUS.disable(); 
   this.ROUTING_CLASS.disable(); 
   this.ROUTING_NAME.disable();
-  this.subService.handleInput.next(
-    { val: true }
+  this.subService.EnableDisableInput.next(
+    { val: true,
+    IsReset : true 
+    }
   );
+ this.clearInputs();
+} 
+
+clearInputs()
+{
+  this.masterForm.reset();
+  this.ROUTING_STATUS.setValue(1);
+  this.ROUTING_VERS.setValue(1);
 } 
 
   get ROUTING_CLASS_ID() { return this.masterForm.get('ROUTING_CLASS_ID') }

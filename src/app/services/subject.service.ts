@@ -1,5 +1,7 @@
+import { IROUTING } from './../models/customers.model';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
+import { Observable } from '../../../node_modules/rxjs';
 
 @Injectable()
 export class SubjectService {
@@ -14,6 +16,9 @@ export class SubjectService {
 
   detailData: Subject<any> = new Subject<any>();
 
-  handleInput: Subject<any> = new Subject<any>();
+  EnableDisableInput: Subject<any> = new Subject<any>();
 
+  RoutingData: Subject<any> = new Subject<any>();
+
+ 
 }

@@ -1,10 +1,11 @@
-
 import { config } from './../../../models/config';
 import { Component, OnDestroy } from '@angular/core';
 import { SubjectService } from '../../../services/subject.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CommonGridComponent } from '../../../common/common-grid/common-grid.component';
 import { PricingService } from '../../../services/pricing/pricing.service';
+import { IROUTING } from '../../../models/customers.model';
+import { RoutingHeaderComponent } from '../routing-header/routing-header.component';
 
 @Component({
   selector: 'routing-detail',
@@ -20,58 +21,95 @@ export class RoutingDetailComponent implements OnDestroy {
   dtoSave: any;
 
   IsDisable : boolean;
+  currentRow:number
 
-  private fieldArray: Array<any> = [];
-  private newAttribute: any = {};
-  bsModalRef: BsModalRef;
+  private fieldArray: Array<any> = [{LINE_NO: '',
+    OPRN_ID: '',
+    ROUTING_ID: '',
+    OPRN_NO : '',
+    OPRN_NAME : '',
+    OPRN_VERS : '',
+    disabled: true,
+    rowEditMode: true}];
+    bsModalRef: BsModalRef;
+  
   constructor(private modalService: BsModalService,
     private subService: SubjectService,private psService: PricingService
   ) {    
-    this.IsDisable=true;
-    this.subService.gridData.subscribe(           
-      lovData => {              
-      let objOperation =lovData.dataFromGrid.selected[0];
+      this.IsDisable=true;
 
-          if(objOperation.OPRN_ID > 0){
-            this.newAttribute.OPRN_ID = objOperation.OPRN_ID;
-            this.newAttribute.OPRN_NO = objOperation.OPRN_NO;
-            this.newAttribute.OPRN_NAME = objOperation.OPRN_NAME;
-            this.newAttribute.OPRN_VERS = objOperation.OPRN_VERS;
-          } 
+      //operation LOV data
+      this.subService.gridData.subscribe(     
+              
+        lovData => {          
+        let objOperation =lovData.dataFromGrid.selected[0];
+
+            if(objOperation.OPRN_ID > 0){
+              let index : number 
+              index = this.currentRow;
+              this.fieldArray[index].OPRN_ID = objOperation.OPRN_ID;
+              this.fieldArray[index].OPRN_NO = objOperation.OPRN_NO;
+              this.fieldArray[index].OPRN_NAME = objOperation.OPRN_NAME;
+              this.fieldArray[index].OPRN_VERS = objOperation.OPRN_VERS;
+            } 
       });
-    // header data
-     this.subService.detailData.subscribe((data) => {
-       debugger
-       const dtlData = data.detailData;
-       this.populateLineItems(dtlData);
-     });
+      //end operation lov data
 
-    this.subService.headerData.subscribe((data) => {
-      
-      this.masterFormData = data;
-      if(data.dataFromGrid != undefined){
-        const headerData = data.dataFromGrid.selected[0];
-        
-        if (headerData.ROUTING_ID) {
-          this.psService.getDataByID('http://'+ config.hostaddress + `/api/Values/GetRoutingHeaderByID?id=${headerData.ROUTING_ID}`,'GET',headerData.ROUTING_ID).subscribe(          
-          (res) => this.subService.detailData.next({             
-              detailData: res 
-            }),
-            err => console.log(err)
-          );          
+    // header data detail data
+      this.subService.detailData.subscribe((data) => {
+         debugger
+        const dtlData = data.detailData;
+        this.masterFormData = dtlData;
+        this.subService.RoutingData.next(
+          { detailData : data  }
+        );
+        this.populateLineItems(dtlData);
+      });
+     ///end header detail data
+
+     //get routing data by id
+      this.subService.headerData.subscribe((data) => {
+        debugger
+        this.masterFormData = data;
+        if(data.dataFromGrid != undefined){
+          const headerData = data.dataFromGrid.selected[0];
+          
+          if (headerData.ROUTING_ID) {
+            this.psService.getDataByID('http://'+ config.hostaddress + `/api/Values/GetRoutingHeaderByID?id=${headerData.ROUTING_ID}`,'GET',headerData.ROUTING_ID).subscribe(          
+            (res) => this.subService.detailData.next({             
+                detailData: res 
+              }),
+              err => console.log(err)
+            );          
+          }
         }
-      }
-    });   
-  }
+      });
+     // name : header.ROUTING_NAME;
+         //end get routing data by id    
+    }
 
   ngOnInit() {
-    this.subService.handleInput.subscribe(
-      res => {
+    this.subService.EnableDisableInput.subscribe(
+      res => {       
               this.IsDisable = res.val;
-        });    
+              if(res.IsReset)
+                this.fieldArray= [{LINE_NO: '',
+                OPRN_ID: '',
+                ROUTING_ID: '',
+                OPRN_NO : '',
+                OPRN_NAME : '',
+                OPRN_VERS : '',
+               // ROUTING_OPRN_ID : '',
+                disabled: true,
+                rowEditMode: true}]; 
+        });               
+      
+     
       }
 
-  openModalLOVGrid() {
+  openModalLOVGrid(index) {
+   
+    this.currentRow = index;
     const initialState = {
       list: [
         'This Modal will show the Operation LOV...'
@@ -93,59 +131,34 @@ export class RoutingDetailComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.subService.headerData.unsubscribe();
-  }
-
-  onInput(event) {
-    console.dir(event.target.value);
+    this.subService.EnableDisableInput.unsubscribe();
+    this.subService.detailData.unsubscribe();
+    this.subService.gridData.unsubscribe();    
   }
 
   populateLineItems(routingData) {
-    debugger
+    //debugger
     this.fieldArray = [];
     const lineItems = routingData.Detail;
 
     lineItems.forEach(
       (lineItem, index) => {
-        debugger
+        //debugger
         const obj = {          
           LINE_NO: lineItem.LINE_NO,
           OPRN_ID: lineItem.OPRN_ID,
           ROUTING_ID: lineItem.ROUTING_ID,
-          OPRN_NO : lineItem.OPRN_NO,
+          OPRN_NO : lineItem.OPRN_NO, 
           OPRN_NAME : lineItem.OPRN_NAME,
           OPRN_VERS : lineItem.OPRN_VERS,
+        //  ROUTING_OPRN_ID : lineItem.ROUTING_OPRN_ID,
           disabled: true,
           rowEditMode: false
         }
         this.fieldArray.push(obj);
-
-        this.fieldArray[index].operation = this.operations[index];
+       // this.fieldArray[index].operation = this.operations[index];
       }
     );
-  }
-
-  // adding activity description
-  addActivityDesc(select: any, index?: number) {
-    console.log(index);
-    if (index !== undefined) {
-      console.log('Not undefined');
-      this.fieldArray[index].description = select.value.ACTIVITY_NAME
-    } else {
-      this.newAttribute.description = select.value.ACTIVITY_NAME
-    }
-  }
-
-  addFieldValue(lineNumber, description, proQuan) {
-    
-    this.newAttribute.disabled = true;
-    this.newAttribute.rowEditMode = false;
-    this.fieldArray.push(this.newAttribute)
-    console.log(JSON.stringify(this.fieldArray));
-    console.log(this.fieldArray);
-    this.newAttribute = {};
-    // lineNumber.reset();
-    // description.reset();
-    // proQuan.reset();
   }
 
   editFieldValue(index) {    
@@ -155,32 +168,64 @@ export class RoutingDetailComponent implements OnDestroy {
     this.fieldArray[index].rowEditMode = true;
   }
 
+  setRowBehaviour(index){
+   // debugger
+    if (this.fieldArray[index].OPRN_ID  != ''  && this.fieldArray[index].LINE_NO != '') 
+      this.fieldArray[index].rowEditMode = true;
+  }
+
   addAfterEdit(index) {
     this.fieldArray[index].disabled = true;
     this.fieldArray[index].rowEditMode = false;
+
+    this.fieldArray.push({LINE_NO: '',
+    OPRN_ID: '',
+    ROUTING_ID: '',
+    OPRN_NO : '',
+    OPRN_NAME : '',
+    OPRN_VERS : '',
+   // ROUTING_OPRN_ID : '',
+    disabled: true,
+    rowEditMode: true});
   }
 
   deleteFieldValue(index) {
-    this.fieldArray.splice(index, 1);
+    if(this.fieldArray.length>1){
+      this.fieldArray.splice(index, 1);
+    }
   }
 
   fetchOperations(cb) {
 
-    fetch('http://C3-0467:8011/api/Values/GetOperationLOV')
+    fetch('http://'+ config.hostaddress + '/api/Values/GetOperationLOV')
       .then(res => res.json())
       .then(data => cb(data))
       .catch(err => console.log(err));
   }
 
   saveData() {
+debugger
+  //this.masterFormData = this.masterFormData.dataFromGrid.selected[0];
+    // const obj = {
+    //   ROUTING_ID: this.masterFormData.ROUTING_ID === undefined ? "" : this.masterFormData.ROUTING_ID.value,
+    //   ROUTING_NO: this.masterFormData.ROUTING_NO === undefined ? "" : this.masterFormData.ROUTING_NO.value,
+    //   ROUTING_VERS: this.masterFormData.ROUTING_VERS === undefined ? "" :this.masterFormData.ROUTING_VERS.value,
+    //   ROUTING_STATUS: this.masterFormData.ROUTING_STATUS === undefined ? "" :this.masterFormData.ROUTING_STATUS.value.value,
+    //   ROUTING_NAME: this.masterFormData.ROUTING_NAME === undefined ? "" :this.masterFormData.ROUTING_NAME.value,
+    //   ROUTING_CLASS_ID: this.masterFormData.ROUTING_CLASS_ID === undefined ? "" :this.masterFormData.ROUTING_CLASS_ID.value,
+    //   LAST_UPDATED_BY: '',
+    //   LAST_UPDATE_DATE: '',
+    //   ORGANIZATION_ID: '1947',      
+    //   MFG_ROUTING_DETAIL: []
+    // }   
 
     const obj = {
-      ROUTING_ID: this.masterFormData.ROUTING_ID === undefined ? "" : this.masterFormData.ROUTING_ID.value,
-      ROUTING_NO: this.masterFormData.ROUTING_NO === undefined ? "" : this.masterFormData.ROUTING_NO.value,
-      ROUTING_VERS: this.masterFormData.ROUTING_VERS === undefined ? "" :this.masterFormData.ROUTING_VERS.value,
-      ROUTING_STATUS: this.masterFormData.ROUTING_STATUS === undefined ? "" :this.masterFormData.ROUTING_STATUS.value.value,
-      ROUTING_NAME: this.masterFormData.ROUTING_NAME === undefined ? "" :this.masterFormData.ROUTING_NAME.value,
-      ROUTING_CLASS_ID: this.masterFormData.ROUTING_CLASS_ID === undefined ? "" :this.masterFormData.ROUTING_CLASS_ID.value,
+      ROUTING_ID: this.masterFormData.ROUTING_ID === undefined ? "" : this.masterFormData.ROUTING_ID,
+      ROUTING_NO: this.masterFormData.ROUTING_NO === undefined ? "" : this.masterFormData.ROUTING_NO,
+      ROUTING_VERS: this.masterFormData.ROUTING_VERS === undefined ? "" :this.masterFormData.ROUTING_VERS,
+      ROUTING_STATUS: this.masterFormData.ROUTING_STATUS === undefined ? "" :this.masterFormData.ROUTING_STATUS,
+      ROUTING_NAME: this.masterFormData.ROUTING_NAME === undefined ? "" :this.masterFormData.ROUTING_NAME,
+      ROUTING_CLASS_ID: this.masterFormData.ROUTING_CLASS_ID === undefined ? "" :this.masterFormData.ROUTING_CLASS_ID,
       LAST_UPDATED_BY: '',
       LAST_UPDATE_DATE: '',
       ORGANIZATION_ID: '1947',      
@@ -191,9 +236,10 @@ export class RoutingDetailComponent implements OnDestroy {
       
       obj.MFG_ROUTING_DETAIL.push(
         {
-          ROUTING_ID : this.masterFormData.ROUTING_ID === undefined ? "" : this.masterFormData.ROUTING_ID.value ,
+          ROUTING_ID : this.masterFormData.ROUTING_ID === undefined ? "" : this.masterFormData.ROUTING_ID ,
           OPRN_ID: el.OPRN_ID,
           LINE_NO: el.LINE_NO,
+         // ROUTING_OPRN_ID : el.ROUTING_OPRN_ID,
           CREATED_BY: '2',
           //CREATED_DATE: new Date(),
           ORGANIZATION_ID: '1947'
@@ -204,7 +250,7 @@ export class RoutingDetailComponent implements OnDestroy {
     // console.log(obj);
 
     const req = new XMLHttpRequest();
-    req.open('POST','http://localhost:55690/api/Values/SaveRoutingData', true);
+    req.open('POST','http://'+ config.hostaddress + '/api/Values/SaveRoutingData', true);
     req.setRequestHeader('Content-type', 'application/json');
 
     req.onreadystatechange = function () {//Call a function when the state changes.
@@ -219,7 +265,4 @@ export class RoutingDetailComponent implements OnDestroy {
     req.send(JSON.stringify(obj));
   }
 
-  checkVal(val) {
-    console.log(val);
-  }
 }
