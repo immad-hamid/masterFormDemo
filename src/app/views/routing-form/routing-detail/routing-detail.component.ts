@@ -4,8 +4,7 @@ import { SubjectService } from '../../../services/subject.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CommonGridComponent } from '../../../common/common-grid/common-grid.component';
 import { PricingService } from '../../../services/pricing/pricing.service';
-import { IROUTING } from '../../../models/customers.model';
-import { RoutingHeaderComponent } from '../routing-header/routing-header.component';
+
 
 @Component({
   selector: 'routing-detail',
@@ -33,9 +32,12 @@ export class RoutingDetailComponent implements OnDestroy {
     rowEditMode: true}];
     bsModalRef: BsModalRef;
   
+    message: any;
+   
   constructor(private modalService: BsModalService,
     private subService: SubjectService,private psService: PricingService
   ) {    
+        
       this.IsDisable=true;
 
       //operation LOV data
@@ -84,11 +86,12 @@ export class RoutingDetailComponent implements OnDestroy {
           }
         }
       });
-     // name : header.ROUTING_NAME;
+    
          //end get routing data by id    
     }
 
   ngOnInit() {
+    
     this.subService.EnableDisableInput.subscribe(
       res => {       
               this.IsDisable = res.val;
@@ -133,7 +136,8 @@ export class RoutingDetailComponent implements OnDestroy {
     this.subService.headerData.unsubscribe();
     this.subService.EnableDisableInput.unsubscribe();
     this.subService.detailData.unsubscribe();
-    this.subService.gridData.unsubscribe();    
+    this.subService.gridData.unsubscribe();   
+    
   }
 
   populateLineItems(routingData) {
@@ -205,6 +209,7 @@ export class RoutingDetailComponent implements OnDestroy {
 
   saveData() {
 debugger
+
   //this.masterFormData = this.masterFormData.dataFromGrid.selected[0];
     // const obj = {
     //   ROUTING_ID: this.masterFormData.ROUTING_ID === undefined ? "" : this.masterFormData.ROUTING_ID.value,

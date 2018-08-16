@@ -8,8 +8,7 @@ import { SubjectService } from '../../../services/subject.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { config } from '../../../models/config';
 import { PricingService } from '../../../services/pricing/pricing.service';
-import { Subscription } from '../../../../../node_modules/rxjs';
-import { IROUTING } from '../../../models/customers.model';
+
 
 @Component({
   selector: 'routing-header',
@@ -50,7 +49,10 @@ export class RoutingHeaderComponent implements OnInit, OnDestroy {
         this.ROUTING_NAME.setValue(obj.ROUTING_NAME);
         this.ROUTING_ID.setValue(obj.ROUTING_ID);
       });           
+    
+      
     }
+
 
   ngOnInit() {
             this.status = [
@@ -218,4 +220,8 @@ clearInputs()
   get ROUTING_NAME() { return this.masterForm.get('ROUTING_NAME') }
   get ROUTING_STATUS() { return this.masterForm.get('ROUTING_STATUS') }
   get ROUTING_VERS() { return this.masterForm.get('ROUTING_VERS') }
+
+
+  
+
 }
