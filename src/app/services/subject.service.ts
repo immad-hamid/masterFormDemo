@@ -20,10 +20,4 @@ export class SubjectService {
 
   RoutingData: Subject<any> = new Subject<any>();
 
-  private countSource = new Subject<string>();
-  count = this.countSource.asObservable();
-  updateCount(count: string) {
-    this.countSource.next(count);
-  }
-
 }

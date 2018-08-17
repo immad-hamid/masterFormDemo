@@ -27,6 +27,7 @@ export class RoutingHeaderComponent implements OnInit, OnDestroy {
      private psService: PricingService
     ) { 
       
+
     this.subService.RoutingClassData.subscribe(
       lovData => {
         const objRouting =lovData.dataFromGrid.selected[0];       
@@ -38,7 +39,7 @@ export class RoutingHeaderComponent implements OnInit, OnDestroy {
       });
       
       this.subService.RoutingData.subscribe((data) => {     
-        debugger   
+       // debugger   
         const obj = data.detailData.detailData;        
         this.ROUTING_CLASS_ID.setValue(obj.ROUTING_CLASS_ID);
         this.ROUTING_CLASS.setValue(obj.ROUTING_CLASS);
@@ -48,13 +49,17 @@ export class RoutingHeaderComponent implements OnInit, OnDestroy {
         this.ROUTING_NO.setValue(obj.ROUTING_NO);
         this.ROUTING_NAME.setValue(obj.ROUTING_NAME);
         this.ROUTING_ID.setValue(obj.ROUTING_ID);
+
+        
       });           
-    
+   
       
     }
 
 
   ngOnInit() {
+
+
             this.status = [
               {
                 value: 1,
@@ -73,16 +78,16 @@ export class RoutingHeaderComponent implements OnInit, OnDestroy {
                 name: "Cancel"
               }
             ];
-debugger
+
             this.masterForm = this.fb.group({
-              ROUTING_CLASS_ID: [''],
-              ROUTING_CLASS: ['', Validators.required],
-              ROUTING_CLASS_NAME: [{value: '', disabled: true}],
-              ROUTING_NO : ['',Validators.required],
-              ROUTING_ID : [{value: ''}],
+              ROUTING_CLASS_ID: [{value:null}],
+              ROUTING_CLASS: [null, Validators.required],
+              ROUTING_CLASS_NAME: [{value:null, disabled: true}],
+              ROUTING_NO : [null,Validators.required],
+              ROUTING_ID : [{value: null}],
               ROUTING_STATUS: [{value: 1}],
               ROUTING_VERS : [{value: '1', disabled: true}],
-              ROUTING_NAME:['',Validators.required]
+              ROUTING_NAME:[null,Validators.required]
             });
 
 
@@ -97,16 +102,7 @@ debugger
               ROUTING_NAME:this.ROUTING_NAME.value
             }); 
 
-            // this.subService.RoutingData.next({       
-            //   ROUTING_CLASS_ID: this.ROUTING_CLASS_ID.value,
-            //   ROUTING_CLASS: this.ROUTING_CLASS.value,
-            //   ROUTING_CLASS_NAME: this.ROUTING_CLASS_NAME.value,
-            //   ROUTING_NO : this.ROUTING_NO.value,
-            //   ROUTING_ID : this.ROUTING_ID.value.value,
-            //   ROUTING_STATUS: this.ROUTING_STATUS.value.value,
-            //   ROUTING_VERS : this.ROUTING_VERS.value,
-            //   ROUTING_NAME:this.ROUTING_NAME.value
-            // }); 
+           
             this.disableInputs();
   }
   addRecord(){
@@ -123,7 +119,7 @@ debugger
      ROUTING_ID : this.ROUTING_ID,
      ROUTING_STATUS: this.ROUTING_STATUS,
      ROUTING_VERS : this.ROUTING_VERS,
-       ROUTING_NAME:this.ROUTING_NAME
+     ROUTING_NAME:this.ROUTING_NAME
      });
    }
 

@@ -1,6 +1,6 @@
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Directive } from '@angular/core';
 
 // routing
 import { AppRoutingModule } from './app-routing.module';
@@ -38,6 +38,7 @@ import { NumberOnlyDirective } from './common/Directives/number-only.directive';
 import { UpperCaseDirective } from './common/Directives/upper-case.directive';
 import { PricingService } from './services/pricing/pricing.service';
 import { RestApiService } from './services/http.service';
+import { FocusDirective } from './common/Directives/focus.directive';
 
 
 @NgModule({
@@ -53,7 +54,8 @@ import { RestApiService } from './services/http.service';
     RoutingHeaderComponent,
     LovGridComponent,
     NumberOnlyDirective,
-    UpperCaseDirective
+    UpperCaseDirective,
+    FocusDirective
   ],
   imports: [
     BrowserModule,

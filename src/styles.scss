@@ -118,3 +118,17 @@ bootstrap table theme
       max-width: 800px!important;
   }
 }
+
+.control-label.required:after { 
+  color: #d00;
+  content: "*";
+  position: absolute;
+  margin-left: 5px;
+  top:7px;
+}
+
+.clsMandatory::before {
+  vertical-align: text-top;
+  content: '*';
+  color: red;
+}

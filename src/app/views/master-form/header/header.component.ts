@@ -163,4 +163,5 @@ export class HeaderComponent implements OnInit {
     this.bsModalRef.content.closeBtnName = 'Close';
   }
 
+
 }

@@ -28,14 +28,19 @@
                     <input 
                       [(ngModel)]="field.OPRN_NO"
                       [attr.disabled]="IsDisable?'':null"
+                     
                       class="form-control form-control-sm" 
                       name="OPRN_NO" UpperCase
-                      required />
+                      required 
+                     
+                      Focus
+                      /><!-- #inputBox -->
                       <button class="btn btn-primary btn-sm" type="button"                         
                         matTooltip="Search"
                         md-raised-button    
                         (click)="openModalLOVGrid(i)" 
                         (focusout)= "setRowBehaviour(i)"
+                        [attr.disabled]="IsDisable?'':null"
                         >
                         <span class="btn-icon-search"><mat-icon>search</mat-icon></span>
                         </button>      
@@ -55,7 +60,9 @@
                       (click)="editFieldValue(i)"
                       color="basic"
                       mat-mini-fab
-                      matTooltip="Edit">
+                      matTooltip="Edit"
+                      
+                      >
                         <mat-icon>edit</mat-icon>
                     </button>
       
@@ -74,84 +81,14 @@
                       (click)="addAfterEdit(i)"
                       color="primary"
                       mat-mini-fab
-                      matTooltip="Add">
+                      matTooltip="Add"
+                      [disabled]="IsDisable?'':null"
+                      >
                         <mat-icon>add</mat-icon>
                     </button>
                 </td>
-            </tr>
-      
-            <!-- Initial input fields -->
-            <!-- <tr>
-                <td>
-                    <input 
-                    [attr.disabled]="IsDisable?'':null"
-                      [(ngModel)]="newAttribute.LINE_NO" 
-                      
-                      name="newAttributeLINE_NO" 
-                      class="form-control form-control-sm" 
-                      NumberOnly 
-                      required />                    
-                </td>
-               
-                <td>
-                    <div class="input-group">
-                    <input type="hidden" class="form-control form-control-sm" name="newAttributeOPRN_ID" #OPRN_ID="ngModel" [(ngModel)]="newAttribute.OPRN_ID"/> 
-                    <input 
-                    [attr.disabled]="IsDisable?'':null"
-                      [(ngModel)]="newAttribute.OPRN_NO"
-                     
-                      class="form-control form-control-sm" 
-                      name="newAttributeOPRN_NO" UpperCase
-                      required />
-                      <button class="btn btn-primary btn-sm" type="button"                         
-                        matTooltip="Search"
-                        md-raised-button    
-                        (click)="openModalLOVGrid()"   
-                        [attr.disabled]="IsDisable?'':null"           
-                        >
-                        <span class="btn-icon-search"><mat-icon>search</mat-icon></span>
-                    </button></div>
-                </td>
-                
-                <td>
-                    <input 
-                      [(ngModel)]="newAttribute.OPRN_VERS" 
-                      #OPRN_VERS="ngModel" 
-                      name="newAttributeOPRN_VERS" 
-                      class="form-control form-control-sm" 
-                      type="text" 
-                      disabled
-                      required />
-                </td>
-                
-                <td>
-                    <input 
-                      [(ngModel)]="newAttribute.OPRN_NAME" 
-                      
-                      name="newAttributeOPRN_NAME" 
-                      class="form-control form-control-sm"    
-                      disabled                   
-                      required />
-                </td>
-               
-                <td>
-                    <button 
-                      (click)="addFieldValue(LINE_NO,OPRN_ID, OPRN_NO, OPRN_VERS, OPRN_NAME)"
-                      [disabled]="
-                        newAttribute.LINE_NO === undefined || 
-                        newAttribute.OPRN_NO === undefined || 
-                        newAttribute.OPRN_VERS === undefined || 
-                        newAttribute.OPRN_NAME === undefined || 
-                        newAttribute.OPRN_ID === undefined
-                      "
-                      color="primary"
-                      mat-mini-fab
-                      matTooltip="Add">
-                        <mat-icon>add</mat-icon>
-                    </button>
-                </td>
-            </tr> -->
-      
+            </tr>    
+            
         </tbody>
       </table>
       
@@ -162,7 +99,7 @@
                       <button 
                           (click)="saveData()"
                           mat-raised-button color="basic"
-                          matTooltip="Edit Form">
+                          matTooltip="Edit Form" >
                           Save
                       </button>
                   </div>
