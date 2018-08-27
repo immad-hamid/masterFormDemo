@@ -6,8 +6,7 @@ import { Directive, EventEmitter, Input, Inject, ElementRef, Renderer } from '@a
 export class FocusDirective {
   @Input('focus') focusEvent: EventEmitter<boolean>;
   constructor(public renderer: Renderer, public elementRef: ElementRef) { }
-  setFocus(id: string) {
-    
+  setFocus(id: string) {   
     if (this.elementRef.nativeElement.name === id) {
       console.log(`Setting focus on '${id}'...`);
       this.renderer.invokeElementMethod(

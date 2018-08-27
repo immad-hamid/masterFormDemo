@@ -95,15 +95,17 @@ export class CommonGridComponent implements OnInit {
   }
 
   onSelect(event) {
-    //debugger
+    
+
     if(this.name == 'OPERATION')
     this.subService.gridData.next({
-      dataFromGrid: event
+      dataFromGrid: event.selected[0] ,
+      focusRequired : true
     });
 
     if(this.name == 'ROUTING_CLASS')
     this.subService.RoutingClassData.next({
-      dataFromGrid: event
+      dataFromGrid: event.selected[0]    
     });
 
     if(this.name == 'ROUTING')

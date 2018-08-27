@@ -1,14 +1,14 @@
-
 import { CommonGridComponent } from '../../../common/common-grid/common-grid.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
 import { SubjectService } from '../../../services/subject.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { config } from '../../../models/config';
 import { PricingService } from '../../../services/pricing/pricing.service';
-
+import { ToastsManager, Toast } from 'ng2-toastr/ng2-toastr';
+// import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'routing-header',
@@ -20,26 +20,39 @@ export class RoutingHeaderComponent implements OnInit, OnDestroy {
   editMode: boolean;
   status :{value:number,name:string}[] ;
   bsModalRef: BsModalRef;
-
+  toastrService: any;
+  
   constructor(private modalService: BsModalService,
      private subService: SubjectService,
      public fb: FormBuilder,
-     private psService: PricingService
+     private psService: PricingService,public toastr: ToastsManager, vcr: ViewContainerRef
     ) { 
-      
-
+    this.toastr.setRootViewContainerRef(vcr);
     this.subService.RoutingClassData.subscribe(
       lovData => {
-        const objRouting =lovData.dataFromGrid.selected[0];       
-        if(objRouting.ROUTING_CLASS_ID > 0){
-        this.ROUTING_CLASS_ID.setValue(objRouting.ROUTING_CLASS_ID);
-        this.ROUTING_CLASS.setValue(objRouting.ROUTING_CLASS);
-        this.ROUTING_CLASS_NAME.setValue(objRouting.ROUTING_CLASS_NAME);
+        if(lovData.dataFromGrid === undefined)
+        {
+          this.toastr.warning('Invalid Routing Class.','', {dismiss: 'click'})
+          .then((toast: Toast) => {
+              setTimeout(() => {
+                  this.toastr.dismissToast(toast);
+              }, 3000);
+          });
+          this.ROUTING_CLASS_ID.setValue('');
+          this.ROUTING_CLASS.setValue('');
+          this.ROUTING_CLASS_NAME.setValue('');
         }
-      });
+        else{
+            const objRouting = lovData.dataFromGrid;       
+        //  if(objRouting.ROUTING_CLASS_ID > 0){
+            this.ROUTING_CLASS_ID.setValue(objRouting.ROUTING_CLASS_ID);
+            this.ROUTING_CLASS.setValue(objRouting.ROUTING_CLASS);
+            this.ROUTING_CLASS_NAME.setValue(objRouting.ROUTING_CLASS_NAME);
+        // }
+      }
+});
       
       this.subService.RoutingData.subscribe((data) => {     
-       // debugger   
         const obj = data.detailData.detailData;        
         this.ROUTING_CLASS_ID.setValue(obj.ROUTING_CLASS_ID);
         this.ROUTING_CLASS.setValue(obj.ROUTING_CLASS);
@@ -48,17 +61,38 @@ export class RoutingHeaderComponent implements OnInit, OnDestroy {
         this.ROUTING_STATUS.setValue(obj.ROUTING_STATUS);
         this.ROUTING_NO.setValue(obj.ROUTING_NO);
         this.ROUTING_NAME.setValue(obj.ROUTING_NAME);
-        this.ROUTING_ID.setValue(obj.ROUTING_ID);
-
-        
+        this.ROUTING_ID.setValue(obj.ROUTING_ID);        
       });           
    
+      this.subService.message.subscribe((data) => {    
+                  
+         this.toastr.warning(data.message,'', {dismiss: 'click'})
+         .then((toast: Toast) => {
+             setTimeout(() => {
+                 this.toastr.dismissToast(toast);
+             }, 3000);
+         });
+        //  showSuccess() {
+        //   this.toastr.success('You are awesome!', 'Success!');
+        // }      
+        // showError() {
+        //   this.toastr.error('This is not good!', 'Oops!');
+        // }      
+        // showWarning() {
+        //   this.toastr.warning('You are being warned.', 'Alert!');
+        // }      
+        // showInfo() {
+        //   this.toastr.info('Just some information for you.');
+        // }        
+        // showCustom() {
+        //   this.toastr.custom('<span style="color: red">Message in red.</span>', null, {enableHTML: true});
+        // }
+       });        
       
     }
 
 
   ngOnInit() {
-
 
             this.status = [
               {
@@ -110,6 +144,31 @@ export class RoutingHeaderComponent implements OnInit, OnDestroy {
     this.clearInputs();
   }
 
+
+  getRoutingClassDetail() {
+   
+    if(this.ROUTING_CLASS.value !=""){
+        let url:string;
+        url = 'http://'+ config.hostaddress + '/api/Values/GetRoutingClassLOV', 
+        this.psService.getData(url,'GET').subscribe(
+          (res: any) => {
+            
+            const result = res.find(res => res.ROUTING_CLASS === this.ROUTING_CLASS.value.toUpperCase());    
+            this.subService.RoutingClassData.next({     
+              dataFromGrid : result
+            });      
+          },
+          err => console.log(err)  
+        );
+      }
+      else
+      {
+        this.ROUTING_CLASS.setValue('');
+        this.ROUTING_CLASS_NAME.setValue('');
+        this.ROUTING_CLASS_ID.setValue('');      
+      }
+    }
+   
   getHeaderData() {    
      this.subService.headerData.next({
      ROUTING_CLASS_ID: this.ROUTING_CLASS_ID,
@@ -207,6 +266,19 @@ clearInputs()
   this.ROUTING_STATUS.setValue(1);
   this.ROUTING_VERS.setValue(1);
 } 
+
+
+getRoutingClass(){
+  
+  if (this.ROUTING_CLASS_NAME !="") {
+    this.psService.getDataByID('http://'+ config.hostaddress + `/api/Values/GetRoutingHeaderByID?id=${this.ROUTING_CLASS_NAME}`,'GET',this.ROUTING_CLASS_NAME).subscribe(          
+    (res) => this.subService.RoutingClassData.next({             
+      RoutingClassData: res 
+      }),
+      err => console.log(err)
+    );          
+  }
+}
 
   get ROUTING_CLASS_ID() { return this.masterForm.get('ROUTING_CLASS_ID') }
   get ROUTING_CLASS() { return this.masterForm.get('ROUTING_CLASS') }

@@ -21,7 +21,9 @@ import { CommonGridComponent } from './common/common-grid/common-grid.component'
 // 3rd party libs
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { ModalModule } from 'ngx-bootstrap'
+import { ModalModule } from 'ngx-bootstrap';
+//import { ToastrModule } from 'ngx-toastr';
+import {ToastModule} from 'ng2-toastr/ng2-toastr';
 
 // in app modules
 import { HttpClientModule } from '@angular/common/http';
@@ -39,7 +41,6 @@ import { UpperCaseDirective } from './common/Directives/upper-case.directive';
 import { PricingService } from './services/pricing/pricing.service';
 import { RestApiService } from './services/http.service';
 import { FocusDirective } from './common/Directives/focus.directive';
-
 
 @NgModule({
   declarations: [
@@ -65,8 +66,10 @@ import { FocusDirective } from './common/Directives/focus.directive';
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    NgxDatatableModule,    
-    ModalModule.forRoot()
+    NgxDatatableModule,
+    ModalModule.forRoot(),
+    ToastModule.forRoot(),
+   // ToastrModule.forRoot(), // ToastrModule added
   ],
   providers: [
     RestApiService,

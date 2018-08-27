@@ -20,6 +20,8 @@
                       type="text" 
                       name="LINE_NO" 
                       (focusout)= "setRowBehaviour(i)"
+                      Focus
+                      NumberOnly
                       />                      
                 </td>
       
@@ -28,11 +30,10 @@
                     <input 
                       [(ngModel)]="field.OPRN_NO"
                       [attr.disabled]="IsDisable?'':null"
-                     
+                     (focusout)='getOperationDetail(i)'
                       class="form-control form-control-sm" 
                       name="OPRN_NO" UpperCase
-                      required 
-                     
+                      required                      
                       Focus
                       /><!-- #inputBox -->
                       <button class="btn btn-primary btn-sm" type="button"                         
@@ -96,7 +97,7 @@
           <div class="row">    
               <span class="d-inline ml-auto">
                   <div class="button-row">
-                      <button 
+                      <button  
                           (click)="saveData()"
                           mat-raised-button color="basic"
                           matTooltip="Edit Form" >

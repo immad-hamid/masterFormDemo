@@ -21,6 +21,11 @@
   
   <mat-progress-bar mode="determinate" value="0"></mat-progress-bar>
   <br>
+<!-- <div class="alert alert-info" role="alert">
+{{ErrorMessage}}  
+</div> -->
+
+
   <form class="form-group container-fluid" [formGroup]="masterForm" #novalidate>
       
       <!--First row-->
@@ -30,8 +35,11 @@
               <div class="md-form">               
                   <label for="form9" class="clsMandatory">ROUTE</label>
                   <input type="hidden" class="form-control form-control-sm" formControlName="ROUTING_ID" > 
-                  <input type="text" class="form-control form-control-sm" formControlName="ROUTING_NO" UpperCase>                
-                   </div>
+                  <input type="text" class="form-control form-control-sm" 
+                  formControlName="ROUTING_NO" UpperCase required>                
+                  <div *ngIf="masterForm.controls['ROUTING_NO'].invalid "
+                  class="alert alert-danger">Route No. required.</div>   
+                </div>
           </div>
     
           <!--Second column-->
@@ -51,8 +59,8 @@
                   <label for="form11" class="clsMandatory">ROUTING CLASS</label>
                   <div class="input-group">
                         <input type="hidden" class="form-control form-control-sm" formControlName="ROUTING_CLASS_ID" > 
-                        <input type="text" class="form-control form-control-sm" formControlName="ROUTING_CLASS" UpperCase>                      
-                        
+                        <input type="text" class="form-control form-control-sm" formControlName="ROUTING_CLASS" 
+                        UpperCase required (focusout)= "getRoutingClassDetail()">                    
                         <button class="btn btn-primary btn-sm" type="button"                         
                         color="warn"                    
                         matTooltip="Search"
@@ -62,7 +70,7 @@
                         <span class="btn-icon-search"><mat-icon>search</mat-icon></span>
                                     
                         </button>
-                        <div *ngIf="ROUTING_CLASS.invalid && ROUTING_CLASS.touched"
+                        <div *ngIf="ROUTING_CLASS.invalid"
                         class="alert alert-danger">Routing Class required.</div>
                 </div>
               </div>
@@ -97,8 +105,8 @@
               <div class="md-form">               
                   <label for="form9" class="clsMandatory">DESCRIPTION</label>
                   <textarea
-                   type="text" class="form-control form-control-sm" formControlName="ROUTING_NAME"></textarea>                
-                  <div *ngIf="masterForm.controls['ROUTING_NAME'].invalid && masterForm.controls['ROUTING_NAME'].touched"
+                   type="text" class="form-control form-control-sm" formControlName="ROUTING_NAME" required></textarea>                
+                  <div *ngIf="masterForm.controls['ROUTING_NAME'].invalid"
                   class="alert alert-danger">Description required.</div>
 
                   
@@ -141,6 +149,6 @@
     </form>
 
 <routing-detail
-    [masterForm]="masterForm"
+    [masterForm]="masterForm" 
 ></routing-detail>
   
