@@ -47,34 +47,36 @@ export class RoutingDetailComponent implements OnDestroy {
       //operation LOV data
       this.subService.gridData.subscribe(                 
       lovData => {      
-       
+       debugger
         let index : number 
         index = this.currentRow;     
         let objOperation =lovData.dataFromGrid;//.selected[0];
         if(objOperation === undefined)
         {
-          this.toastr.warning('Invalid Routing Class.','', {dismiss: 'click'})
-          .then((toast: Toast) => {
-              setTimeout(() => {
-                  this.toastr.dismissToast(toast);
-              }, 3000);
-          });
           this.fieldArray[index].OPRN_ID = '';
           this.fieldArray[index].OPRN_NO = '';
           this.fieldArray[index].OPRN_NAME = '';
           this.fieldArray[index].OPRN_VERS = '';
+          this.toastr.warning('Invalid Operation Class.','', {dismiss: 'click'})
+          .then((toast: Toast) => {
+              setTimeout(() => {
+                  this.toastr.dismissToast(toast);
+              }, 3000);
+          });         
         }
-        else{        
+        else{     
+                   
               this.fieldArray[index].OPRN_ID = objOperation.OPRN_ID;
               this.fieldArray[index].OPRN_NO = objOperation.OPRN_NO;
               this.fieldArray[index].OPRN_NAME = objOperation.OPRN_NAME;
               this.fieldArray[index].OPRN_VERS = objOperation.OPRN_VERS;
               //this._el.nativeElement.focus();
               
-              if(lovData.focusRequired){
-                 this.vc.forEach(x => x.setFocus('OPRN_NO'));
-              }
-            } 
+              //  if(lovData.focusRequired){
+              //     this.vc.forEach(x => x.setFocus('OPRN_NO'));
+              //  }
+               this.validateDuplicate(index);
+            }           
       },
       error => console.log(error)
     );
@@ -156,7 +158,7 @@ export class RoutingDetailComponent implements OnDestroy {
   }
 
   getOperationDetail(index) {
-  
+  //debugger
     this.currentRow = index;
     if(this.fieldArray[index].OPRN_NO !=""){
         let url:string;
@@ -198,20 +200,25 @@ export class RoutingDetailComponent implements OnDestroy {
     lineItems.forEach(
       (lineItem, index) => {
         //debugger
-        const obj = {          
-          LINE_NO: lineItem.LINE_NO,
-          OPRN_ID: lineItem.OPRN_ID,
-          ROUTING_ID: lineItem.ROUTING_ID,
-          OPRN_NO : lineItem.OPRN_NO, 
-          OPRN_NAME : lineItem.OPRN_NAME,
-          OPRN_VERS : lineItem.OPRN_VERS,
-        //  ROUTING_OPRN_ID : lineItem.ROUTING_OPRN_ID,
-          disabled: true,
-          rowEditMode: false
-        }
-        this.fieldArray.push(obj);
-       // this.fieldArray[index].operation = this.operations[index];
-      }
+          
+            const obj = {          
+              LINE_NO: lineItem.LINE_NO,
+              OPRN_ID: lineItem.OPRN_ID,
+              ROUTING_ID: lineItem.ROUTING_ID,
+              OPRN_NO : lineItem.OPRN_NO, 
+              OPRN_NAME : lineItem.OPRN_NAME,
+              OPRN_VERS : lineItem.OPRN_VERS,
+            //  ROUTING_OPRN_ID : lineItem.ROUTING_OPRN_ID,
+              disabled: true,
+              rowEditMode: false
+            }
+            this.fieldArray.push(obj);
+          
+         
+            if(index == lineItems.length-1)
+              this.fieldArray[index].rowEditMode = true;
+          // this.fieldArray[index].operation = this.operations[index];
+          }
     );
   }
 
@@ -223,9 +230,10 @@ export class RoutingDetailComponent implements OnDestroy {
   }
 
   setRowBehaviour(index){
-   
+  // debugger
    if(this.validateDuplicate(index)){
-    if (this.fieldArray[index].OPRN_ID  != ''  && this.fieldArray[index].LINE_NO != '') 
+    if (this.fieldArray[index].OPRN_ID  != ''  && this.fieldArray[index].LINE_NO != '' &&
+    (this.fieldArray[index].length-1) == index ) 
       this.fieldArray[index].rowEditMode = true;
    }
   }
@@ -250,15 +258,15 @@ export class RoutingDetailComponent implements OnDestroy {
      }
   }
 
-  validateDuplicate(index) : boolean{   
+    validateDuplicate(index) : boolean{   
    // debugger
     if (this.fieldArray.length>1)
     {
       for (let i = 0; i < this.fieldArray.length-1; i++) {
-        if(this.fieldArray[i].LINE_NO === this.fieldArray[index].LINE_NO)
+        if(this.fieldArray[i].LINE_NO.toString()  === this.fieldArray[index].LINE_NO && i != index)
         {
-        
-          this.toastr.warning("LINE_NO already exist.",'', {dismiss: 'click'})
+          this.fieldArray[index].LINE_NO ='';
+          this.toastr.warning("LINE_NO already exist.",'', {dismiss: 'click'})          
           .then((toast: Toast) => {
               setTimeout(() => {
                   this.toastr.dismissToast(toast);
@@ -267,9 +275,12 @@ export class RoutingDetailComponent implements OnDestroy {
          // this.vc.forEach(x => x.setFocus('LINE_NO'));
           return false;
         }
-        else if(this.fieldArray[i].OPRN_NO === this.fieldArray[index].OPRN_NO)
+        else if(this.fieldArray[i].OPRN_NO === this.fieldArray[index].OPRN_NO && i != index)
         {
-        
+          this.fieldArray[index].OPRN_NO ='';
+          this.fieldArray[index].OPRN_VERS ='';
+          this.fieldArray[index].OPRN_NAME ='';
+          this.fieldArray[index].OPRN_ID ='';
           this.toastr.warning("Operation already exist.",'', {dismiss: 'click'})
           .then((toast: Toast) => {
               setTimeout(() => {
@@ -277,8 +288,7 @@ export class RoutingDetailComponent implements OnDestroy {
               }, 3000);
           });         
           return false;
-        }
-        
+        }        
       }     
     }
     return true;

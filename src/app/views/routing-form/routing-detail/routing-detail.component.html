@@ -36,7 +36,7 @@
                       required                      
                       Focus
                       /><!-- #inputBox -->
-                      <button class="btn btn-primary btn-sm" type="button"                         
+                      <button class="btn btn-primary btn-sm" type="button" name="btnOPRN_NO"                      
                         matTooltip="Search"
                         md-raised-button    
                         (click)="openModalLOVGrid(i)" 
@@ -57,7 +57,7 @@
       
                 <!-- if disabled -->
                 <td *ngIf="!field.rowEditMode">
-                    <button 
+                    <!-- <button 
                       (click)="editFieldValue(i)"
                       color="basic"
                       mat-mini-fab
@@ -65,7 +65,7 @@
                       
                       >
                         <mat-icon>edit</mat-icon>
-                    </button>
+                    </button> -->
       
                     <button 
                       (click)="deleteFieldValue(i)"

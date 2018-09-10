@@ -96,7 +96,6 @@ export class CommonGridComponent implements OnInit {
 
   onSelect(event) {
     
-
     if(this.name == 'OPERATION')
     this.subService.gridData.next({
       dataFromGrid: event.selected[0] ,

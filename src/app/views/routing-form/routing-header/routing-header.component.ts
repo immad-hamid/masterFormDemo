@@ -28,6 +28,7 @@ export class RoutingHeaderComponent implements OnInit, OnDestroy {
      private psService: PricingService,public toastr: ToastsManager, vcr: ViewContainerRef
     ) { 
     this.toastr.setRootViewContainerRef(vcr);
+
     this.subService.RoutingClassData.subscribe(
       lovData => {
         if(lovData.dataFromGrid === undefined)
@@ -268,7 +269,7 @@ clearInputs()
 } 
 
 
-getRoutingClass(){
+getRoutingClass(){  
   
   if (this.ROUTING_CLASS_NAME !="") {
     this.psService.getDataByID('http://'+ config.hostaddress + `/api/Values/GetRoutingHeaderByID?id=${this.ROUTING_CLASS_NAME}`,'GET',this.ROUTING_CLASS_NAME).subscribe(          
@@ -289,7 +290,24 @@ getRoutingClass(){
   get ROUTING_STATUS() { return this.masterForm.get('ROUTING_STATUS') }
   get ROUTING_VERS() { return this.masterForm.get('ROUTING_VERS') }
 
-
-  
+  ValidateDuplicate()
+  {
+   // debugger
+      if (this.ROUTING_NO.value !="") {
+      let url:string;
+      url = 'http://'+ config.hostaddress + `/api/Values/KeyCheck?no=${this.ROUTING_NO.value}`, 
+      this.psService.getData(url,'GET').subscribe(
+        (res: any) => {
+          if(res){
+            this.subService.message.next(
+              { message : "Already exist!" }
+            );
+            this.ROUTING_NO.setValue('');
+          }
+        },
+        err => console.log(err)  
+      );
+     }
+   } 
 
 }

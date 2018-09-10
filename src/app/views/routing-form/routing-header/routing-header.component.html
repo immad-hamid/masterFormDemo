@@ -36,7 +36,7 @@
                   <label for="form9" class="clsMandatory">ROUTE</label>
                   <input type="hidden" class="form-control form-control-sm" formControlName="ROUTING_ID" > 
                   <input type="text" class="form-control form-control-sm" 
-                  formControlName="ROUTING_NO" UpperCase required>                
+                  formControlName="ROUTING_NO" UpperCase required (blur)="ValidateDuplicate()">                
                   <div *ngIf="masterForm.controls['ROUTING_NO'].invalid "
                   class="alert alert-danger">Route No. required.</div>   
                 </div>
