@@ -23,7 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ModalModule } from 'ngx-bootstrap';
 //import { ToastrModule } from 'ngx-toastr';
-import {ToastModule} from 'ng2-toastr/ng2-toastr';
+import {ToastModule} from 'ng2-toastr';
 
 // in app modules
 import { HttpClientModule } from '@angular/common/http';
@@ -41,6 +41,9 @@ import { UpperCaseDirective } from './common/Directives/upper-case.directive';
 import { PricingService } from './services/pricing/pricing.service';
 import { RestApiService } from './services/http.service';
 import { FocusDirective } from './common/Directives/focus.directive';
+import { SizingprogramMasterComponent } from './views/sizingprogram-form/sizingprogram-master.component';
+import { SizingprogramHeaderComponent } from './views/sizingprogram-form/sizingprogram-header/sizingprogram-header.component';
+import { SizingprogramDetailComponent } from './views/sizingprogram-form/sizingprogram-detail/sizingprogram-detail.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +59,10 @@ import { FocusDirective } from './common/Directives/focus.directive';
     LovGridComponent,
     NumberOnlyDirective,
     UpperCaseDirective,
-    FocusDirective
+    FocusDirective,
+    SizingprogramMasterComponent,
+    SizingprogramHeaderComponent,
+    SizingprogramDetailComponent
   ],
   imports: [
     BrowserModule,

@@ -1,11 +1,11 @@
-import { FocusDirective } from './../../../common/Directives/focus.directive';
-import { config } from './../../../models/config';
+import { FocusDirective } from '../../../common/Directives/focus.directive';
+import { config } from '../../../models/config';
 import { Component, OnDestroy, Input, ElementRef, ViewChild, EventEmitter, ViewChildren, QueryList, ViewContainerRef } from '@angular/core';
 import { SubjectService } from '../../../services/subject.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CommonGridComponent } from '../../../common/common-grid/common-grid.component';
 import { PricingService } from '../../../services/pricing/pricing.service';
-import { ToastsManager, Toast } from '../../../../../node_modules/ng2-toastr';
+import { ToastsManager, Toast } from 'ng2-toastr';
 
 @Component({
   selector: 'routing-detail',

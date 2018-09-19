@@ -21,6 +21,7 @@ export class CommonGridComponent implements OnInit {
   HttpType: string;
   name : string;
 
+
   constructor(
     private subService: SubjectService,
     public bsModalRef: BsModalRef,
@@ -30,8 +31,8 @@ export class CommonGridComponent implements OnInit {
     // this.list.push();
     // this.columns.push();
 
-    console.log(this.list);
-    console.log(this.columns);
+    console.log("list:" + this.list);
+    console.log("columns:" + this.columns);
     console.log(this.url)
 
     const obj = {
@@ -116,13 +117,22 @@ export class CommonGridComponent implements OnInit {
   }
 
   updateFilter(event) {
-    console.log(event);
+    //console.log(event);
     const val = event.target.value;
 
     // filter our data
-    console.log(this.temp);
     const temp = this.temp.filter((d) => {
-      return d.OPRN_NAME.toLowerCase().indexOf(val) !== -1 || !val;
+      
+      var isTrue = false;
+
+      for( var i = 0; i < this.columns.length; i++){
+        var name = this.columns[i].name;
+        if(d[name] != null)
+          isTrue = d[name].toString().toLowerCase().indexOf(val.toLowerCase()) !== -1 || !val;
+        if(isTrue)
+          break;
+      }  
+      return isTrue;   
     });
 
     // update the rows

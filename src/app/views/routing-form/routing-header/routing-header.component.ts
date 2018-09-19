@@ -7,7 +7,7 @@ import { SubjectService } from '../../../services/subject.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { config } from '../../../models/config';
 import { PricingService } from '../../../services/pricing/pricing.service';
-import { ToastsManager, Toast } from 'ng2-toastr/ng2-toastr';
+import { ToastsManager, Toast } from 'ng2-toastr';
 // import { ToastrService } from 'ngx-toastr';
 
 @Component({

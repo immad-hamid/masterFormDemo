@@ -1,0 +1,171 @@
+
+
+
+
+<mat-tab-group>
+        <mat-tab label="PO Detail">
+        
+                <table class="display table table-bordered table-striped table-hover" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>PO No</th>
+                                <th>Weaver</th>
+                                <th>Quality</th>
+                                <th>PO Qty(Kg)</th>
+                                <th>No. of Pcs</th>          
+                                <th>Already Selected Wt.(Kg)</th>
+                                <th>Balance Wt.(Kg)</th>
+                                <th>Selected Wt.(Kg)</th>
+                                <th>Detail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                      
+                            <tr *ngFor="let field of fieldArray; let i = index">
+                                <td>
+                                        <!-- <input type="hidden" class="form-control form-control-sm" name="ROUITNG_OPRN_ID" [(ngModel)]="field.ROUTING_OPRN_ID"/>  -->
+                                       {{field.PO_NO}}
+                                </td>
+                      
+                                <td>  
+                                    {{field.WEAVER}}
+                                </td>
+                      
+                                <td> 
+                                    {{field.QUALITY}} 
+                                </td>
+                      
+                                <td>  
+                                      {{field.PO_QTY}}
+                                </td>
+                      
+                                <td>  
+                                  {{field.NO_OF_PCS}}
+                                </td>
+                      
+                                <td>  
+                                  {{field.ALREADY_SELECTED}}
+                                </td>
+                      
+                                <td>  
+                                    {{field.BALANCE_WT}}
+                                </td>
+                      
+                                <td>  
+                                  {{field.SELECTED_WT}}   
+                                </td>
+                      
+                      
+                                <td *ngIf="field.rowEditMode">
+                                    <button 
+                                      (click)="addAfterEdit(i)"
+                                      color="primary"
+                                      mat-mini-fab
+                                      matTooltip="Add"
+                                      [disabled]="IsDisable?'':null"
+                                      >
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>    
+                            
+                        </tbody>
+                      </table>
+        
+        </mat-tab>
+        <mat-tab label="Yarn Detail"> 
+            
+                <table class="display table table-bordered table-striped table-hover" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>PO No</th>
+                                <th>Weaver</th>
+                                <th>Quality</th>
+                                <th>PO Qty(Kg)</th>
+                                <th>No. of Pcs</th>          
+                                <th>Already Selected Wt.(Kg)</th>
+                                <th>Balance Wt.(Kg)</th>
+                                <th>Selected Wt.(Kg)</th>
+                                <th>Detail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                      
+                            <tr *ngFor="let field of fieldArray; let i = index">
+                                <td>
+                                        <!-- <input type="hidden" class="form-control form-control-sm" name="ROUITNG_OPRN_ID" [(ngModel)]="field.ROUTING_OPRN_ID"/>  -->
+                                       {{field.PO_NO}}
+                                </td>
+                      
+                                <td>  
+                                    {{field.WEAVER}}
+                                </td>
+                      
+                                <td> 
+                                    {{field.QUALITY}} 
+                                </td>
+                      
+                                <td>  
+                                      {{field.PO_QTY}}
+                                </td>
+                      
+                                <td>  
+                                  {{field.NO_OF_PCS}}
+                                </td>
+                      
+                                <td>  
+                                  {{field.ALREADY_SELECTED}}
+                                </td>
+                      
+                                <td>  
+                                    {{field.BALANCE_WT}}
+                                </td>
+                      
+                                <td>  
+                                  {{field.SELECTED_WT}}   
+                                </td>
+                      
+                      
+                                <td *ngIf="field.rowEditMode">
+                                    <button 
+                                      (click)="addAfterEdit(i)"
+                                      color="primary"
+                                      mat-mini-fab
+                                      matTooltip="Add"
+                                      [disabled]="IsDisable?'':null"
+                                      >
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>    
+                            
+                        </tbody>
+                      </table>
+
+        </mat-tab>
+</mat-tab-group>
+
+
+
+
+
+
+
+
+
+<div class="col-sm-12 mt-5">
+    <div class="row">    
+        <span class="d-inline ml-auto">
+            <div class="button-row">
+                <button  
+                    (click)="saveData()"
+                    mat-raised-button color="basic"
+                    matTooltip="Edit Form" >
+                    Save
+                </button>
+            </div>
+        </span>
+    </div>
+</div>
+
+
