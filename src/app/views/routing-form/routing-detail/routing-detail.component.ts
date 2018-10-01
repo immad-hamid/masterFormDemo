@@ -34,8 +34,8 @@ export class RoutingDetailComponent implements OnDestroy {
     OPRN_VERS : '',
     disabled: true,
     rowEditMode: true}];
-    bsModalRef: BsModalRef;
-  
+
+    bsModalRef: BsModalRef;  
     message: any;
    
   constructor(private modalService: BsModalService,public toastr: ToastsManager, vcr: ViewContainerRef,
@@ -313,17 +313,16 @@ export class RoutingDetailComponent implements OnDestroy {
 saveData() {
 
 console.log(this.masterForm);
-if(this.fieldArray[0].OPRN_ID=="" && this.fieldArray[0].LINE_NO=="")
-{
-  //this.ErrorMessage = "Please enter atleast one operation.";
-  this.subService.message.next(
-    { message : "Please enter atleast one operation."  }
-  );
-  this.IsValid=false;
-}
-else {
-  this.IsValid=true;
-}
+      if(this.fieldArray[0].OPRN_ID=="" && this.fieldArray[0].LINE_NO=="")
+        {  
+          this.subService.message.next(
+            { message : "Please enter atleast one operation."  }
+          );
+          this.IsValid=false;
+        }
+        else {
+          this.IsValid=true;
+      }
 
       if (this.masterForm.valid && this.IsValid)
       {

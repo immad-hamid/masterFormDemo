@@ -5,16 +5,6 @@
             <strong style="font-weight: 600">Sizing Program</strong>
         </h3>
     </span>
-
-    <span class="d-inline ml-auto">
-        <button               
-          color="primary"
-          mat-fab
-          (click)="openModalSearchGrid()"
-          matTooltip="Search">
-            <mat-icon>search</mat-icon>
-        </button>
-    </span>
 </div>
 <!-- </div> -->
 
@@ -33,9 +23,8 @@
       <div class="col-md-3" form-group>
           <div class="md-form">               
               <label for="form9" class="clsMandatory">SIZING PROGRAM NO</label>
-              <input type="hidden" class="form-control form-control-sm" formControlName="PROGRAM_ID" > 
               <input type="text" class="form-control form-control-sm" 
-              formControlName="PROGRAM_NO" disabled>                              
+              formControlName="PROGRAM_ID" disabled>                              
             </div>
       </div>
 
@@ -44,7 +33,7 @@
           <div class="md-form">
               <label for="form10" class="clsMandatory">STATUS</label>
               <select class="form-control form-control-sm" formControlName="PROGRAM_STATUS"> 
-                  <!-- <option *ngFor="let s of status" [value]="s.value">{{ s.name }}</option> -->
+                  <option *ngFor="let s of status" [value]="s.value">{{ s.name }}</option> 
               </select>               
           </div>
       </div>
@@ -52,7 +41,7 @@
       <div class="col-md-3" form-group>
           <div class="md-form">
             <label for="form9" class="clsMandatory">DATE</label>
-            <input type="text" class="form-control form-control-sm" 
+            <input type="text" class="form-control form-control-sm"  
             formControlName="PROGRAM_DATE" disabled>              
           </div>
       </div>
@@ -73,8 +62,8 @@
       <div class="col-md-3" form-group>
           <div class="md-form">               
               <label for="form9">WEAVER</label>
-              <select class="form-control form-control-sm" formControlName="WEAVER"> 
-                <!-- <option *ngFor="let s of status" [value]="s.value">{{ s.name }}</option> -->
+              <select class="form-control form-control-sm" formControlName="WEAVER_CODE"> 
+                <option *ngFor="let w of WeaverArray" [value]="w.WEAVER_CODE">{{ w.WEAVER_NAME }}</option>
             </select>                  
           </div>
       </div>           
@@ -86,18 +75,22 @@
       <div class="col-md-3" form-group>
         <div class="md-form">               
             <label for="form9">PO NO.</label>
-            <select class="form-control form-control-sm" formControlName="PO_NO"> 
-              <!-- <option *ngFor="let s of status" [value]="s.value">{{ s.name }}</option> -->
-          </select>                  
+            <input type="text" class="form-control form-control-sm"  NumberOnly
+            formControlName="PO_NO" >
+            <!-- <select class="form-control form-control-sm" formControlName="PO_NO"> 
+              <option *ngFor="let s of POArray" [value]="s.RECORD_ID">{{ s.PO_NO }}</option>
+          </select>                   -->
         </div>
       </div>        
   
     <div class="col-md-3" form-group>
       <div class="md-form">               
           <label for="form9">QUALITY</label>
-          <select class="form-control form-control-sm" formControlName="QUALITY"> 
-            <!-- <option *ngFor="let s of status" [value]="s.value">{{ s.name }}</option> -->
-        </select>                  
+          <input type="text" class="form-control form-control-sm"  
+          formControlName="QUALITY_CODE" >
+          <!-- <select class="form-control form-control-sm" formControlName="QUALITY"> 
+            <option *ngFor="let s of QualityArray" [value]="s.QUALITY_SNO">{{ s.QUALITY_CODE }}</option>
+        </select>                   -->
       </div>
     </div>      
 
@@ -105,51 +98,15 @@
       <div class="md-form">    
                   
           <button style = "margin-top: 24px;"
-            (click)="addRecord()"
+            (click)="GetPODetail()"
             mat-raised-button color="basic"
             matTooltip="Search">
-              Search 
+              Go 
           </button>          
       </div>
-    </div>      
-    
-   
-  </div>
-
-
-  <br>
-  <div class="form-row">
-    <div class="col-md-6">
-        <span class="d-inline">
-            <div class="button-row">
-              <button 
-                (click)="addRecord()"
-                mat-raised-button color="basic"
-                matTooltip="Add">
-                  Add 
-              </button>
-            </div>
-        </span>
-    </div>
-    <div class="col-md-6" align="right">
-        <span class="d-inline ml-auto">
-            <div class="button-row">
-              <button 
-                (click)="enableInputs()"
-                mat-raised-button color="basic"
-                matTooltip="Edit Form">
-                  Edit
-              </button>
-              <a 
-                (click)="disableInputs()"
-                mat-raised-button color="basic"
-                matTooltip="Cancel Form">
-                  Cancel
-              </a>
-            </div>
-        </span>
-    </div>
+    </div>         
   </div>   
+ 
 </form>
 
 <sizingprogram-detail></sizingprogram-detail>

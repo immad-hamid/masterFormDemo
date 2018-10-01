@@ -1,0 +1,38 @@
+<div class="navbar-header">
+  <button type="submit" id="btnAdd" class="commonbtn btn btn-primary btn-sm" disabled="disabled" 
+  (click)="addRecord()"
+  title="Add" 
+  >
+    <span class="btn-icon-add"><mat-icon>add</mat-icon></span> 
+      <!-- <span class="fa fa-plus fa-lg"></span> -->
+  </button>
+  <button type="submit" id="btnEdit" class="commonbtn btn btn-primary btn-sm" disabled="disabled"
+   title="Edit"
+   (click)="enableInputs()"
+   >
+    <span class="btn-icon-edit"><mat-icon>edit</mat-icon></span>   
+    <!-- <span class="fa fa-edit  fa-lg"></span> -->
+  </button>
+  <button type="submit" id="btnSearching" class="commonbtn btn btn-primary btn-sm" disabled="disabled" 
+  title="Search" 
+  (click)="openModalSearchGrid()" 
+  >
+    <span class="btn-icon-search"><mat-icon>search</mat-icon></span>  
+    <!-- <span class="fa fa-search fa-lg"></span> -->
+  </button>
+  <button type="submit" id="btnSave" class="commonbtn btn btn-primary btn-sm" disabled="disabled" 
+  title="Save"
+  (click)="saveData()"
+  >
+    <span class="btn-icon-save"><mat-icon>save</mat-icon></span>  
+    <!-- <span class="fa fa-save fa-lg"></span> -->
+  </button>
+  <button type="submit" id="btnCancel" class="commonbtn btn btn-primary btn-sm" disabled="disabled" 
+  title="Cancel"
+  (click)="disableInputs()"
+  >
+    <span class="btn-icon-cancel"><mat-icon>cancel</mat-icon></span> 
+    <!-- <span class="fa fa-times fa-lg"></span> -->
+  </button>
+
+</div>

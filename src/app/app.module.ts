@@ -44,6 +44,7 @@ import { FocusDirective } from './common/Directives/focus.directive';
 import { SizingprogramMasterComponent } from './views/sizingprogram-form/sizingprogram-master.component';
 import { SizingprogramHeaderComponent } from './views/sizingprogram-form/sizingprogram-header/sizingprogram-header.component';
 import { SizingprogramDetailComponent } from './views/sizingprogram-form/sizingprogram-detail/sizingprogram-detail.component';
+import { ToolbarComponent } from './common/toolbar/toolbar.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { SizingprogramDetailComponent } from './views/sizingprogram-form/sizingp
     FocusDirective,
     SizingprogramMasterComponent,
     SizingprogramHeaderComponent,
-    SizingprogramDetailComponent
+    SizingprogramDetailComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,
