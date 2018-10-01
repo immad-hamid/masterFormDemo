@@ -1,9 +1,9 @@
 import { config } from './../../../models/config';
 import { PricingService } from './../../../services/pricing/pricing.service';
 import { SubjectService } from './../../../services/subject.service';
-import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager, Toast } from 'ng2-toastr';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, Input } from '@angular/core';
 import { toTypeScript } from '../../../../../node_modules/@angular/compiler';
 
 @Component({
@@ -12,16 +12,19 @@ import { toTypeScript } from '../../../../../node_modules/@angular/compiler';
   styleUrls: ['./sizingprogram-detail.component.scss']
 })
 export class SizingprogramDetailComponent implements OnInit {
-  
+  @Input() masterForm: any; 
   // loader: boolean ;
-   selectedTab : number
-   loomtypes: any;
+  selectedTab : number
+  loomtypes: any;
+  IsValid : boolean;
+
   private loom_types : {LOOM_TYPE_CODE: number, LOOM_TYPE : string}[] ;
 
   private fieldArray: Array<any> = [{PO_NO: '',
     RECORD_ID: '',
     WEAVER_CODE: '',
     WEAVER_NAME : '',
+    QUALITY_SNO : '',
     QUALITY_CODE : '',
     PO_QTY : '',
     NO_OF_PCS : '',
@@ -71,6 +74,7 @@ export class SizingprogramDetailComponent implements OnInit {
                 RECORD_ID: lineItem.RECORD_ID,
                 WEAVER_CODE: lineItem.WEAVER_CODE,
                 WEAVER_NAME : lineItem.WEAVER_NAME, 
+                QUALITY_SNO : lineItem.QUALITY_SNO,
                 QUALITY_CODE : lineItem.QUALITY_CODE,
                 PO_QTY : lineItem.PO_QTY,
                 NO_OF_PCS: lineItem.NO_OF_PCS,
@@ -102,11 +106,11 @@ export class SizingprogramDetailComponent implements OnInit {
       (lineItem, index) => {
       //  debugger          
             const obj = {          
-             DETAIL_RECORD_ID : lineItem.DETAIL_RECORD_ID,
+              SIZING_PROGRAM_DETAIL_ID : lineItem.SIZING_PROGRAM_DETAIL_ID,
               BEAM_TYPE: lineItem.BEAM_TYPE,
               RECORD_ID: lineItem.RECORD_ID,
-              LOOM_TYPE_CODE: PO_obj.LOOM_TYPE_CODE,
-              NO_OF_PANEL : PO_obj.NO_OF_PANEL,
+             // LOOM_TYPE_CODE: PO_obj.LOOM_TYPE_CODE,
+             // NO_OF_PANEL : PO_obj.NO_OF_PANEL,
               BEAM_WIDTH : lineItem.BEAM_WIDTH,
               NO_OF_ENDS : lineItem.BEAM_TYPE == "PILE" ? lineItem.TOTAL_PILE_ENDS :lineItem.TOTAL_GROUND_ENDS ,
               NO_OF_BEAMS : lineItem.NO_OF_BEAMS,
@@ -172,7 +176,80 @@ export class SizingprogramDetailComponent implements OnInit {
     //#endregion
 
 
-    getAllDataToSave(){  
-      return "";
-    }  
+    save(){  
+            
+      if(this.masterForm.value.PROGRAM_STATUS == "0" )
+      {
+          this.subService.message.next(
+            { message : "Please select Program Status."  }
+          );
+          this.IsValid=false;
+      }
+        
+        if(this.fieldArray[0].PROGRAM_STATUS=="" && this.fieldArray[0].LINE_NO=="")
+        {  
+            this.subService.message.next(
+              { message : "Please enter atleast one operation."  }
+            );
+            this.IsValid=false;
+          }
+          else {
+            this.IsValid=true;
+        }
+
+        if (this.masterForm.valid && this.IsValid)
+        {
+            const obj = {
+              ROUTING_ID: this.masterForm.value.ROUTING_ID === undefined ? "" : this.masterForm.value.ROUTING_ID,
+              ROUTING_STATUS: this.masterForm.value.ROUTING_STATUS === undefined ? "" :this.masterForm.value.ROUTING_STATUS,
+              LAST_UPDATED_BY: '',
+              LAST_UPDATE_DATE: '',
+              ORGANIZATION_ID: '1948',      
+              WSZ_SIZING_PROGRAM_DETAIL: []
+            }
+
+            this.fieldArray.forEach(el => {
+              if(el.OPRN_ID != "" && el.LINE_NO !=""){
+                  obj.WSZ_SIZING_PROGRAM_DETAIL.push(
+                    {
+                      ROUTING_ID : this.masterForm.value.ROUTING_ID === undefined ? "" : this.masterForm.value.ROUTING_ID ,
+                      OPRN_ID: el.OPRN_ID,
+                      LINE_NO: el.LINE_NO,
+                    // ROUTING_OPRN_ID : el.ROUTING_OPRN_ID,
+                      CREATED_BY: '2',
+                      //CREATED_DATE: new Date(),
+                      ORGANIZATION_ID: '1947'
+                    }
+                  )
+                }
+            });
+
+            // console.log(obj);
+          
+            const req = new XMLHttpRequest();
+            req.open('POST','http://'+ config.hostaddress + '/api/Values/SaveRoutingData', true);
+            req.setRequestHeader('Content-type', 'application/json');
+
+            req.onreadystatechange = () => {//Call a function when the state changes.
+              if (req.readyState == 4 && req.status == 200) {             
+                //alert(req.responseText);
+                this.setMessage(req.responseText);
+              }
+            } 
+            req.send(JSON.stringify(obj));                
+        }
+        else{
+
+        }
+    }
+    
+    setMessage(status)
+    {
+      if(status.replace(/"/g,"") === '1' || status.replace(/"/g,"") == '2')
+      {
+        this.toastr.success("Record saved successfully.",'', {dismiss: 'click'})
+            .then((toast: Toast) => { setTimeout(() => { this.toastr.dismissToast(toast); }, 3000);
+          });         
+      }
+    }
 }

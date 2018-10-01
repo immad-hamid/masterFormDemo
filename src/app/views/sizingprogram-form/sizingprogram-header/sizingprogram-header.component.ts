@@ -62,10 +62,10 @@ export class SizingprogramHeaderComponent implements OnInit {
     let curr_date = ('0' + date.getDate()).slice(-2) + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + date.getFullYear() ;
     
     this.masterForm = this.fb.group({
-      PROGRAM_ID: [],      
-      PROGRAM_STATUS: [1, Validators.required],
-      PROGRAM_DATE: [{value:curr_date, disabled: true}],
-      WEAVER_CODE : [null,Validators.required],
+      SIZING_PROGRAM_HEADER_ID: [],      
+      STATUS: [1, Validators.required],
+      CREATED_DATE: [{value:curr_date, disabled: true}],
+      WEAVER_CODE : [],
       PO_NO : [],
       QUALITY_CODE: [],
     });
@@ -147,12 +147,12 @@ export class SizingprogramHeaderComponent implements OnInit {
           ); 
       }
       
-      get PROGRAM_ID() { return this.masterForm.get('PROGRAM_ID') }
-      get PROGRAM_DATE() { return this.masterForm.get('PROGRAM_DATE') }
+      get SIZING_PROGRAM_HEADER_ID() { return this.masterForm.get('SIZING_PROGRAM_HEADER_ID') }
+      get CREATED_DATE() { return this.masterForm.get('CREATED_DATE') }
       get WEAVER_CODE() { return this.masterForm.get('WEAVER_CODE') }
       get QUALITY_CODE() { return this.masterForm.get('QUALITY_CODE') }
       get PO_NO() { return this.masterForm.get('PO_NO') }
-      get PROGRAM_STATUS() { return this.masterForm.get('PROGRAM_STATUS') }
+      get STATUS() { return this.masterForm.get('STATUS') }
      
 }
 

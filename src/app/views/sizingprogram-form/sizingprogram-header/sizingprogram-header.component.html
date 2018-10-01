@@ -24,7 +24,7 @@
           <div class="md-form">               
               <label for="form9" class="clsMandatory">SIZING PROGRAM NO</label>
               <input type="text" class="form-control form-control-sm" 
-              formControlName="PROGRAM_ID" disabled>                              
+              formControlName="SIZING_PROGRAM_HEADER_ID" disabled>                              
             </div>
       </div>
 
@@ -32,7 +32,7 @@
       <div class="col-md-3" form-group>
           <div class="md-form">
               <label for="form10" class="clsMandatory">STATUS</label>
-              <select class="form-control form-control-sm" formControlName="PROGRAM_STATUS"> 
+              <select class="form-control form-control-sm" formControlName="STATUS"> 
                   <option *ngFor="let s of status" [value]="s.value">{{ s.name }}</option> 
               </select>               
           </div>
@@ -42,7 +42,7 @@
           <div class="md-form">
             <label for="form9" class="clsMandatory">DATE</label>
             <input type="text" class="form-control form-control-sm"  
-            formControlName="PROGRAM_DATE" disabled>              
+            formControlName="CREATED_DATE" disabled>              
           </div>
       </div>
 
@@ -109,6 +109,5 @@
  
 </form>
 
-<sizingprogram-detail></sizingprogram-detail>
-<!-- [masterForm]="masterForm"  
-></sizingprogram-detail> -->
+<!-- <sizingprogram-detail></sizingprogram-detail> -->
+<sizingprogram-detail [masterForm]="masterForm" ></sizingprogram-detail>

@@ -10,7 +10,9 @@
                             <tr>
                                 <th>PO No</th>
                                 <th>Weaver</th>
-                                <th>Quality</th>
+                                <th>Quality</th>                               
+                                <th>Loom Type</th>
+                                <th>No of Panels</th>
                                 <th>PO Qty(Kg)</th>
                                 <th>No. of Pcs</th>          
                                 <th>Already Selected Wt.(Kg)</th>
@@ -23,19 +25,33 @@
                       
                             <tr *ngFor="let field of fieldArray; let i = index">
                                 <td>
-    <input type="hidden" class="form-control form-control-sm" name="RECORD_ID" [(ngModel)]="field.RECORD_ID"/>
+                                  <input type="hidden" class="form-control form-control-sm" name="SIZING_PROGRAM_DETAIL_ID" [(ngModel)]="field.SIZING_PROGRAM_DETAIL_ID"/>
                                   {{field.PO_NO}}
                                 </td>
                       
                                 <td>   
-                                    <input type="hidden" class="form-control form-control-sm" name="WEAVER_CODE" [(ngModel)]="field.WEAVER_CODE"/>      
+                                  <input type="hidden" class="form-control form-control-sm" name="WEAVER_CODE" [(ngModel)]="field.WEAVER_CODE"/>      
                                   {{field.WEAVER_NAME}}
                                 </td>
                       
                                 <td> 
+                                  <input type="hidden" class="form-control form-control-sm" name="QUALITY_SNO" [(ngModel)]="field.QUALITY_SNO"/>      
                                   {{field.QUALITY_CODE}} 
                                 </td>
-                      
+                                <td>  
+                                    <select class="form-control form-control-sm" name="LOOM_TYPE_CODE" [(ngModel)]="field.LOOM_TYPE_CODE" > 
+                                        <option *ngFor="let s of loom_types" [ngValue]="s.LOOM_TYPE_CODE" >{{ s.LOOM_TYPE }}</option> 
+                                    </select>        
+                                </td>
+                          
+                                <td> 
+                                    <input                      
+                                    [(ngModel)]="field.NO_OF_PANEL" 
+                                    class="form-control form-control-sm" 
+                                    type="text" 
+                                    name="NO_OF_PANEL" align=right                                       
+                                    />        
+                                </td>
                                 <td>  
                                   {{field.PO_QTY}}
                                 </td>
@@ -55,10 +71,10 @@
                                 <td>  
                                   <!-- {{field.SELECTED_WT}}    -->
                                         <input                      
-                                        [(ngModel)]="field.SELECTED_WT" 
+                                        [(ngModel)]="field.REQUIRED_WEIGHT" 
                                         class="form-control form-control-sm" 
                                         type="text" 
-                                        name="SELECTED_WT" align=right                                       
+                                        name="REQUIRED_WEIGHT" align=right                                       
                                         />                
                                 </td>
                       
@@ -85,8 +101,8 @@
                         <thead>
                             <tr>
                                 <th>Beam Type</th>
-                                <th>Loom Type</th>
-                                <th>No. of Panels</th>
+                                <!-- <th>Loom Type</th>
+                                <th>No. of Panels</th> -->
                                 <th>Beam Width</th>
                                 <th>No. of Ends Per Beam</th>          
                                 <th>No. of Beams Required</th>
@@ -101,7 +117,7 @@
                                     {{field.BEAM_TYPE}}
                                 </td>                      
                                 
-                                <td>  
+                                <!-- <td>  
                                     <select class="form-control form-control-sm" name="LOOM_TYPE_CODE" [(ngModel)]="field.LOOM_TYPE_CODE" > 
                                         <option *ngFor="let s of loom_types" [ngValue]="s.LOOM_TYPE_CODE" >{{ s.LOOM_TYPE }}</option> 
                                     </select>        
@@ -114,7 +130,7 @@
                                         type="text" 
                                         name="NO_OF_PANEL" align=right                                       
                                         />        
-                                </td>
+                                </td> -->
                       
                                 <td>  
                                     {{field.BEAM_WIDTH}}
@@ -158,6 +174,21 @@
                      
         </mat-tab>
 </mat-tab-group>
+
+<div class="col-sm-12 mt-5">
+        <div class="row">    
+            <span class="d-inline ml-auto">
+                <div class="button-row">
+                    <button  
+                        (click)="save()"
+                        mat-raised-button color="basic"
+                        matTooltip="Save" >
+                        Save
+                    </button>
+                </div>
+            </span>
+        </div>
+    </div>
 
 
 
