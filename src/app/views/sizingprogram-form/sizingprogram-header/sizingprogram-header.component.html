@@ -5,6 +5,15 @@
             <strong style="font-weight: 600">Sizing Program</strong>
         </h3>
     </span>
+    <span class="d-inline ml-auto">
+        <button               
+          color="primary"
+          mat-fab
+          (click)="openModalSearchGrid()"
+          matTooltip="Search">
+            <mat-icon>search</mat-icon>
+        </button>
+    </span>
 </div>
 <!-- </div> -->
 
@@ -62,8 +71,8 @@
       <div class="col-md-3" form-group>
           <div class="md-form">               
               <label for="form9">WEAVER</label>
-              <select class="form-control form-control-sm" formControlName="WEAVER_CODE"> 
-                <option *ngFor="let w of WeaverArray" [value]="w.WEAVER_CODE">{{ w.WEAVER_NAME }}</option>
+              <select class="form-control form-control-sm" formControlName="WEAVER_CODE" > 
+                <option *ngFor="let w of WeaverArray" [value]="w.WEAVER_CODE"  >{{ w.WEAVER_NAME }}</option> 
             </select>                  
           </div>
       </div>           
@@ -100,14 +109,51 @@
           <button style = "margin-top: 24px;"
             (click)="GetPODetail()"
             mat-raised-button color="basic"
-            matTooltip="Search">
+            matTooltip="Search" [disabled]="!editMode?'':null">
               Go 
           </button>          
       </div>
     </div>         
   </div>   
- 
+  <br>
+      <div class="form-row">
+        <div class="col-md-6">
+            <span class="d-inline">
+                <div class="button-row">
+                  <button 
+                    (click)="addRecord()"
+                    mat-raised-button color="basic"
+                    matTooltip="Add">
+                      Add 
+                  </button>
+                </div>
+            </span>
+        </div>
+        <div class="col-md-6" align="right">
+            <span class="d-inline ml-auto">
+                <div class="button-row">
+                  <button 
+                    (click)="enableInputs()"
+                    mat-raised-button color="basic"
+                    matTooltip="Edit Form">
+                      Edit
+                  </button>
+                  <a 
+                    (click)="disableInputs()"
+                    mat-raised-button color="basic"
+                    matTooltip="Cancel Form">
+                      Cancel
+                  </a>
+                </div>
+            </span>
+        </div>
+      </div> 
 </form>
 
 <!-- <sizingprogram-detail></sizingprogram-detail> -->
-<sizingprogram-detail [masterForm]="masterForm" ></sizingprogram-detail>
+<sizingprogram-detail 
+    [masterForm]="masterForm" 
+    [loader]="loaderVal"
+   
+    >
+</sizingprogram-detail>

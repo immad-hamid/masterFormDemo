@@ -40,4 +40,11 @@ export class PricingService {
   // fetchList(body) {
   //   return this.http.post('http://C3-0467:8011/api/Values/GetList', body, '')
   // }
+
+  getCurrDate()
+  {
+    var date = new Date();
+    let curr_date = ('0' + date.getDate()).slice(-2) + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + date.getFullYear() ;
+    return curr_date;
+  }
 }

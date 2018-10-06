@@ -21,4 +21,6 @@ export class SubjectService {
   message: Subject<any> = new Subject<any>();
 
   EntityData: Subject<any> = new Subject<any>();
+  
+  LoaderStatus: Subject<any> = new Subject<any>();
 }

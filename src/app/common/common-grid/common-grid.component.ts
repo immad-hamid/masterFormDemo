@@ -108,11 +108,16 @@ export class CommonGridComponent implements OnInit {
       dataFromGrid: event.selected[0]    
     });
 
-    if(this.name == 'ROUTING')
+    if(this.name == 'ROUTING' || this.name == 'SIZING_PROGRAM')
     this.subService.headerData.next({
       dataFromGrid: event
     });
 
+    if(this.name == 'SIZING_PROGRAM')    
+      this.subService.EntityData.next({
+      dataFromGrid: event
+    });
+    
     this.bsModalRef.hide();
   }
 

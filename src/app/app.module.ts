@@ -45,6 +45,7 @@ import { SizingprogramMasterComponent } from './views/sizingprogram-form/sizingp
 import { SizingprogramHeaderComponent } from './views/sizingprogram-form/sizingprogram-header/sizingprogram-header.component';
 import { SizingprogramDetailComponent } from './views/sizingprogram-form/sizingprogram-detail/sizingprogram-detail.component';
 import { ToolbarComponent } from './common/toolbar/toolbar.component';
+import { DatePipe } from '../../node_modules/@angular/common';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { ToolbarComponent } from './common/toolbar/toolbar.component';
   providers: [
     RestApiService,
     SubjectService,
-    PricingService
+    PricingService,
+    DatePipe
   ],
   entryComponents: [
     CommonGridComponent,

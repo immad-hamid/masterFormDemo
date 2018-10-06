@@ -1,10 +1,12 @@
-<!-- <div *ngIf="loader">
-    <mat-spinner class="mx-auto" style="margin:0 auto;" mode="indeterminate"></mat-spinner>
-</div> -->
+
+<div *ngIf="loader" style="position: absolute;z-index: 5;width: 100%;display: block;margin-top: 90px;margin-left: 480px;" >
+    <mat-spinner class="mx-auto"></mat-spinner>
+     <!-- {{ loader }}   -->
+</div> 
 
 <mat-tab-group [(selectedIndex)]="selectedTab">
         <mat-tab label="PO Detail">
-                <!-- <div *ngIf="!loader"> -->
+                <div> 
                 <table class="display table table-bordered table-striped table-hover" cellspacing="0">
                         <thead>
                             <tr>
@@ -39,7 +41,7 @@
                                   {{field.QUALITY_CODE}} 
                                 </td>
                                 <td>  
-                                    <select class="form-control form-control-sm" name="LOOM_TYPE_CODE" [(ngModel)]="field.LOOM_TYPE_CODE" > 
+                                    <select class="form-control form-control-sm" name="LOOM_TYPE_CODE" [(ngModel)]="field.LOOM_TYPE_CODE" [disabled]="IsDisable?'':null"> 
                                         <option *ngFor="let s of loom_types" [ngValue]="s.LOOM_TYPE_CODE" >{{ s.LOOM_TYPE }}</option> 
                                     </select>        
                                 </td>
@@ -49,7 +51,9 @@
                                     [(ngModel)]="field.NO_OF_PANEL" 
                                     class="form-control form-control-sm" 
                                     type="text" 
-                                    name="NO_OF_PANEL" align=right                                       
+                                    name="NO_OF_PANEL" align=right  
+                                    [disabled]="IsDisable?'':null" maxlength="8"
+                                    NumberOnly                                    
                                     />        
                                 </td>
                                 <td>  
@@ -61,7 +65,7 @@
                                 </td>
                       
                                 <td>  
-                                  {{field.ALREADY_SELECTED}}
+                                  {{field.ALREADY_SELECTED_WT}}
                                 </td>
                       
                                 <td>  
@@ -74,7 +78,8 @@
                                         [(ngModel)]="field.REQUIRED_WEIGHT" 
                                         class="form-control form-control-sm" 
                                         type="text" 
-                                        name="REQUIRED_WEIGHT" align=right                                       
+                                        name="REQUIRED_WEIGHT" align=right (focusout)="setBalanceWt(i)" 
+                                        [disabled]="IsDisable?'':null"  NumberOnly maxlength="19"                                   
                                         />                
                                 </td>
                       
@@ -85,6 +90,7 @@
                                       color="primary"
                                       mat-mini-fab
                                       matTooltip="Detail"                                     
+                                     
                                       >
                                         <mat-icon>add</mat-icon>
                                     </button>
@@ -93,7 +99,7 @@
                             
                         </tbody>
                       </table>
-                    <!-- </div> -->
+                    </div> 
         </mat-tab>
         <mat-tab label="Yarn Detail"> 
            
@@ -145,7 +151,8 @@
                                     [(ngModel)]="field.NO_OF_BEAMS" 
                                     class="form-control form-control-sm" 
                                     type="text" 
-                                    name="NO_OF_BEAMS" align=right                                       
+                                    name="NO_OF_BEAMS" align=right 
+                                    [disabled]="IsDisable?'':null"                                      
                                     />        
                                 </td>                                                                             
                                             
@@ -154,14 +161,16 @@
                                           (click)="SaveYarnDetail(i)"
                                           color="primary"
                                           mat-mini-fab
-                                          matTooltip="Save"                                      
+                                          matTooltip="Save"          
+                                          [disabled]="IsDisable?'':null"                            
                                           >
                                           <mat-icon>save</mat-icon> </button>
                                     <button 
                                       (click)="RedirectYarnAssignment(i)"
                                       color="primary"
                                       mat-mini-fab
-                                      matTooltip="Redirect"                                      
+                                      matTooltip="Redirect"     
+                                      [disabled]="IsDisable?'':null"                                 
                                       >
                                       <mat-icon>reply</mat-icon>
                                     </button>
