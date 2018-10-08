@@ -1,8 +1,8 @@
 import { ToastsManager,Toast } from 'ng2-toastr';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { config } from './../../models/config';
-import { PricingService } from './../../services/pricing/pricing.service';
-import { SubjectService } from './../../services/subject.service';
+import { config } from '../../models/config';
+import { PricingService } from '../../services/pricing/pricing.service';
+import { SubjectService } from '../../services/subject.service';
 import { Component, OnInit, ViewContainerRef, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({

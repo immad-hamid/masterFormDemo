@@ -1,13 +1,13 @@
-import { CommonGridComponent } from './../../../common/common-grid/common-grid.component';
-import { config } from './../../../models/config';
+import { CommonGridComponent } from '../../../common/common-grid/common-grid.component';
+import { config } from '../../../models/config';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { ToastsManager, Toast } from 'ng2-toastr';
-import { PricingService } from './../../../services/pricing/pricing.service';
+import { PricingService } from '../../../services/pricing/pricing.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { SubjectService } from './../../../services/subject.service';
+import { SubjectService } from '../../../services/subject.service';
 import { Component, OnInit, ViewContainerRef, ViewChild } from '@angular/core';
-import { BsModalService } from '../../../../../node_modules/ngx-bootstrap/modal/bs-modal.service';
-import { DatePipe } from '../../../../../node_modules/@angular/common';
+import { BsModalService } from 'ngx-bootstrap/modal/bs-modal.service';
+import { DatePipe } from '@angular/common';
 import { SizingprogramDetailComponent } from '../sizingprogram-detail/sizingprogram-detail.component';
 
 @Component({

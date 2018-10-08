@@ -45,7 +45,9 @@ import { SizingprogramMasterComponent } from './views/sizingprogram-form/sizingp
 import { SizingprogramHeaderComponent } from './views/sizingprogram-form/sizingprogram-header/sizingprogram-header.component';
 import { SizingprogramDetailComponent } from './views/sizingprogram-form/sizingprogram-detail/sizingprogram-detail.component';
 import { ToolbarComponent } from './common/toolbar/toolbar.component';
-import { DatePipe } from '../../node_modules/@angular/common';
+import { DatePipe } from '@angular/common';
+import { DecimalOnlyDirective } from './common/Directives/decimal-only.directive';
+
 
 @NgModule({
   declarations: [
@@ -65,7 +67,8 @@ import { DatePipe } from '../../node_modules/@angular/common';
     SizingprogramMasterComponent,
     SizingprogramHeaderComponent,
     SizingprogramDetailComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    DecimalOnlyDirective
   ],
   imports: [
     BrowserModule,

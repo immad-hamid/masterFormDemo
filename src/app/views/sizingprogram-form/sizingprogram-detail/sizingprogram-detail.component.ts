@@ -1,10 +1,10 @@
-import { config } from './../../../models/config';
-import { PricingService } from './../../../services/pricing/pricing.service';
-import { SubjectService } from './../../../services/subject.service';
+import { config } from '../../../models/config';
+import { PricingService } from '../../../services/pricing/pricing.service';
+import { SubjectService } from '../../../services/subject.service';
 import { ToastsManager, Toast } from 'ng2-toastr';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Component, OnInit, ViewContainerRef, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { toTypeScript } from '../../../../../node_modules/@angular/compiler';
+import { toTypeScript } from '@angular/compiler';
 
 @Component({
   selector: 'sizingprogram-detail',
