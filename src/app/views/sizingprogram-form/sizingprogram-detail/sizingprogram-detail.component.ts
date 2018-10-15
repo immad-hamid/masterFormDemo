@@ -119,7 +119,7 @@ export class SizingprogramDetailComponent implements OnInit {
       TotalEnds=0;
       lineItems.forEach(
       (lineItem, index) => {
-        debugger          
+        //debugger          
             const obj = {          
               SIZING_PROGRAM_DETAIL_ID : lineItem.SIZING_PROGRAM_DETAIL_ID,
               BEAM_TYPE: lineItem.BEAM_TYPE,
@@ -247,7 +247,7 @@ export class SizingprogramDetailComponent implements OnInit {
         beam_ends_ground = this.YarnDetailArray[index].NO_OF_ENDS;
         beam_required_ground = this.YarnDetailArray[index].NO_OF_BEAMS;
       }
-      debugger
+      //debugger
       if(this.fieldArray[this.PO_index].SIZING_PROGRAM_DETAIL_ID !="" && this.fieldArray[this.PO_index].SIZING_PROGRAM_DETAIL_ID !=undefined){
  
         const obj = {

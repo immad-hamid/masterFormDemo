@@ -1,0 +1,78 @@
+
+<div *ngIf="loader" style="position: absolute;z-index: 5;width: 100%;display: block;margin-top: 90px;margin-left: 480px;" >
+  <mat-spinner class="mx-auto"></mat-spinner>
+   <!-- {{ loader }}  -->
+</div> 
+
+<table class="display table table-bordered table-striped table-hover" cellspacing="0">
+  <thead>
+      <tr>
+          <th>Yarn Code</th>
+          <th>Yarn Description</th>
+          <th>Count</th>
+          <th>%age of Yarn Wt.</th>
+          <th>No. of Ends/Beam(QVR)</th>          
+          <th>No. of Ends/Beam(Actual)</th>
+          <th>Required Wt. (Actual)</th>
+          <!-- <th>Required Length/Beam (QVR)</th> -->
+      </tr>
+  </thead>
+  <tbody>
+                      
+    <tr *ngFor="let field of fieldArray; let i = index">
+        <td>
+          <input type="hidden" class="form-control form-control-sm" name="SIZING_YARN_DETAIL_ID" [(ngModel)]="field.SIZING_YARN_DETAIL_ID"/>
+          <input type="hidden" class="form-control form-control-sm" name="YARN_SNO" [(ngModel)]="field.YARN_SNO"/>
+          {{field.YARN_CODE}}
+        </td>
+
+        <td>   
+          {{field.YARN_DESC}}
+        </td>
+
+        <td> 
+          {{field.COUNT}} 
+        </td>
+        <td>  
+            {{field.YARN_WEIGHT_PERCENTAGE}} 
+        </td>
+  
+        <td>  
+            {{field.NO_OF_ENDS}} 
+        </td>
+        <td> 
+            <input                      
+            [(ngModel)]="field.NO_OF_ENDS_ACTUAL" 
+            class="form-control form-control-sm" 
+            type="text" 
+            name="NO_OF_ENDS_ACTUAL" align=right  
+            [disabled]="IsDisable?'':null" maxlength="8"
+            NumberOnly                                    
+            />        
+        </td>
+        <td>  
+          {{field.REQUIRED_WEIGHT_ACTUAL}}
+        </td>
+
+        <!-- <td>  
+          {{field.REQUIRED_LENGTH_QVR}}
+        </td> -->
+    </tr>    
+    
+</tbody>
+</table>
+
+<div class="col-sm-12 mt-5">
+    <div class="row">    
+        <span class="d-inline ml-auto">
+            <div class="button-row">
+                <button  
+                    (click)="saveData()"
+                    mat-raised-button color="basic"
+                    matTooltip="Save" >
+                    Save
+                </button>
+            </div>
+        </span>
+    </div>
+</div>

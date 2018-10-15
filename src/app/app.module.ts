@@ -47,6 +47,9 @@ import { SizingprogramDetailComponent } from './views/sizingprogram-form/sizingp
 import { ToolbarComponent } from './common/toolbar/toolbar.component';
 import { DatePipe } from '@angular/common';
 import { DecimalOnlyDirective } from './common/Directives/decimal-only.directive';
+import { YarnassignmentMasterComponent } from './views/yarnassignment-form/yarnassignment-master.component';
+import { YarnassignmentHeaderComponent } from './views/yarnassignment-form/yarnassignment-header/yarnassignment-header.component';
+import { YarnassignmentDetailComponent } from './views/yarnassignment-form/yarnassignment-detail/yarnassignment-detail.component';
 
 
 @NgModule({
@@ -68,7 +71,10 @@ import { DecimalOnlyDirective } from './common/Directives/decimal-only.directive
     SizingprogramHeaderComponent,
     SizingprogramDetailComponent,
     ToolbarComponent,
-    DecimalOnlyDirective
+    DecimalOnlyDirective,
+    YarnassignmentMasterComponent,
+    YarnassignmentHeaderComponent,
+    YarnassignmentDetailComponent
   ],
   imports: [
     BrowserModule,

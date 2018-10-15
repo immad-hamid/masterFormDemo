@@ -178,12 +178,12 @@ export class SizingprogramHeaderComponent implements OnInit {
 
       GetPODetail()
       {
-        debugger
+       // debugger
         this.loaderVal = true;
         let PODetail ;
         this.psService.getData(`http://${config.hostaddress}/api/Values/GetPODetail?WeaverCode=${this.WEAVER_CODE.value}&PoNo=${this.PO_NO.value}&QualityCode=${this.QUALITY_CODE.value}`,'GET').subscribe(          
           (res) => {
-          debugger
+          //debugger
           this.loaderVal = false;
           
            PODetail = res;
@@ -231,7 +231,7 @@ export class SizingprogramHeaderComponent implements OnInit {
 
       clearInputs()
       {
-        //this.masterForm.reset();
+        this.masterForm.reset();
         this.STATUS.setValue(1);
         this.CREATED_DATE.setValue(this.psService.getCurrDate());
       } 

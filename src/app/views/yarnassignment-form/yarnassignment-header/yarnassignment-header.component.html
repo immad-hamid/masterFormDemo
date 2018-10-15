@@ -1,0 +1,107 @@
+<!-- <div class="mb-5 col-sm-12"> -->
+  <div class="form-row" style="margin-top:12px;margin-bottom: 12px;">
+    <span class="d-inline">
+        <h3 class="d-inline" style="font-weight: 300">Product Development 
+            <strong style="font-weight: 600">Yarn Assignment</strong>
+        </h3>
+    </span>
+    <span class="d-inline ml-auto">
+        <button               
+          color="primary"
+          mat-fab
+          (click)="openModalSearchGrid()"
+          matTooltip="Search">
+            <mat-icon>search</mat-icon>
+        </button>
+    </span>
+</div>
+<!-- </div> -->
+
+<mat-progress-bar mode="determinate" value="0"></mat-progress-bar>
+<br>
+
+
+<form class="form-group container-fluid" [formGroup]="masterForm" #novalidate>
+  
+  <!--First row-->
+  <div class="form-row">
+      <!--First column-->
+      <div class="col-md-3" form-group>
+          <div class="md-form">               
+              <label for="form9" class="clsMandatory">SIZING PROGRAM NO</label>
+              <input type="hidden" formControlName="SIZING_YARN_HEADER_ID" />
+              <input type="hidden" formControlName="SIZING_PROGRAM_DETAIL_ID" />
+              
+              <input type="text" class="form-control form-control-sm" 
+              formControlName="SIZING_PROGRAM_HEADER_ID" disabled>                              
+            </div>
+      </div>
+
+      <!--Second column-->
+      <div class="col-md-3" form-group>
+          <div class="md-form">
+              <label for="form10" class="clsMandatory">BEAM TYPE</label>
+              <input type="text" class="form-control form-control-sm"  
+              formControlName="BEAM_TYPE" disabled>           
+          </div>
+      </div>
+
+      <div class="col-md-3" form-group>
+          <div class="md-form">
+            <label for="form9" class="clsMandatory">NO OF ENDS/BEAM</label>
+            <input type="text" class="form-control form-control-sm"  
+            formControlName="NO_OF_ENDS" disabled>              
+          </div>
+      </div>
+
+      <!--Third column-->
+      <div class="col-md-3" form-group>
+          <div class="md-form">               
+            <label for="form9" class="clsMandatory">LENGTH PER BEAM</label>
+            <input type="text" class="form-control form-control-sm"  
+            formControlName="LENGTH_PER_BEAM" disabled>  
+          </div>
+      </div>
+  </div> 
+
+  <br>
+      <div class="form-row">
+        <div class="col-md-6">
+            <span class="d-inline">
+                <div class="button-row">
+                  <button 
+                    (click)="addRecord()"
+                    mat-raised-button color="basic"
+                    matTooltip="Add">
+                      Add 
+                  </button>
+                </div>
+            </span>
+        </div>
+        <div class="col-md-6" align="right">
+            <span class="d-inline ml-auto">
+                <div class="button-row">
+                  <button 
+                    (click)="enableInputs()"
+                    mat-raised-button color="basic"
+                    matTooltip="Edit Form">
+                      Edit
+                  </button>
+                  <a 
+                    (click)="disableInputs()"
+                    mat-raised-button color="basic"
+                    matTooltip="Cancel Form">
+                      Cancel
+                  </a>
+                </div>
+            </span>
+        </div>
+      </div> 
+</form>
+
+<!-- <sizingprogram-detail></sizingprogram-detail> -->
+<yarnassignment-detail 
+    [masterForm]="masterForm" 
+    [loader]="loaderVal"   
+    >
+</yarnassignment-detail>
