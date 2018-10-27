@@ -28,6 +28,8 @@
                             <tr *ngFor="let field of fieldArray; let i = index">
                                 <td>
                                   <input type="hidden" class="form-control form-control-sm" name="SIZING_PROGRAM_DETAIL_ID" [(ngModel)]="field.SIZING_PROGRAM_DETAIL_ID"/>
+                                  <input type="hidden" class="form-control form-control-sm" name="QVR_REVISION_NO" [(ngModel)]="field.QVR_REVISION_NO"/>
+                                                                   
                                   {{field.PO_NO}}
                                 </td>
                       

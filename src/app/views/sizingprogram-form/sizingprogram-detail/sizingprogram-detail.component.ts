@@ -29,6 +29,7 @@ export class SizingprogramDetailComponent implements OnInit {
 
   private fieldArray: Array<any> = [{PO_NO: '',
     RECORD_ID: '',
+    CT_RECORD_ID: '',
     WEAVER_CODE: '',
     WEAVER_NAME : '',
     QUALITY_SNO : '',
@@ -41,6 +42,7 @@ export class SizingprogramDetailComponent implements OnInit {
     LOOM_TYPE_CODE :'',
     NO_OF_PANEL :'',
     AVG_REED_SPACE:'',
+    QVR_REVISION_NO:'',
     disabled: true,
     rowEditMode: true
     }];
@@ -72,7 +74,7 @@ export class SizingprogramDetailComponent implements OnInit {
 //#region Fill Details
 
     PopulatePODetails(dtldata){
-      //debugger
+      debugger
       
       console.log(this.loader);
       this.fieldArray = [];
@@ -82,10 +84,11 @@ export class SizingprogramDetailComponent implements OnInit {
       
       lineItems.forEach(
         (lineItem, index) => {
-          // debugger            
+           debugger            
               const obj = {          
                 PO_NO: lineItem.PO_NO,
                 RECORD_ID: lineItem.RECORD_ID,
+                CT_RECORD_ID: lineItem.CT_RECORD_ID,
                 WEAVER_CODE: lineItem.WEAVER_CODE,
                 WEAVER_NAME : lineItem.WEAVER_NAME, 
                 QUALITY_SNO : lineItem.QUALITY_SNO,
@@ -98,7 +101,8 @@ export class SizingprogramDetailComponent implements OnInit {
                 LOOM_TYPE_CODE : lineItem.LOOM_TYPE_CODE,        
                 NO_OF_PANEL : lineItem.NO_OF_PANEL,
                 AVG_REED_SPACE : lineItem.AVG_REED_SPACE,
-                SIZING_PROGRAM_DETAIL_ID : lineItem.SIZING_PROGRAM_DETAIL_ID
+                SIZING_PROGRAM_DETAIL_ID : lineItem.SIZING_PROGRAM_DETAIL_ID,
+                QVR_REVISION_NO : lineItem.QVR_REVISION_NO
               }
               //debugger
               this.fieldArray.push(obj);
@@ -119,15 +123,15 @@ export class SizingprogramDetailComponent implements OnInit {
       TotalEnds=0;
       lineItems.forEach(
       (lineItem, index) => {
-        //debugger          
+        debugger          
             const obj = {          
               SIZING_PROGRAM_DETAIL_ID : lineItem.SIZING_PROGRAM_DETAIL_ID,
-              BEAM_TYPE: lineItem.BEAM_TYPE,
-              RECORD_ID: lineItem.RECORD_ID,
+              BEAM_TYPE: lineItem.beam_type,
+              RECORD_ID: lineItem.record_id,
              // LOOM_TYPE_CODE: PO_obj.LOOM_TYPE_CODE,
              // NO_OF_PANEL : PO_obj.NO_OF_PANEL,
               BEAM_WIDTH : lineItem.BEAM_WIDTH,
-              NO_OF_ENDS : lineItem.BEAM_TYPE == "PILE" ? lineItem.TOTAL_PILE_ENDS :lineItem.TOTAL_GROUND_ENDS ,
+              NO_OF_ENDS : lineItem.beam_type == "PILE" ? lineItem.total_pile_ends :lineItem.total_ground_ends ,
               NO_OF_BEAMS : lineItem.NO_OF_BEAMS,
               REQUIRED_WEIGHT : lineItem.REQUIRED_WEIGHT,
               disabled: true,
@@ -214,10 +218,10 @@ export class SizingprogramDetailComponent implements OnInit {
     ShowDetail(index)
     {
      
-     //  debugger
+       debugger
        this.PO_index = index;
        this.selectedTab = 1;
-       const id = this.fieldArray[index].RECORD_ID;
+       const id = this.fieldArray[index].CT_RECORD_ID;
        const detail_id = this.fieldArray[index].SIZING_PROGRAM_DETAIL_ID;
        this.loader = true;
        let url:string;
@@ -319,7 +323,7 @@ export class SizingprogramDetailComponent implements OnInit {
                   obj.WSZ_SIZING_PROGRAM_DETAIL.push(
                     {
                       SIZING_PROGRAM_HEADER_ID: this.masterForm.value.SIZING_PROGRAM_HEADER_ID === undefined ? "" : this.masterForm.value.SIZING_PROGRAM_HEADER_ID,              
-                      SIZING_PROGRAM_DETAIL_ID : this.masterForm.value.SIZING_PROGRAM_DETAIL_ID === undefined ? "" : this.masterForm.value.SIZING_PROGRAM_DETAIL_ID ,
+                      SIZING_PROGRAM_DETAIL_ID : el.SIZING_PROGRAM_DETAIL_ID === undefined ? "" : el.SIZING_PROGRAM_DETAIL_ID ,
                       PO_NO: el.PO_NO,
                       WEAVER_CODE: el.WEAVER_CODE,
                       QUALITY_SNO : el.QUALITY_SNO,
@@ -328,6 +332,8 @@ export class SizingprogramDetailComponent implements OnInit {
                       REQUIRED_WEIGHT : el.REQUIRED_WEIGHT,
                       LOOM_TYPE_ID : el.LOOM_TYPE_CODE,
                       RECORD_ID : el.RECORD_ID,
+                      CT_RECORD_ID : el.CT_RECORD_ID,
+                      QVR_REVISION_NO : el.QVR_REVISION_NO,
                       // BEAM_WIDTH: el.BEAM_WIDTH,
                       // BEAMS_ENDS_PILE: el.BEAMS_ENDS_PILE,
                       // BEAMS_REQUIRED_PILE : el.BEAMS_REQUIRED_PILE,

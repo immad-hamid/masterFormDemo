@@ -113,7 +113,7 @@ export class CommonGridComponent implements OnInit {
       dataFromGrid: event
     });
 
-    if(this.name == 'SIZING_PROGRAM')    
+    if(this.name == 'SIZING_PROGRAM' || this.name == 'YARN_ASSIGNMENT')    
       this.subService.EntityData.next({
       dataFromGrid: event
     });
@@ -122,6 +122,7 @@ export class CommonGridComponent implements OnInit {
   }
 
   updateFilter(event) {
+    //debugger
     //console.log(event);
     const val = event.target.value;
 
@@ -131,7 +132,7 @@ export class CommonGridComponent implements OnInit {
       var isTrue = false;
 
       for( var i = 0; i < this.columns.length; i++){
-        var name = this.columns[i].name;
+        var name = this.columns[i].prop;
         if(d[name] != null)
           isTrue = d[name].toString().toLowerCase().indexOf(val.toLowerCase()) !== -1 || !val;
         if(isTrue)

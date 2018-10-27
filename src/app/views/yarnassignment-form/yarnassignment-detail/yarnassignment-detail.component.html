@@ -13,8 +13,9 @@
           <th>%age of Yarn Wt.</th>
           <th>No. of Ends/Beam(QVR)</th>          
           <th>No. of Ends/Beam(Actual)</th>
+          <th>Required Wt. (QVR)</th>
           <th>Required Wt. (Actual)</th>
-          <!-- <th>Required Length/Beam (QVR)</th> -->
+          <th>Required Length/Beam (QVR)</th> 
       </tr>
   </thead>
   <tbody>
@@ -23,6 +24,9 @@
         <td>
           <input type="hidden" class="form-control form-control-sm" name="SIZING_YARN_DETAIL_ID" [(ngModel)]="field.SIZING_YARN_DETAIL_ID"/>
           <input type="hidden" class="form-control form-control-sm" name="YARN_SNO" [(ngModel)]="field.YARN_SNO"/>
+          <input type="hidden" class="form-control form-control-sm" name="PLY" [(ngModel)]="field.PLY"/>
+          <input type="hidden" class="form-control form-control-sm" name="BEAM_TYPE_DETAIL_RECORD_ID" [(ngModel)]="field.BEAM_TYPE_DETAIL_RECORD_ID"/>
+          
           {{field.YARN_CODE}}
         </td>
 
@@ -47,16 +51,20 @@
             type="text" 
             name="NO_OF_ENDS_ACTUAL" align=right  
             [disabled]="IsDisable?'':null" maxlength="8"
-            NumberOnly                                    
+            NumberOnly            
+            (focusout) = UpdateNoOfEndsPerBeam(i)                        
             />        
         </td>
+        
         <td>  
-          {{field.REQUIRED_WEIGHT_ACTUAL}}
+            {{field.REQUIRED_WEIGHT_QVR}}
         </td>
-
-        <!-- <td>  
+        <td>  
+            {{field.REQUIRED_WEIGHT_ACTUAL}}
+        </td>
+        <td>  
           {{field.REQUIRED_LENGTH_QVR}}
-        </td> -->
+        </td> 
     </tr>    
     
 </tbody>
@@ -67,7 +75,7 @@
         <span class="d-inline ml-auto">
             <div class="button-row">
                 <button  
-                    (click)="saveData()"
+                    (click)="save()"
                     mat-raised-button color="basic"
                     matTooltip="Save" >
                     Save
