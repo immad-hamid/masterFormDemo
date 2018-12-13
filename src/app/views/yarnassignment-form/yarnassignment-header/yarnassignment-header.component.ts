@@ -1,10 +1,10 @@
-import { config } from './../../../models/config';
-import { CommonGridComponent } from './../../../common/common-grid/common-grid.component';
+import { config } from '../../../models/config';
+import { CommonGridComponent } from '../../../common/common-grid/common-grid.component';
 import { DatePipe } from '@angular/common';
 import { ToastsManager,Toast } from 'ng2-toastr';
-import { PricingService } from './../../../services/pricing/pricing.service';
+import { PricingService } from '../../../services/pricing/pricing.service';
 import { FormBuilder } from '@angular/forms';
-import { SubjectService } from './../../../services/subject.service';
+import { SubjectService } from '../../../services/subject.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 

@@ -1,0 +1,58 @@
+
+<div class="container">
+  <div class="row">
+      <div class="col-sm-12">
+
+        <div class="form-row" style="margin-top:12px;margin-bottom: 12px;">
+          <span class="d-inline">
+              <h3 class="d-inline" style="font-weight: 300">Greige Module
+                  <strong style="font-weight: 600">Inspection Unit</strong>
+              </h3>
+          </span>
+        </div>
+<br>
+          <table class="display table table-bordered table-striped table-hover" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Serial No.</th>
+                    <th>Inspection unit</th>
+                    <th>Select</th>
+                </tr>
+            </thead>
+            <tbody>
+          
+                <tr *ngFor="let field of inspection_units; let i = index">
+                 <td>
+                        {{i+1}}        
+                 </td>  
+                  <td>
+                           {{field.UNIT_NAME}}        
+                    </td>
+                    
+                    <td>
+                        <input type="checkbox" checked="false" [(ngModel)]="field.IS_SELECT" class="form-control form-control-lg" name="{{field.IS_SELECT}}">
+                       
+                    </td>
+                </tr>
+
+            </tbody>
+          </table>
+          
+          <div class="col-sm-12 mt-5">
+              <div class="row">    
+                  <span class="d-inline ml-auto">
+                      <div class="button-row">
+                          <button  
+                              (click)="Go()"
+                              mat-raised-button color="basic"
+                              matTooltip="Click to Open LOOM Selection." >
+                              Go
+                          </button>
+                      </div>
+                  </span>
+              </div>
+          </div>
+
+        </div>
+      </div>
+  </div>          

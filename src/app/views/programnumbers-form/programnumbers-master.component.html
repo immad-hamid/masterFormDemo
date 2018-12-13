@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">Program Numbers</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+  
+    <!-- <div 
+      *ngIf="loader">
+        <mat-spinner class="mx-auto"></mat-spinner>
+    </div>
+  
+    <div *ngIf="!loader">
+    </div> -->
+    <table class="display table table-bordered table-striped table-hover" cellspacing="0">
+        <thead>
+            <tr>
+                
+            </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td *ngFor = "let field of program_numbers">
+                <!-- <span >{{field.PROGRAM_NO}}</span> -->
+                <button type="button" class="btn btn-default" (click)="RedirectToInLineQC(field.PROGRAM_NO)">{{field.PROGRAM_NO}}</button>
+            </td>
+          </tr>
+            
+        </tbody>
+        </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">{{closeBtnName}}</button>
+  </div>
+  

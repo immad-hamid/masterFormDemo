@@ -1,0 +1,281 @@
+<div class="container">
+  <div class="row">
+      <div class="col-sm-12">
+
+        <div class="form-row" style="margin-top:12px;margin-bottom: 12px;">
+          <span class="d-inline">
+              <h3 class="d-inline" style="font-weight: 300">Greige Module
+                  <strong style="font-weight: 600">In-Line QC</strong>
+              </h3>
+          </span>
+          <!-- <span class="d-inline ml-auto">
+              <button               
+                color="primary"
+                mat-fab
+                (click)="openModalSearchGrid()"
+                matTooltip="Search">
+                  <mat-icon>search</mat-icon>
+              </button>
+          </span> -->
+        </div>
+
+        <form class="form-group container-fluid" [formGroup]="masterForm" #novalidate>
+  
+          <!--First row-->
+          <div class="form-row">
+              <!--First column-->
+              <div class="col-md-2" form-group>
+                  <div class="md-form">          
+                      <input type="hidden" class="form-control form-control-sm" formControlName="RECORD_ID" >
+                      <input type="hidden" class="form-control form-control-sm" formControlName="DOFFING_NO" >     
+                      <label for="form9" class="clsMandatory">LOOM NO</label>
+                      <input type="text" class="form-control form-control-sm" 
+                      formControlName="LOOM_NO" disabled>                              
+                    </div>
+              </div>        
+        
+              <div class="col-md-2" form-group>
+                  <div class="md-form">
+                    <label for="form9" class="clsMandatory">PROGRAM NO</label>
+                    <input type="text" class="form-control form-control-sm"  
+                    formControlName="PROGRAM_NO" disabled>              
+                  </div>
+              </div>
+                      
+              <!--Second column-->
+              <div class="col-md-2" form-group>
+                <div class="md-form">
+                    <input type="hidden" class="form-control form-control-sm" formControlName="QUALITY_SNO" >
+                  <label for="form9" class="clsMandatory">QUALITY CODE</label>
+                  <input type="text" class="form-control form-control-sm"  
+                  formControlName="QUALITY_CODE" disabled>              
+                </div>
+              </div>
+
+              <div class="col-md-2" form-group>
+                <div class="md-form">
+                  <label for="form9" class="clsMandatory">TOTAL BORDERS</label>
+                  <input type="text" class="form-control form-control-sm"  
+                  formControlName="TOTAL_NO_OF_BORDERS" disabled>              
+                </div>
+              </div>
+
+              <!--Third column-->
+              <div class="col-md-4" form-group>
+                  <div class="md-form" align="right">               
+                    <button style = "margin-top: 24px;"
+                    (click)="Start()"
+                    mat-raised-button color="basic"
+                    matTooltip="Inspection Start" 
+                    [disabled]="IsEnable?'':null"
+                    >
+                    Inspection Start
+                  </button>   
+                  <button style = "margin-top: 24px;"
+                    (click)="Close()"
+                    mat-raised-button color="basic"
+                    matTooltip="Inspection Close" 
+                    [disabled]="IsDisable?'':null"
+                    >
+                    Inspection Close 
+                  </button>    
+                  
+                  </div>
+              </div>
+          </div>
+
+        </form>
+
+        <div class="form-row">
+          <div class="col-md-6">
+              <span class="d-inline">
+                  <div class="button-row">
+                    <button 
+                      (click)="Complain()"
+                      mat-raised-button color="basic"
+                      matTooltip="Compalin">
+                        Complain 
+                    </button>
+                    <button 
+                      (click)="QCParameters()"
+                      mat-raised-button color="basic"
+                      matTooltip="QC Parameteres">
+                        QC Paramters 
+                    </button>
+                  </div>
+              </span>
+          </div>
+          <div class="col-md-6" align="right">
+              <span class="d-inline ml-auto">
+                  <div class="button-row">
+                      <button style = "margin-top: 24px;"
+                      (click)="FinalClose()"
+                      mat-raised-button color="basic"
+                      matTooltip="Final Close" 
+                      [disabled]="Final_Close_Disable?'':null"
+                      >
+                      Final Close 
+                    </button>   
+                    <!-- <button 
+                      (click)="SaveBatchers()"
+                      mat-raised-button color="basic"
+                      matTooltip="Save">
+                        Save
+                    </button> -->
+                    <a 
+                      (click)="BackToLoom()"
+                      mat-raised-button color="basic"
+                      matTooltip="Back to Loom">
+                        Back
+                    </a>
+                  </div>
+              </span>
+          </div>
+        </div> 
+
+        <br>
+
+        <table class="display table table-bordered table-striped table-hover" cellspacing="0">
+          <thead>
+              <tr>
+                  <th> Batcher No.</th>
+                  <th *ngFor="let obj of batchers" >{{obj.value}}</th>  
+                  <th> Save</th>  
+                  <th> Edit</th>            
+              </tr>          
+          </thead>
+           
+          <tbody>        
+            <tr>
+                <td>No. of Pcs. per Border</td>
+                <td *ngFor="let obj of pcs_per_border" >
+                  <input                      
+                  [(ngModel)]="obj.value" 
+                  class="form-control form-control-sm" 
+                  type="text" 
+                  name="PCS_PER_BORDER" align=right NumberOnly
+                   [disabled]="No_Border_Enable?'':null"                                     
+                  />        
+                 </td> 
+              <td><button 
+                (click)="SaveBatchers()"
+                color="primary"
+                mat-mini-fab
+                matTooltip="Save"          
+                [disabled]="No_Border_Enable?'':null"                            
+                ><mat-icon>save</mat-icon></button>  
+              </td>
+              <td>
+               <button 
+                  (click)="editNoOfBorderValue()"
+                  color="basic"
+                  mat-mini-fab
+                  matTooltip="Edit"
+                  [disabled]="No_Border_Disable?'':null" 
+                  >
+                  <mat-icon>edit</mat-icon>
+               </button>
+              </td>
+
+            </tr>
+
+            <tr>
+                <td>No. of A Pcs.</td>
+                <td *ngFor="let obj of a_pcs" >{{obj.value}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>No. of B Pcs.</td>
+                <td *ngFor="let obj of b_pcs" >{{obj.value}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>No. of C Pcs.</td>
+                <td *ngFor="let obj of c_pcs" >{{obj.value}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>B %</td>
+                <td *ngFor="let obj of b_percent" >{{obj.value}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>C %</td>
+                <td *ngFor="let obj of c_percent" >{{obj.value}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td> 
+                  <select class="form-control form-control-sm" name="DEFECT_CODE" [(ngModel)]="DEFECT_CODE"
+                  [disabled]="IsDisable?'':null"     
+                  >                     
+                    <option *ngFor="let s of defects" [ngValue]="s.DEFECT_CODE" >{{ s.DEFECT_NAME }}</option> 
+                </select>
+                
+                </td>
+                <td *ngFor="let obj of no_of_defects" >
+                  <input                      
+                  [(ngModel)]="obj.value" 
+                  class="form-control form-control-sm" 
+                  type="text" 
+                  name="NO_OF_DEFECTED_PCS" align=right  NumberOnly
+                  [disabled]="IsDisable?'':null"                                      
+                  /></td>
+                <td> <button 
+                  (click)="SaveDefects()"
+                  color="primary"
+                  mat-mini-fab
+                  matTooltip="Save"          
+                  [disabled]="IsDisable?'':null"                            
+                  > <mat-icon>save</mat-icon> </button>                
+                </td>
+                  <td>
+
+                  </td>
+            </tr>
+
+            <tr>
+                <td>Cut Pcs.</td>
+                <td *ngFor="let obj of cut_pcs" >
+                  <input                      
+                  [(ngModel)]="obj.value" 
+                  class="form-control form-control-sm" 
+                  type="text" 
+                  name="CUT_PCS" align=right 
+                  [disabled]="Cut_Pcs_Enable?'':null" NumberOnly                                   
+                  />        
+                </td> <td> 
+                   <button 
+                (click)="SaveCutPcs()"
+                color="primary"
+                mat-mini-fab
+                matTooltip="Save"          
+                [disabled]="Cut_Pcs_Enable?'':null"                            
+                > <mat-icon>save</mat-icon> </button>                                       
+              </td>
+              <td>
+               <button 
+                  (click)="editCutPcsValue()"
+                  color="basic"
+                  mat-mini-fab
+                  matTooltip="Edit"
+                  [disabled]="Cut_Pcs_Disable?'':null" >
+                  <mat-icon>edit</mat-icon>
+               </button></td>
+            </tr>
+          </tbody> 
+        </table>      
+
+    </div>
+  </div>
+</div>

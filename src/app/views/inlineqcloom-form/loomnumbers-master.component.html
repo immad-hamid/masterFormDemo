@@ -1,0 +1,75 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+  
+          <div class="form-row" style="margin-top:12px;margin-bottom: 12px;">
+            <span class="d-inline">
+                <h3 class="d-inline" style="font-weight: 300">Greige Module
+                    <strong style="font-weight: 600">Loom Numbers</strong>
+                </h3>
+            </span>
+          </div>
+ 
+  <div class="col-sm-12 mt-5">
+      <div class="row">    
+          <span class="d-inline ml-auto">
+              <div class="button-row">
+                  <button  
+                      (click)="Back()"
+                      mat-raised-button color="basic"
+                      matTooltip="Go Back" >
+                      Back
+                  </button>
+              </div>
+          </span>
+      </div>
+  </div>
+<br>
+  <table class="display table table-bordered table-striped table-hover" cellspacing="0">
+      <thead>
+          <tr>
+              <th colspan="8"> LOOM NUMBERS</th>
+              <!-- <th > LOOM NUMBERS</th>
+              <th > LOOM NUMBERS</th>
+              <th > LOOM NUMBERS</th>
+              <th > LOOM NUMBERS</th>
+              <th > LOOM NUMBERS</th>
+              <th > LOOM NUMBERS</th>
+              <th > LOOM NUMBERS</th> -->
+              <!-- <th>Inspection unit</th>
+              <th>Select</th> -->
+          </tr>
+      </thead>
+      <tbody>
+    
+           <tr *ngFor="let field of loom_numbers_cols">
+           <td (click)="LinktoProgram(field.col1)">  <span > {{field.col1}} </span>
+           </td>
+           
+           <td (click)="LinktoProgram(field.col2)">  <span >{{field.col2}} </span>           
+           </td>
+           
+           <td (click)="LinktoProgram(field.col3)"> <span >{{field.col3}}</span> 
+           </td>
+           
+           <td (click)="LinktoProgram(field.col4)">  <span >{{field.col4}}</span>            
+           </td>
+           
+           <td (click)="LinktoProgram(field.col5)">  <span >{{field.col5}}</span>           
+           </td>
+           
+           <td (click)="LinktoProgram(field.col6)"> <span >{{field.col6}}</span>                            
+           </td>
+           
+           <td (click)="LinktoProgram(field.col7)"> <span > {{field.col7}}</span>             
+           </td>
+           
+           <td (click)="LinktoProgram(field.col8)">  <span > {{field.col8}}</span>                       
+           </td>
+          </tr> 
+      </tbody>
+    </table>
+
+   </div>
+  </div>
+</div>

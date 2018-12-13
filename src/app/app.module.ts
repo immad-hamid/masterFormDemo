@@ -1,9 +1,6 @@
-
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, Directive } from '@angular/core';
+import { NgModule, Directive, Component } from '@angular/core';
 
-// routing
-import { AppRoutingModule } from './app-routing.module';
 
 // main app component
 import { AppComponent } from './app.component';
@@ -50,7 +47,13 @@ import { DecimalOnlyDirective } from './common/Directives/decimal-only.directive
 import { YarnassignmentMasterComponent } from './views/yarnassignment-form/yarnassignment-master.component';
 import { YarnassignmentHeaderComponent } from './views/yarnassignment-form/yarnassignment-header/yarnassignment-header.component';
 import { YarnassignmentDetailComponent } from './views/yarnassignment-form/yarnassignment-detail/yarnassignment-detail.component';
+import { InlineqcMasterComponent } from './views/inlineqc-form/inlineqc-master.component';
+import { InspectionunitMasterComponent } from './views/inspectionunit-form/inspectionunit-master.component';
+import { LoomnumbersMasterComponent } from './views/inlineqcloom-form/loomnumbers-master.component';
+import { ProgramnumbersMasterComponent } from './views/programnumbers-form/programnumbers-master.component';
 
+// routing
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -74,20 +77,31 @@ import { YarnassignmentDetailComponent } from './views/yarnassignment-form/yarna
     DecimalOnlyDirective,
     YarnassignmentMasterComponent,
     YarnassignmentHeaderComponent,
-    YarnassignmentDetailComponent
-  ],
+    YarnassignmentDetailComponent,
+    InlineqcMasterComponent,
+    InspectionunitMasterComponent,
+    LoomnumbersMasterComponent,
+    ProgramnumbersMasterComponent
+    ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
+    ReactiveFormsModule,    
     NgxDatatableModule,
     ModalModule.forRoot(),
     ToastModule.forRoot(),
-   // ToastrModule.forRoot(), // ToastrModule added
+    RouterModule.forRoot([
+      { path: '', component: InspectionunitMasterComponent },
+      { path: 'loomnumbers-master/:id', component: LoomnumbersMasterComponent },		  
+      { path: 'loomnumbers-master', component: LoomnumbersMasterComponent },		  
+      { path: 'inlineqc-master/:id/:range', component: InlineqcMasterComponent}, 
+     // { path: '**', component: AppComponent },
+      //{ path: '', redirectTo: '/home', pathMatch: 'full' },
+    ]),
+    //AppRoutingModule  
   ],
   providers: [
     RestApiService,
@@ -97,7 +111,8 @@ import { YarnassignmentDetailComponent } from './views/yarnassignment-form/yarna
   ],
   entryComponents: [
     CommonGridComponent,
-    LovGridComponent
+    LovGridComponent,
+    ProgramnumbersMasterComponent
   ],
   bootstrap: [AppComponent]
 })

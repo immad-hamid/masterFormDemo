@@ -1,10 +1,10 @@
-import { config } from './../../../models/config';
-import { PricingService } from './../../../services/pricing/pricing.service';
-import { SubjectService } from './../../../services/subject.service';
+import { config } from '../../../models/config';
+import { PricingService } from '../../../services/pricing/pricing.service';
+import { SubjectService } from '../../../services/subject.service';
 import { ToastsManager,Toast } from 'ng2-toastr';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Component, OnInit, Input, ViewContainerRef } from '@angular/core';
-import { TooltipConfig } from '../../../../../node_modules/ngx-bootstrap';
+import { TooltipConfig } from 'ngx-bootstrap';
 
 @Component({
   selector: 'yarnassignment-detail',
@@ -197,7 +197,7 @@ export class YarnassignmentDetailComponent implements OnInit {
     { const selected_wt = parseFloat(this.masterForm.controls.SELECTED_WT.value || 0);
 
         this.setTotalEnds();
-//debugger
+        //debugger
         this.fieldArray[index].REQUIRED_WEIGHT_ACTUAL =  (((parseFloat(this.fieldArray[index].YARN_WEIGHT_PERCENTAGE ||0) /100 *
         selected_wt)/parseFloat(this.fieldArray[index].NO_OF_ENDS || 1)) * parseFloat(this.fieldArray[index].NO_OF_ENDS_ACTUAL || 0)).toFixed(2)
     
